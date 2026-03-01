@@ -57,8 +57,8 @@
     <input type="password" id="adminPass" placeholder="Password" style="width:300px; margin-bottom:10px;">
     <button onclick="loginAdmin()" style="width:300px;">Authorize Session</button>
 </div>
-
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
@@ -77,23 +77,50 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
+  const auth = firebase.auth();
 
+  // 2. THE MISSING LOGIN FUNCTION
+  function loginAdmin() {
+    const email = document.getElementById('adminEmail').value;
+    const pass = document.getElementById('adminPass').value;
+    const btn = document.querySelector('#login-screen button');
+
+    btn.innerText = "Checking Credentials...";
+
+    auth.signInWithEmailAndPassword(email, pass)
+      .then((userCredential) => {
+        // Success! Hide the login screen
+        document.getElementById('login-screen').style.display = 'none';
+        console.log("Logged in as:", userCredential.user.email);
+      })
+      .catch((error) => {
+        // Failure! Show error
+        alert("Login Failed: " + error.message);
+        btn.innerText = "Authorize Session";
+      });
+  }
+
+  // 3. THE CLEAN FIREBASE SAVE FUNCTION
   function saveQuestion() {
     const subject = document.getElementById('subject').value;
     const qText = document.getElementById('qText').value;
     const sText = document.getElementById('sText').value;
     const marks = document.getElementById('marks').value;
 
-    // This creates a unique entry under the chosen subject
+    if(!qText || !sText) {
+        alert("Please fill in the question and solution!");
+        return;
+    }
+
     const newRef = database.ref('questions/' + subject).push();
-    
+
     newRef.set({
       text: qText,
       solution: sText,
       marks: marks,
       timestamp: Date.now()
     }).then(() => {
-      document.getElementById('status').innerText = "✅ Successfully added to " + subject + " archive!";
+      document.getElementById('status').innerText = "✅ Saved to " + subject + " Successfully!";
       document.getElementById('qText').value = "";
       document.getElementById('sText').value = "";
     }).catch((error) => {
@@ -101,28 +128,5 @@
     });
   }
 </script>
-<script>
-    function saveQuestion() {
-        const question = {
-            subject: document.getElementById('subject').value,
-            text: document.getElementById('qText').value,
-            sol: document.getElementById('sText').value,
-            marks: document.getElementById('marks').value,
-            id: Date.now()
-        };
-
-        // For now, we save to LocalStorage (Your browser's memory)
-        let db = JSON.parse(localStorage.getItem('ijmb_questions')) || [];
-        db.push(question);
-        localStorage.setItem('ijmb_questions', JSON.stringify(db));
-
-        document.getElementById('status').innerText = "Question Saved Successfully!";
-        
-        // Clear fields
-        document.getElementById('qText').value = "";
-        document.getElementById('sText').value = "";
-    }
-</script>
-
 </body>
 </html>
