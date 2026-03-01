@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IJMB Admin | Add Questions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --text: #f1f5f9; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 40px; }
+        .admin-container { max-width: 600px; margin: 0 auto; background: var(--panel); padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--accent); }
+        input, textarea, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; }
+        button { width: 100%; padding: 15px; background: var(--accent); color: var(--bg); border: none; border-radius: 8px; font-weight: 800; cursor: pointer; margin-top: 10px; }
+        .preview { margin-top: 30px; padding: 20px; border: 1px dashed #444; border-radius: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <h2>Add New Theory Question</h2>
+    <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 20px;">Use this to populate your database.</p>
+
+    <div class="form-group">
+        <label>Subject</label>
+        <select id="subject">
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Economics">Economics</option>
+            <option value="Government">Government</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Question Text</label>
+        <textarea id="qText" rows="4" placeholder="e.g. State the three laws of thermodynamics..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Solution / Marking Scheme</label>
+        <textarea id="sText" rows="6" placeholder="Break it down into steps..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Marks Awarded</label>
+        <input type="text" id="marks" placeholder="e.g. 10 Marks">
+    </div>
+
+    <button onclick="saveQuestion()">Save to Database</button>
+    
+    <div id="status" style="margin-top: 15px; text-align: center; color: #10b981;"></div>
+</div>
+
+<script>
+    function saveQuestion() {
+        const question = {
+            subject: document.getElementById('subject').value,
+            text: document.getElementById('qText').value,
+            sol: document.getElementById('sText').value,
+            marks: document.getElementById('marks').value,
+            id: Date.now()
+        };
+
+        // For now, we save to LocalStorage (Your browser's memory)
+        let db = JSON.parse(localStorage.getItem('ijmb_questions')) || [];
+        db.push(question);
+        localStorage.setItem('ijmb_questions', JSON.stringify(db));
+
+        document.getElementById('status').innerText = "Question Saved Successfully!";
+        
+        // Clear fields
+        document.getElementById('qText').value = "";
+        document.getElementById('sText').value = "";
+    }
+</script>
+
+</body>
+</html>
