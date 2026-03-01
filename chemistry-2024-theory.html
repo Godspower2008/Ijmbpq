@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Theory | IJMB Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --border: rgba(255, 255, 255, 0.1); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f1f5f9; padding: 20px; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .q-card { background: var(--panel); border: 1px solid var(--border); border-radius: 15px; padding: 25px; margin-bottom: 30px; }
+        .obs-table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #000; }
+        .obs-table th, .obs-table td { border: 1px solid #444; padding: 12px; text-align: left; font-size: 0.9rem; }
+        .obs-table th { background: #334155; color: var(--accent); }
+        .sol-toggle { background: var(--accent); color: var(--bg); border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; width: 100%; }
+        .sol-box { display: none; margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .sol-box.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside></aside> <h1>Chemistry Paper III (Practical)</h1>
+        
+        <div class="q-card">
+            <p><strong>Test:</strong> To a portion of sample X, add few drops of $NaOH$ solution in drops and then in excess.</p>
+            
+            <button class="sol-toggle" onclick="this.nextElementSibling.classList.toggle('active')">View Observation & Inference</button>
+            
+            <div class="sol-box">
+                <table class="obs-table">
+                    <tr>
+                        <th>Observation</th>
+                        <th>Inference</th>
+                    </tr>
+                    <tr>
+                        <td>White gelatinous precipitate formed.</td>
+                        <td>$Al^{3+}, Zn^{2+}$ or $Pb^{2+}$ present.</td>
+                    </tr>
+                    <tr>
+                        <td>Precipitate dissolves in excess $NaOH$ to give a colorless solution.</td>
+                        <td>$Al^{3+}, Zn^{2+}$ or $Pb^{2+}$ confirmed.</td>
+                    </tr>
+                </table>
+                <p style="color: #10b981;">[4 Marks total for correct table entries]</p>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
