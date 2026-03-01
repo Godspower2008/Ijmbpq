@@ -3,155 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics Archive | IJMB Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Physics 2024 - Theory Solutions | IJMB Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
             --bg: #0f172a;
-            --sidebar: #1e293b;
+            --card: #1e293b;
             --accent: #38bdf8;
+            --success: #10b981;
             --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: var(--bg); 
-            color: var(--text-main);
-            padding: 2rem;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); line-height: 1.7; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
 
-        .container { max-width: 900px; margin: 0 auto; }
+        /* Question Box */
+        .question-wrapper { background: var(--card); border-radius: 16px; border: 1px solid var(--border); padding: 30px; margin-bottom: 25px; position: relative; }
+        .q-number { position: absolute; top: -15px; left: 20px; background: var(--accent); color: var(--bg); font-weight: 800; padding: 4px 15px; border-radius: 8px; font-size: 0.9rem; }
         
-        /* Breadcrumbs */
-        .breadcrumb { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem; }
-        .breadcrumb a { color: var(--accent); text-decoration: none; }
-
-        .subject-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 20px;
-        }
-
-        h1 { font-size: 2.5rem; font-weight: 800; }
+        .question-text { font-size: 1.15rem; font-weight: 500; margin-bottom: 20px; color: #fff; }
         
-        /* Year Groups */
-        .year-section { margin-bottom: 2.5rem; }
-        .year-title { 
-            font-size: 1.2rem; 
-            font-weight: 700; 
-            margin-bottom: 15px; 
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .year-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+        /* Solution Box (Hidden by default) */
+        .solution-toggle { background: none; border: 2px solid var(--accent); color: var(--accent); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.3s; width: 100%; margin-top: 10px; }
+        .solution-toggle:hover { background: var(--accent); color: var(--bg); }
 
-        .paper-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
+        .solution-content { display: none; margin-top: 25px; padding-top: 25px; border-top: 1px dashed var(--border); }
+        .solution-content.active { display: block; animation: fadeIn 0.5s ease; }
 
-        .paper-card {
-            background: var(--sidebar);
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            color: white;
-            transition: 0.2s;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
+        .marking-step { margin-bottom: 15px; padding-left: 15px; border-left: 3px solid var(--success); }
+        .points { color: var(--success); font-weight: 700; font-size: 0.85rem; float: right; }
 
-        .paper-card:hover {
-            border-color: var(--accent);
-            background: rgba(56, 189, 248, 0.05);
-            transform: scale(1.02);
-        }
-
-        .paper-type { font-size: 0.75rem; color: var(--accent); font-weight: 800; text-transform: uppercase; }
-        .paper-name { font-weight: 600; font-size: 1rem; }
-        .status { font-size: 0.7rem; color: var(--text-muted); margin-top: 10px; }
-
-        .back-btn {
-            background: var(--sidebar);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            border: 1px solid var(--border);
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .diagram-placeholder { background: rgba(0,0,0,0.2); border: 2px dashed #444; height: 200px; display: flex; align-items: center; justify-content: center; margin: 15px 0; border-radius: 8px; color: var(--text-muted); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="breadcrumb">
-        <a href="index.html">Dashboard</a> / <a href="#">Sciences</a> / Physics
-    </div>
+    <header style="margin-bottom: 40px; text-align: center;">
+        <h2 style="color: var(--accent);">Physics Paper II (Theory)</h2>
+        <p>Year: 2024 | Subject Code: 004</p>
+    </header>
 
-    <div class="subject-header">
-        <div>
-            <h1>Physics</h1>
-            <p style="color: var(--text-muted)">15 Years of Past Questions Available</p>
+    <div class="question-wrapper">
+        <span class="q-number">QUESTION 1a</span>
+        <div class="question-text">
+            State the principle of conservation of linear momentum and derive the expression for the force exerted by a jet of water striking a vertical wall.
         </div>
-        <a href="index.html" class="back-btn">← Back to Portal</a>
-    </div>
 
-    <div class="year-section">
-        <div class="year-title">2024 Series</div>
-        <div class="paper-grid">
-            <a href="#" class="paper-card">
-                <span class="paper-type">Paper I</span>
-                <span class="paper-name">Objectives</span>
-                <span class="status">✅ Solved & Verified</span>
-            </a>
-            <a href="#" class="paper-card">
-                <span class="paper-type">Paper II</span>
-                <span class="paper-name">Theory & Essay</span>
-                <span class="status">✅ Solved & Verified</span>
-            </a>
-            <a href="#" class="paper-card">
-                <span class="paper-type">Paper III</span>
-                <span class="paper-name">Practical Alt A</span>
-                <span class="status">📝 Questions Only</span>
-            </a>
-        </div>
-    </div>
+        <button class="solution-toggle" onclick="this.nextElementSibling.classList.toggle('active')">View Marking Scheme & Solution</button>
+        
+        <div class="solution-content">
+            <div class="marking-step">
+                <span class="points">[2 Marks]</span>
+                <strong>Definition:</strong> The total linear momentum of an isolated system of interacting particles remains constant in both magnitude and direction, provided no external force acts on it.
+            </div>
 
-    <div class="year-section">
-        <div class="year-title">2023 Series</div>
-        <div class="paper-grid">
-            <a href="#" class="paper-card">
-                <span class="paper-type">Paper I</span>
-                <span class="paper-name">Objectives</span>
-                <span class="status">✅ Solved</span>
-            </a>
-            <a href="#" class="paper-card">
-                <span class="paper-type">Paper II</span>
-                <span class="paper-name">Theory & Essay</span>
-                <span class="status">✅ Solved</span>
-            </a>
+            <div class="marking-step">
+                <span class="points">[3 Marks]</span>
+                <strong>Derivation:</strong> 
+                Let $m$ be the mass of water striking the wall in time $t$. 
+                $$F = \frac{\Delta p}{\Delta t} = \frac{m(v - u)}{t}$$
+                If the water does not rebound ($v = 0$):
+                $$F = \rho A v^2$$
+                Where $\rho$ is density and $A$ is cross-sectional area.
+            </div>
+            
+            <div class="diagram-placeholder">
+                [Diagram of Jet striking wall would go here]
+            </div>
         </div>
     </div>
 
-    <div class="year-section">
-        <div class="year-title">2022 Series</div>
-        <div class="paper-grid">
-            <a href="#" class="paper-card">
-                <span class="paper-type">Paper I & II</span>
-                <span class="paper-name">Combined Archive</span>
-                <span class="status">✅ Solved</span>
-            </a>
+    <div class="question-wrapper">
+        <span class="q-number">QUESTION 1b</span>
+        <div class="question-text">
+            A bullet of mass 20g moving at 200m/s hits a stationary wooden block of mass 2kg. Calculate the common velocity if they move together.
+        </div>
+
+        <button class="solution-toggle" onclick="this.nextElementSibling.classList.toggle('active')">View Solution</button>
+        
+        <div class="solution-content">
+            <div class="marking-step">
+                Using $m_1u_1 + m_2u_2 = (m_1 + m_2)V$:
+                $$(0.02 \times 200) + (2 \times 0) = (0.02 + 2)V$$
+                $$4 = 2.02V \implies V \approx 1.98 \, m/s$$
+            </div>
         </div>
     </div>
 </div>
