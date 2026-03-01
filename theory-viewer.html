@@ -6,17 +6,53 @@ database.ref('questions/' + subject).on('value', (snapshot) => {
     const data = snapshot.val();
     qContainer.innerHTML = ""; // Clear existing
     
-    for (let id in data) {
-        const q = data[id];
-        qContainer.innerHTML += `
-            <div class="theory-card">
-                <div class="question-body">${q.text}</div>
-                <button class="toggle-btn" onclick="toggle(this)">Reveal Solution</button>
-                <div class="solution-area">
-                    <p>${q.solution}</p>
-                    <span class="mark-pill">${q.marks}</span>
-                </div>
-            </div>
-        `;
+    // Add this inside your database.ref('questions/' + currentSubject).on('value', ...) loop
+
+for (let id in data) {
+    const q = data[id];
+    // Check if this specific question ID is already saved as "solved" in the browser
+    const isSolved = localStorage.getItem('solved_' + id) === 'true';
+
+    const cardHTML = `
+      <div class="theory-card ${isSolved ? 'solved' : ''}" id="card-${id}" 
+           style="background: #1e293b; padding: 25px; border-radius: 15px; border: 1px solid ${isSolved ? '#10b981' : 'rgba(255,255,255,0.1)'}; margin-bottom: 25px; transition: 0.3s;">
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <label style="display:flex; align-items:center; cursor:pointer; color:#94a3b8; font-size:0.8rem;">
+                <input type="checkbox" ${isSolved ? 'checked' : ''} 
+                       onchange="markSolved('${id}', this)" 
+                       style="margin-right:8px; accent-color:#10b981;"> 
+                MARK AS SOLVED
+            </label>
+            <span style="color:#10b981; font-weight:bold;">${q.marks}</span>
+        </div>
+
+        <div class="question-body" style="font-size:1.1rem; margin-bottom:20px; opacity: ${isSolved ? '0.6' : '1'};">
+            ${q.text}
+        </div>
+        
+        <button class="toggle-btn" onclick="this.nextElementSibling.classList.toggle('open')" 
+                style="background:#38bdf8; color:#0f172a; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer; width:100%;">
+            Show Marking Scheme
+        </button>
+        <div class="solution-area" style="display:none; margin-top:20px; padding-top:20px; border-top:1px dashed #444;">
+            <div class="step">${q.solution}</div>
+        </div>
+      </div>
+    `;
+    container.innerHTML += cardHTML;
+}
+
+// Function to handle the checkbox logic
+function markSolved(qId, checkbox) {
+    const card = document.getElementById('card-' + qId);
+    if (checkbox.checked) {
+        localStorage.setItem('solved_' + qId, 'true');
+        card.style.borderColor = '#10b981';
+        card.querySelector('.question-body').style.opacity = '0.6';
+    } else {
+        localStorage.removeItem('solved_' + qId);
+        card.style.borderColor = 'rgba(255,255,255,0.1)';
+        card.querySelector('.question-body').style.opacity = '1';
     }
-});
+}
