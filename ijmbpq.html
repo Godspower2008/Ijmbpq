@@ -3,57 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB Past Questions Portal</title>
+    <title>IJMB Exam Portal | Past Questions & Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2c3e50;
-            --accent: #27ae60;
-            --light: #f4f7f6;
+            --primary: #1a56db;
+            --primary-dark: #1e42af;
+            --secondary: #10b981;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light: #f9fafb;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--light); }
-        header { background: var(--primary); color: white; padding: 1rem; text-align: center; }
-        nav { background: #fff; padding: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
-        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
-        .search-box { width: 100%; padding: 15px; font-size: 1.1rem; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 30px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 10px; border-bottom: 4px solid var(--accent); transition: 0.3s; cursor: pointer; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h3 { margin-top: 0; color: var(--primary); }
-        .btn { display: inline-block; background: var(--accent); color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6; 
+            background-color: var(--light); 
+            color: var(--dark);
+        }
+
+        /* Header & Navigation */
+        header {
+            background: white;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-weight: 700; font-size: 1.5rem; color: var(--primary); text-decoration: none; }
+        .nav-links a { text-decoration: none; color: var(--gray); margin-left: 20px; font-weight: 500; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 60px 5%;
+            text-align: center;
+        }
+
+        .hero h1 { font-size: 2.5rem; margin-bottom: 15px; }
+        .hero p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        /* Main Content Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 5%;
+        }
+
+        /* Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            transition: 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .card h3 { margin-bottom: 10px; color: var(--primary); }
+        .card p { color: var(--gray); font-size: 0.9rem; margin-bottom: 20px; }
+
+        .btn-view {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            height: fit-content;
+        }
+
+        .sidebar h4 { margin-bottom: 15px; border-bottom: 2px solid var(--light); padding-bottom: 10px; }
+        .update-item { font-size: 0.85rem; margin-bottom: 15px; color: var(--gray); border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
+        .update-item a { color: var(--dark); text-decoration: none; font-weight: 600; display: block; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>IJMB Past Questions Portal</h1>
-    <p>The #1 Resource for A-Level Success</p>
+    <a href="#" class="logo">IJMB<span>Archive</span></a>
+    <nav class="nav-links">
+        <a href="#">Syllabus</a>
+        <a href="#">Centers</a>
+        <a href="#">Blog</a>
+    </nav>
 </header>
 
-<nav>
-    <a href="#">Home</a> | <a href="#">Science</a> | <a href="#">Social Science</a> | <a href="#">Arts</a> | <a href="#">Contact</a>
-</nav>
-
-<div class="container">
-    <input type="text" class="search-box" placeholder="Search for a subject (e.g. Physics 2024)...">
-
-    <h2>Select Your Department</h2>
-    <div class="grid">
-        <div class="card">
-            <h3>Sciences</h3>
-            <p>Physics, Chemistry, Biology, Mathematics, Geology.</p>
-            <a href="#" class="btn">View Questions</a>
-        </div>
-        <div class="card">
-            <h3>Social Sciences</h3>
-            <p>Economics, Government, Business Management, Sociology.</p>
-            <a href="#" class="btn">View Questions</a>
-        </div>
-        <div class="card">
-            <h3>Arts & Humanities</h3>
-            <p>Literature, CRS/IRS, History, French, Music.</p>
-            <a href="#" class="btn">View Questions</a>
-        </div>
+<section class="hero">
+    <h1>Pass Your IJMB Exams with Ease</h1>
+    <p>Access 15+ years of solved past questions and study materials.</p>
+    <div class="search-container">
+        <input type="text" placeholder="e.g. Chemistry 2022 Paper II">
     </div>
+</section>
+
+<div class="main-layout">
+    <main>
+        <h2 style="margin-bottom: 25px;">Subject Departments</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Sciences</h3>
+                <p>Physics, Chemistry, Biology, Mathematics, and Geography past questions with explained solutions.</p>
+                <a href="#" class="btn-view">Browse Sciences</a>
+            </div>
+
+            <div class="card">
+                <h3>Social Sciences</h3>
+                <p>Economics, Government, Business Management, Sociology, and Accounting resources.</p>
+                <a href="#" class="btn-view">Browse Social Science</a>
+            </div>
+
+            <div class="card">
+                <h3>Arts & Humanities</h3>
+                <p>Literature in English, CRS, IRS, History, and Christian Religious Studies archives.</p>
+                <a href="#" class="btn-view">Browse Arts</a>
+            </div>
+        </div>
+    </main>
+
+    <aside class="sidebar">
+        <h4>Latest Updates</h4>
+        <div class="update-item">
+            <a href="#">2024 Physics Paper II Solutions</a>
+            <span>Updated 2 hours ago</span>
+        </div>
+        <div class="update-item">
+            <a href="#">IJMB 2025 Registration Guide</a>
+            <span>Updated yesterday</span>
+        </div>
+        <div class="update-item">
+            <a href="#">Chemistry Practical Tips</a>
+            <span>Updated 3 days ago</span>
+        </div>
+        
+        <div style="background: var(--light); padding: 15px; border-radius: 8px; margin-top: 20px;">
+            <p style="font-size: 0.8rem; font-weight: 600;">Join Study Group</p>
+            <p style="font-size: 0.75rem; color: var(--gray);">Connect with other students preparing for the exams.</p>
+            <a href="#" style="color: var(--secondary); font-size: 0.8rem; font-weight: 700;">Join WhatsApp →</a>
+        </div>
+    </aside>
 </div>
 
 </body>
