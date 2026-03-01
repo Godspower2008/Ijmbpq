@@ -4,8 +4,8 @@ Welcome to the **IJMB Pro-Archive**, a high-performance, mobile-responsive web p
 
 ## 🚀 Quick Access
 To view the website locally on your computer:
-1. **[Click here to open the Homepage](index.html)**
-2. Alternatively, right-click `index.html` and select **"Open with Google Chrome"** (or any modern browser).
+1. **[Click here to open the Homepage](ijmbpq.html)**
+2. Alternatively, right-click `ijmbpq.html` and select **"Open with Google Chrome"** (or any modern browser).
 
 ---
 
