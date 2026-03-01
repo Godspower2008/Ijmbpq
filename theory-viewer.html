@@ -1,0 +1,22 @@
+// Add this to your student view page
+const subject = "Physics"; // This would change based on the page
+const qContainer = document.getElementById('questions-container');
+
+database.ref('questions/' + subject).on('value', (snapshot) => {
+    const data = snapshot.val();
+    qContainer.innerHTML = ""; // Clear existing
+    
+    for (let id in data) {
+        const q = data[id];
+        qContainer.innerHTML += `
+            <div class="theory-card">
+                <div class="question-body">${q.text}</div>
+                <button class="toggle-btn" onclick="toggle(this)">Reveal Solution</button>
+                <div class="solution-area">
+                    <p>${q.solution}</p>
+                    <span class="mark-pill">${q.marks}</span>
+                </div>
+            </div>
+        `;
+    }
+});
