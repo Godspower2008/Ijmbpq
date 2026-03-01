@@ -1,39 +1,38 @@
 # IJMB Pro-Archive Portal 📚
 
-Welcome to the **IJMB Pro-Archive**, a high-performance, mobile-responsive web portal designed to provide Nigerian A-Level students with solved theory and objective past questions.
+A high-performance web portal for IJMB students featuring cloud-synced theory solutions, marking schemes, and real-time search.
 
 ## 🚀 Quick Access
-To view the website locally on your computer:
-1. **[Click here to open the Homepage](ijmbpq.html)**
-2. Alternatively, right-click `ijmbpq.html` and select **"Open with Google Chrome"** (or any modern browser).
+* **[View Student Dashboard](index.html)** - Start here to browse subjects.
+* **[Admin Control Panel](admin.html)** - 🔐 Private: Use this to upload new questions and solutions to Firebase.
 
 ---
 
-## 📂 Project Structure
-This repository contains the core templates for the IJMB portal:
-
-* `index.html` - The main dashboard and subject selection area.
-* `subject-physics.html` - The archive listing sorted by year and paper type.
-* `physics-2024-theory.html` - The specialized study mode for theory questions.
-* `images/` - (Folder) Stores all diagrams for science and math solutions.
+## 🛠 Project Structure
+* `index.html` - The main entry point for students.
+* `admin.html` - Secure interface connected to **Firebase Realtime Database**.
+* `app.js` - The "Global Brain" handling navigation, search, and shared UI components.
+* `subject-physics.html` - Example subject page using the **Live Viewer** script.
 
 ---
 
-## 🛠 Features for Students
-* **Study Mode:** Toggle-based solutions to encourage active recall.
-* **Marking Scheme:** Step-by-step mark distribution (e.g., [2 Marks] for definitions).
-* **Math Support:** High-quality rendering of complex formulas using MathJax.
-* **Dark Aesthetic:** Designed for long study hours and reduced eye strain.
+## 🧪 Adding Theory Content
+When using the Admin Panel, follow these tips for high-quality theory answers:
+
+1. **Marking Schemes:** Always include mark distribution using the `[X Marks]` format.
+2. **Mathematical Formulas:** Use LaTeX syntax for equations, e.g., `$$PV = nRT$$`.
+3. **Diagrams:** Since IJMB theory is visual, include images by pasting a link in the solution box:
+   `<img src="your-image-url.png" style="width:100%; border-radius:10px;">`
 
 ---
 
-## 📝 How to Add New Questions
-To add a new theory question, open the relevant paper file and use this structure:
+## 📡 Database Management
+This project is powered by **Firebase**. 
+- **Database:** Realtime Database (JSON format).
+- **Authentication:** Email/Password login required for `admin.html`.
+- **Hosting:** Can be hosted on GitHub Pages or Firebase Hosting.
 
-```html
-<div class="q-box">
-    <p><strong>Question X:</strong> Your question text here.</p>
-    <div class="ans-content">
-        <p><span class="mark">[X Marks]</span> <strong>Step 1:</strong> Solution text.</p>
-    </div>
-</div>
+---
+
+## ⚠️ Security Reminder
+The `admin.html` file is your "backdoor." Ensure your Firebase Security Rules are set to only allow **Authenticated Users** to write data, while allowing **Public** read access for students.
