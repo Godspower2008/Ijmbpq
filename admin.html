@@ -58,20 +58,48 @@
     <button onclick="loginAdmin()" style="width:300px;">Authorize Session</button>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
 <script>
-function loginAdmin() {
-    const email = document.getElementById('adminEmail').value;
-    const pass = document.getElementById('adminPass').value;
+  // Your specific configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
+    authDomain: "ijmb-portal.firebaseapp.com",
+    databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com",
+    projectId: "ijmb-portal",
+    storageBucket: "ijmb-portal.firebasestorage.app",
+    messagingSenderId: "521270251438",
+    appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f",
+    measurementId: "G-7PPD26XKQ9"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  function saveQuestion() {
+    const subject = document.getElementById('subject').value;
+    const qText = document.getElementById('qText').value;
+    const sText = document.getElementById('sText').value;
+    const marks = document.getElementById('marks').value;
+
+    // This creates a unique entry under the chosen subject
+    const newRef = database.ref('questions/' + subject).push();
     
-    firebase.auth().signInWithEmailAndPassword(email, pass)
-        .then((userCredential) => {
-            document.getElementById('login-screen').style.display = 'none';
-            alert("Secure Session Established");
-        })
-        .catch((error) => {
-            alert("Access Denied: " + error.message);
-        });
-}
+    newRef.set({
+      text: qText,
+      solution: sText,
+      marks: marks,
+      timestamp: Date.now()
+    }).then(() => {
+      document.getElementById('status').innerText = "✅ Successfully added to " + subject + " archive!";
+      document.getElementById('qText').value = "";
+      document.getElementById('sText').value = "";
+    }).catch((error) => {
+      document.getElementById('status').innerText = "❌ Error: " + error.message;
+    });
+  }
 </script>
 <script>
     function saveQuestion() {
