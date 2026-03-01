@@ -51,7 +51,28 @@
     
     <div id="status" style="margin-top: 15px; text-align: center; color: #10b981;"></div>
 </div>
+<div id="login-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <h2 style="color:var(--accent);">Admin Portal Secure Access</h2>
+    <input type="email" id="adminEmail" placeholder="Email" style="width:300px; margin-bottom:10px;">
+    <input type="password" id="adminPass" placeholder="Password" style="width:300px; margin-bottom:10px;">
+    <button onclick="loginAdmin()" style="width:300px;">Authorize Session</button>
+</div>
 
+<script>
+function loginAdmin() {
+    const email = document.getElementById('adminEmail').value;
+    const pass = document.getElementById('adminPass').value;
+    
+    firebase.auth().signInWithEmailAndPassword(email, pass)
+        .then((userCredential) => {
+            document.getElementById('login-screen').style.display = 'none';
+            alert("Secure Session Established");
+        })
+        .catch((error) => {
+            alert("Access Denied: " + error.message);
+        });
+}
+</script>
 <script>
     function saveQuestion() {
         const question = {
