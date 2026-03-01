@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory Master | IJMB Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #1e293b;
+            --accent: #38bdf8;
+            --success: #10b981;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: #f1f5f9; 
+            line-height: 1.8; 
+            margin: 0; 
+            padding-bottom: 100px;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: var(--panel);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        /* Question Container */
+        .theory-card {
+            background: var(--panel);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .question-header {
+            background: rgba(56, 189, 248, 0.1);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-body { padding: 30px; font-size: 1.1rem; }
+
+        /* The Solution Area */
+        .solution-area {
+            background: rgba(0,0,0,0.2);
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .solution-area.open { max-height: 2000px; padding: 30px; border-top: 1px dashed var(--border); }
+
+        .mark-pill {
+            background: var(--success);
+            color: var(--bg);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+
+        .step {
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 2px solid var(--accent);
+        }
+
+        .toggle-btn {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 20px 30px;
+            display: block;
+        }
+
+        /* Diagrams */
+        .diagram-container {
+            background: white;
+            border-radius: 10px;
+            margin: 20px 0;
+            padding: 10px;
+            text-align: center;
+            color: #333;
+        }
+
+        .diagram-container img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div style="font-weight: 800; color: var(--accent);">IJMB PRO ARCHIVE</div>
+    <a href="subject-physics.html" style="color: white; text-decoration: none; font-size: 0.9rem;">← Exit Study Mode</a>
+</div>
+
+<div class="container">
+    <div style="margin-bottom: 30px;">
+        <h1 style="margin:0;">Chemistry Paper II</h1>
+        <p style="color: var(--accent);">Organic & Physical Chemistry (Section A)</p>
+    </div>
+
+    <div class="theory-card">
+        <div class="question-header">
+            <span style="font-weight: 800;">QUESTION 1</span>
+            <span style="color: var(--accent);">[10 Marks Total]</span>
+        </div>
+        
+        <div class="question-body">
+            <strong>(a)</strong> State Henry's Law concerning the solubility of a gas in a liquid. <br><br>
+            <strong>(b)</strong> Calculate the pH of a 0.05 $mol/dm^3$ solution of $H_2SO_4$, assuming complete ionization.
+        </div>
+
+        <button class="toggle-btn" onclick="toggleSolution(this)">Reveal Step-by-Step Solution</button>
+
+        <div class="solution-area">
+            <div class="step">
+                <strong>Part (a) Answer:</strong><br>
+                Henry's law states that at a constant temperature, the amount of a given gas that dissolves in a given type and volume of liquid is directly proportional to the partial pressure of that gas in equilibrium with that liquid.
+                <span class="mark-pill">2 MARKS</span>
+            </div>
+
+            <div class="step">
+                <strong>Part (b) Solution:</strong><br>
+                Since $H_2SO_4$ is a diprotic acid:
+                $$[H^+] = 2 \times [H_2SO_4] = 2 \times 0.05 = 0.1 \, mol/dm^3$$
+                <span class="mark-pill">2 MARKS - Substitution</span>
+                <br><br>
+                Using the pH formula:
+                $$pH = -\log[H^+]$$
+                $$pH = -\log(0.1) = 1$$
+                <span class="mark-pill">1 MARK - Final Answer</span>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<script>
+    function toggleSolution(btn) {
+        const area = btn.nextElementSibling;
+        area.classList.toggle('open');
+        btn.innerText = area.classList.contains('open') ? 'Hide Solution' : 'Reveal Step-by-Step Solution';
+    }
+</script>
+
+</body>
+</html>
