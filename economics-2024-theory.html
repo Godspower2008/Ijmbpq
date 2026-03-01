@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economics Theory | IJMB Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #38bdf8;
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f1f5f9;
+        }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
+        .container { max-width: 850px; margin: 0 auto; }
+
+        /* Question Box */
+        .q-wrapper { background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; padding: 25px; }
+        .q-tag { color: var(--accent); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Solution Styling */
+        .sol-btn { background: #334155; border: none; color: white; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: 600; width: 100%; transition: 0.3s; }
+        .sol-btn:hover { background: var(--accent); color: var(--bg); }
+        .sol-content { display: none; padding-top: 20px; margin-top: 20px; border-top: 1px dashed var(--border); }
+        .sol-content.active { display: block; }
+
+        /* Table Styling for Theory Data */
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; background: rgba(0,0,0,0.2); border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
+        th { background: rgba(56, 189, 248, 0.1); color: var(--accent); }
+
+        .mark { color: #10b981; font-weight: bold; float: right; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header style="margin-bottom: 40px;">
+        <a href="index.html" style="color: var(--accent); text-decoration: none;">← Back to Portal</a>
+        <h1 style="margin-top: 10px;">Economics (Paper II)</h1>
+        <p style="color: #94a3b8;">Section B: Macroeconomics</p>
+    </header>
+
+    <div class="q-wrapper">
+        <span class="q-tag">Question 4 (Data Interpretation)</span>
+        <p style="margin-top: 10px;">Given the table below for a hypothetical country's National Income data:</p>
+        
+        <table>
+            <tr><th>Item</th><th>Amount (₦ Billion)</th></tr>
+            <tr><td>Consumption (C)</td><td>500</td></tr>
+            <tr><td>Investment (I)</td><td>200</td></tr>
+            <tr><td>Government Spend (G)</td><td>150</td></tr>
+        </table>
+        
+        <p><strong>(a)</strong> Calculate the Equilibrium National Income ($Y$).</p>
+        
+        <button class="sol-btn" onclick="this.nextElementSibling.classList.toggle('active')">Show Mathematical Solution</button>
+        <div class="sol-content">
+            <p>Using the formula: $Y = C + I + G$ <span class="mark">[1 Mark]</span></p>
+            <p>$Y = 500 + 200 + 150$ <span class="mark">[1 Mark]</span></p>
+            <p><strong>$Y = 850$ Billion</strong> <span class="mark">[1 Mark]</span></p>
+        </div>
+    </div>
+
+    <div class="q-wrapper">
+        <span class="q-tag">Question 5 (Theory)</span>
+        <p style="margin-top: 10px;">Distinguish between <strong>Inflationary Gap</strong> and <strong>Deflationary Gap</strong>.</p>
+        
+        <button class="sol-btn" onclick="this.nextElementSibling.classList.toggle('active')">Show Comparison Table</button>
+        <div class="sol-content">
+            <table>
+                <tr>
+                    <th>Inflationary Gap</th>
+                    <th>Deflationary Gap</th>
+                </tr>
+                <tr>
+                    <td>Occurs when Aggregate Demand exceeds Full Employment output.</td>
+                    <td>Occurs when Aggregate Demand is less than Full Employment output.</td>
+                </tr>
+                <tr>
+                    <td>Leads to a rise in general price levels (Inflation).</td>
+                    <td>Leads to unemployment and a fall in output.</td>
+                </tr>
+            </table>
+            <p style="font-size: 0.8rem; color: #94a3b8;">*Candidates should provide at least two distinct points for full marks [4 Marks].</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
