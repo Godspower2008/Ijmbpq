@@ -1,3 +1,75 @@
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+<script>
+  // Use the same config you used in admin.html
+  const firebaseConfig = {
+    apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
+    authDomain: "ijmb-portal.firebaseapp.com",
+    databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com",
+    projectId: "ijmb-portal",
+    storageBucket: "ijmb-portal.firebasestorage.app",
+    messagingSenderId: "521270251438",
+    appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  // CHANGE THIS per page (e.g., "Chemistry", "Economics")
+  const currentSubject = "Physics"; 
+
+  function loadQuestions() {
+    const container = document.getElementById('questions-container');
+    
+    // Pull data from the 'questions/SubjectName' folder
+    database.ref('questions/' + currentSubject).on('value', (snapshot) => {
+      const data = snapshot.val();
+      container.innerHTML = ""; // Clear "Loading..." message
+
+      if (!data) {
+        container.innerHTML = "<p>No questions uploaded for this subject yet.</p>";
+        return;
+      }
+
+      // Loop through the data and build the HTML cards
+      for (let id in data) {
+        const q = data[id];
+        const cardHTML = `
+          <div class="theory-card" style="background: #1e293b; padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px;">
+            <div class="question-header" style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                <span style="color:#38bdf8; font-weight:800;">THEORY QUESTION</span>
+                <span style="color:#10b981; font-weight:bold;">${q.marks}</span>
+            </div>
+            <div class="question-body" style="font-size:1.1rem; margin-bottom:20px;">
+                ${q.text}
+            </div>
+            <button class="toggle-btn" onclick="this.nextElementSibling.classList.toggle('open')" 
+                    style="background:#38bdf8; color:#0f172a; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer; width:100%;">
+                Show Marking Scheme & Solution
+            </button>
+            <div class="solution-area" style="display:none; margin-top:20px; padding-top:20px; border-top:1px dashed #444;">
+                <div class="step">${q.solution}</div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += cardHTML;
+      }
+      
+      // Re-trigger MathJax to format any new equations
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
+    });
+  }
+
+  // Define the toggle function globally
+  window.addEventListener('DOMContentLoaded', loadQuestions);
+</script>
+
+<style>
+    .solution-area.open { display: block !important; }
+</style>
 <div class="q-card" style="background: var(--panel); padding: 30px; border-radius: 15px; border: 1px solid var(--border);">
     <h3>Question: Highlight five functions of the Judiciary in a modern state.</h3>
     
