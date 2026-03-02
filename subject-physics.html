@@ -3,53 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics Archive | IJMB Portal</title>
+    <title>Subject Archive | IJMB Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --text: #f1f5f9; --success: #10b981; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.6; }
         .container { max-width: 800px; margin: 0 auto; }
         
-        /* Progress Bar Styles */
-        #progress-container { background: var(--panel); padding: 20px; border-radius: 15px; margin-bottom: 30px; border: 1px solid var(--accent); }
-        .bar-bg { width: 100%; background: #0f172a; height: 12px; border-radius: 6px; overflow: hidden; margin-top: 10px; }
-        #bar-fill { width: 0%; height: 100%; background: var(--success); transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* Header & Progress */
+        header { margin-bottom: 30px; border-bottom: 1px solid #1e293b; padding-bottom: 20px; }
+        .progress-card { background: var(--panel); padding: 20px; border-radius: 15px; border: 1px solid var(--accent); margin-top: 15px; }
+        .progress-bar-bg { width: 100%; background: #0f172a; height: 10px; border-radius: 5px; margin-top: 10px; overflow: hidden; }
+        #progress-fill { width: 0%; height: 100%; background: var(--success); transition: 0.5s ease; }
 
-        /* Question Card Styles */
-        .theory-card { background: var(--panel); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; transition: 0.3s; position: relative; }
-        .theory-card.is-solved { border-color: var(--success); }
-        .q-body { font-size: 1.1rem; margin-bottom: 20px; }
-        .q-body.dim { opacity: 0.5; }
+        /* Question Cards */
+        .q-card { background: var(--panel); padding: 25px; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .q-card.solved { border-color: var(--success); }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .q-text { font-size: 1.1rem; margin-bottom: 20px; }
+        .q-text.solved-text { opacity: 0.5; }
         
-        .toggle-btn { background: var(--accent); color: #0f172a; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
-        .solution-area { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #444; animation: fadeIn 0.3s; }
-        .solution-area.open { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .btn-reveal { background: var(--accent); color: var(--bg); border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; }
+        .solution { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #444; }
+        .solution.show { display: block; }
+        
+        .back-link { color: var(--accent); text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header style="margin-bottom: 30px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <a href="index.html" style="color: var(--accent); text-decoration: none; font-weight: 600;">← Back</a>
-            <span id="user-tag" style="font-size: 0.8rem; color: #94a3b8;">Checking user...</span>
-        </div>
-        <h1 style="font-size: 2rem; margin: 10px 0;">Physics Theory Archive</h1>
-        
-        <div id="progress-container">
-            <div style="display:flex; justify-content:space-between; font-weight: 600;">
-                <span>Topic Mastery</span>
-                <span id="progress-text">0%</span>
+    <header>
+        <a href="index.html" class="back-link">← Back to Dashboard</a>
+        <h1 id="subject-name">Subject Archive</h1>
+        <div class="progress-card">
+            <div style="display:flex; justify-content:space-between; font-size: 0.9rem;">
+                <span>Completion Progress</span>
+                <span id="stat-text">0/0 Solved</span>
             </div>
-            <div class="bar-bg"><div id="bar-fill"></div></div>
+            <div class="progress-bar-bg"><div id="progress-fill"></div></div>
         </div>
     </header>
 
-    <div id="questions-container">
-        <p style="text-align:center; color:#94a3b8;">Connecting to IJMB Cloud...</p>
+    <div id="questions-list">
+        <p style="text-align: center; color: #94a3b8;">Loading questions from cloud...</p>
     </div>
 </div>
 
@@ -58,105 +56,96 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
+  // YOUR CONFIGURATION
   const firebaseConfig = {
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
     authDomain: "ijmb-portal.firebaseapp.com",
     databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com",
     projectId: "ijmb-portal",
-    storageBucket: "ijmb-portal.firebasestorage.app",
-    messagingSenderId: "521270251438",
     appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f"
   };
 
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.database();
-  const currentSubject = "Physics"; // Change this for Biology, Chemistry, etc.
 
-  let currentUser = null;
-  let userSolvedData = {};
+  // --- CHANGE THIS FOR EACH PAGE ---
+  const currentSubject = "Physics"; // Set to "Biology", "Economics", etc.
+  document.getElementById('subject-name').innerText = currentSubject + " Archive";
 
-  // 1. Check Auth State
-  auth.onAuthStateChanged((user) => {
-    currentUser = user;
-    const tag = document.getElementById('user-tag');
+  let userProgress = {};
+  let userId = null;
+
+  // 1. Monitor User
+  auth.onAuthStateChanged(user => {
     if (user) {
-        tag.innerText = "Logged in: " + user.email;
-        // Load user's solved questions from Firebase
-        db.ref('users/' + user.uid + '/progress/' + currentSubject).on('value', (snapshot) => {
-            userSolvedData = snapshot.val() || {};
-            loadQuestions(); 
+        userId = user.uid;
+        // Get user's saved progress from Firebase
+        db.ref(`users/${userId}/progress/${currentSubject}`).on('value', snapshot => {
+            userProgress = snapshot.val() || {};
+            fetchQuestions();
         });
     } else {
-        tag.innerHTML = '<a href="auth.html" style="color:var(--accent)">Login for Cloud Sync</a>';
-        loadQuestions(); // Load anyway (guest mode uses local memory)
+        fetchQuestions(); // Guest mode
     }
   });
 
-  // 2. Load Questions from Database
-  function loadQuestions() {
-    const container = document.getElementById('questions-container');
-    db.ref('questions/' + currentSubject).on('value', (snapshot) => {
-      const questions = snapshot.val();
-      container.innerHTML = "";
-      
-      if (!questions) {
-        container.innerHTML = "<p>No questions found in this archive.</p>";
-        return;
-      }
+  // 2. Fetch Questions
+  function fetchQuestions() {
+    db.ref('questions/' + currentSubject).on('value', snapshot => {
+        const data = snapshot.val();
+        const list = document.getElementById('questions-list');
+        list.innerHTML = "";
 
-      let total = 0;
-      let solvedCount = 0;
+        if (!data) {
+            list.innerHTML = "<p style='text-align:center;'>No questions uploaded yet for this subject.</p>";
+            return;
+        }
 
-      for (let id in questions) {
-        total++;
-        const q = questions[id];
-        // Priority: Firebase Data > LocalStorage (for guests)
-        const isSolved = userSolvedData[id] || localStorage.getItem('guest_solved_' + id) === 'true';
-        if (isSolved) solvedCount++;
+        let total = 0;
+        let solved = 0;
 
-        container.innerHTML += `
-          <div class="theory-card ${isSolved ? 'is-solved' : ''}" id="card-${id}">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <label style="display:flex; align-items:center; cursor:pointer; font-size:0.8rem; color:#94a3b8;">
-                    <input type="checkbox" ${isSolved ? 'checked' : ''} onchange="toggleSolved('${id}', this)" style="margin-right:8px; accent-color:var(--success);">
-                    ${isSolved ? 'SOLVED' : 'MARK AS SOLVED'}
-                </label>
-                <span style="color:var(--success); font-weight:bold;">${q.marks || 'Theory'}</span>
-            </div>
-            <div class="q-body ${isSolved ? 'dim' : ''}">${q.text}</div>
-            <button class="toggle-btn" onclick="this.nextElementSibling.classList.toggle('open')">Reveal Marking Scheme</button>
-            <div class="solution-area">${q.solution}</div>
-          </div>
-        `;
-      }
-      updateProgressBar(solvedCount, total);
-      if (window.MathJax) MathJax.typeset();
+        for (let id in data) {
+            total++;
+            const q = data[id];
+            const isSolved = userProgress[id] === true;
+            if (isSolved) solved++;
+
+            list.innerHTML += `
+                <div class="q-card ${isSolved ? 'solved' : ''}">
+                    <div class="q-header">
+                        <label style="font-size: 0.8rem; color: #94a3b8; cursor: pointer;">
+                            <input type="checkbox" ${isSolved ? 'checked' : ''} onchange="toggleSolved('${id}', this)"> 
+                            MARK SOLVED
+                        </label>
+                        <span style="color: var(--success); font-weight: bold;">${q.marks}</span>
+                    </div>
+                    <div class="q-text ${isSolved ? 'solved-text' : ''}">${q.text}</div>
+                    <button class="btn-reveal" onclick="this.nextElementSibling.classList.toggle('show')">View Solution</button>
+                    <div class="solution">${q.solution}</div>
+                </div>
+            `;
+        }
+        updateUI(solved, total);
+        if (window.MathJax) MathJax.typeset();
     });
   }
 
-  // 3. Toggle Solved Status
+  // 3. Save Progress
   function toggleSolved(qId, checkbox) {
-    if (currentUser) {
-        // Save to Firebase for logged-in users
-        db.ref('users/' + currentUser.uid + '/progress/' + currentSubject + '/' + qId)
-          .set(checkbox.checked ? true : null);
-    } else {
-        // Save to LocalStorage for guests
-        if (checkbox.checked) {
-            localStorage.setItem('guest_solved_' + qId, 'true');
-        } else {
-            localStorage.removeItem('guest_solved_' + qId);
-        }
-        loadQuestions(); // Refresh UI for guest
+    if (!userId) {
+        alert("Please Login to save your progress to the cloud!");
+        checkbox.checked = false;
+        return;
     }
+    db.ref(`users/${userId}/progress/${currentSubject}/${qId}`).set(checkbox.checked ? true : null);
   }
 
-  // 4. Update Progress UI
-  function updateProgressBar(solved, total) {
-    const percent = total > 0 ? Math.round((solved / total) * 100) : 0;
-    document.getElementById('bar-fill').style.width = percent + "%";
-    document.getElementById('progress-text').innerText = percent + "% Mastery";
+  // 4. Update Progress Bar
+  function updateUI(s, t) {
+    const percent = t > 0 ? (s / t) * 100 : 0;
+    document.getElementById('progress-fill').style.width = percent + "%";
+    document.getElementById('stat-text').innerText = `${s} of ${t} Solved (${Math.round(percent)}%)`;
   }
 </script>
 </body>
