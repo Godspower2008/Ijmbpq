@@ -3,300 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics Masterclass | IJMB Pro-Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Physics Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --brand-primary: #38bdf8;
-            --brand-gold: #fbbf24;
-            --bg-dark: #020617;
-            --card-bg: #0f172a;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
-            --success: #10b981;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: #020617;
-            border-right: 1px solid #1e293b;
-            padding: 30px 20px;
-            position: fixed;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-box {
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: var(--brand-gold);
-            margin-bottom: 40px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-item {
-            padding: 12px 15px;
-            border-radius: 10px;
-            color: var(--text-dim);
-            text-decoration: none;
-            margin-bottom: 8px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--brand-primary);
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 260px;
-            flex: 1;
-            padding: 40px;
-            max-width: 1000px;
-        }
-
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 40px;
-        }
-
-        .subject-title h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-
-        /* Progress Widget */
-        .progress-widget {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.05);
-            width: 300px;
-        }
-
-        .progress-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .progress-track {
-            height: 8px;
-            background: #020617;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        #progress-fill {
-            height: 100%;
-            background: var(--brand-gold);
-            width: 0%;
-            transition: width 0.8s ease;
-        }
-
-        /* Question Cards */
-        .question-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 24px;
-            border: 1px solid #1e293b;
-            transition: 0.2s;
-        }
-
-        .question-card:hover { border-color: var(--brand-primary); }
-
-        .mark-badge {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        .q-text {
-            font-size: 1.15rem;
-            line-height: 1.6;
-            margin: 20px 0;
-            color: #e2e8f0;
-        }
-
-        .btn-action {
-            background: var(--brand-primary);
-            color: #020617;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
-        }
-
-        .solution-panel {
-            display: none;
-            margin-top: 25px;
-            padding: 25px;
-            background: #020617;
-            border-radius: 12px;
-            border-left: 4px solid var(--brand-gold);
-        }
-
-        .solution-panel.active { display: block; }
-
-        .solved-check {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            color: var(--text-dim);
-        }
-
-        @media (max-width: 900px) {
-            .sidebar { display: none; }
-            .main-content { margin-left: 0; padding: 20px; }
-        }
+        :root { --bg: #030712; --glass: rgba(17, 24, 39, 0.7); --border: rgba(255, 255, 255, 0.1); --accent: #6366f1; --text: #f9fafb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+        .q-card { background: var(--glass); border: 1px solid var(--border); padding: 25px; border-radius: 20px; margin-bottom: 20px; }
+        .reveal-btn { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; margin-top: 15px; }
+        .solution { display: none; margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.4); border-radius: 10px; border-left: 3px solid var(--accent); }
     </style>
 </head>
 <body>
+    <a href="index.html" style="color:var(--accent); text-decoration:none;">← Dashboard</a>
+    <h1 style="margin: 20px 0;">Physics Archive</h1>
+    <div id="feed">Loading questions...</div>
 
-<aside class="sidebar">
-    <div class="logo-box">🏆 IJMB PRO</div>
-    <nav>
-        <a href="index.html" class="nav-item">Dashboard</a>
-        <a href="subject-physics.html" class="nav-item active">Physics</a>
-        <a href="subject-chemistry.html" class="nav-item">Chemistry</a>
-        <a href="subject-biology.html" class="nav-item">Biology</a>
-    </nav>
-    <div style="margin-top: auto;">
-        <p id="user-display" style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 10px;">Guest Access</p>
-        <a href="auth.html" id="auth-link" class="nav-item" style="color: var(--brand-gold);">Login to Sync</a>
-    </div>
-</aside>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", authDomain: "ijmb-portal.firebaseapp.com", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", projectId: "ijmb-portal", appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database(), auth = firebase.auth();
+        const subject = "Physics";
 
-<main class="main-content">
-    <div class="header-section">
-        <div class="subject-title">
-            <h1 id="page-title">Physics Archive</h1>
-            <p style="color: var(--text-dim);">Past Questions & Professional Marking Schemes</p>
-        </div>
-        <div class="progress-widget">
-            <div class="progress-meta">
-                <span>PROGRESS</span>
-                <span id="stat-percent">0%</span>
-            </div>
-            <div class="progress-track"><div id="progress-fill"></div></div>
-        </div>
-    </div>
-
-    <div id="questions-feed">
-        <p style="text-align: center; color: var(--text-dim); margin-top: 50px;">Syncing with cloud...</p>
-    </div>
-</main>
-
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
-    authDomain: "ijmb-portal.firebaseapp.com",
-    databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com",
-    projectId: "ijmb-portal",
-    appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.database();
-
-  const currentSubject = "Physics"; // Set this for each file
-  let userId = null;
-  let cloudProgress = {};
-
-  auth.onAuthStateChanged(user => {
-    if (user) {
-        userId = user.uid;
-        document.getElementById('user-display').innerText = user.email;
-        document.getElementById('auth-link').innerText = "Sign Out";
-        document.getElementById('auth-link').onclick = () => auth.signOut();
-        db.ref(`users/${userId}/progress/${currentSubject}`).on('value', snap => {
-            cloudProgress = snap.val() || {};
-            loadQuestions();
+        auth.onAuthStateChanged(user => {
+            db.ref('questions/' + subject).on('value', snap => {
+                const data = snap.val(); const feed = document.getElementById('feed'); feed.innerHTML = "";
+                for(let id in data) {
+                    feed.innerHTML += `
+                        <div class="q-card">
+                            <p>${data[id].text}</p>
+                            <button class="reveal-btn" onclick="this.nextElementSibling.style.display='block'">View Solution</button>
+                            <div class="solution">${data[id].solution}</div>
+                        </div>`;
+                }
+            });
         });
-    } else {
-        loadQuestions();
-    }
-  });
-
-  function loadQuestions() {
-    db.ref('questions/' + currentSubject).on('value', snap => {
-        const data = snap.val();
-        const feed = document.getElementById('questions-feed');
-        feed.innerHTML = "";
-        if (!data) { feed.innerHTML = "No questions uploaded."; return; }
-
-        let total = 0, solved = 0;
-        for (let id in data) {
-            total++;
-            const q = data[id];
-            const isSolved = cloudProgress[id] === true;
-            if (isSolved) solved++;
-
-            feed.innerHTML += `
-                <div class="question-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <label class="solved-check">
-                            <input type="checkbox" ${isSolved ? 'checked' : ''} onchange="toggleSolved('${id}', this)">
-                            Mastered
-                        </label>
-                        <span class="mark-badge">${q.marks}</span>
-                    </div>
-                    <div class="q-text">${q.text}</div>
-                    <button class="btn-action" onclick="this.nextElementSibling.classList.toggle('active')">REVEAL SOLUTION</button>
-                    <div class="solution-panel">${q.solution}</div>
-                </div>`;
-        }
-        updateProgress(solved, total);
-        if (window.MathJax) MathJax.typeset();
-    });
-  }
-
-  function toggleSolved(id, checkbox) {
-    if (!userId) { alert("Please login to save progress!"); checkbox.checked = false; return; }
-    db.ref(`users/${userId}/progress/${currentSubject}/${id}`).set(checkbox.checked ? true : null);
-  }
-
-  function updateProgress(s, t) {
-    const pct = t > 0 ? Math.round((s / t) * 100) : 0;
-    document.getElementById('progress-fill').style.width = pct + "%";
-    document.getElementById('stat-percent').innerText = pct + "%";
-  }
-</script>
+    </script>
 </body>
 </html>
