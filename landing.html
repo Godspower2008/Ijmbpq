@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IJMB Pro-Archive | Secure Your A</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #030712; --glass: rgba(17, 24, 39, 0.7); --border: rgba(255, 255, 255, 0.1); --accent: #6366f1; --gold: #f59e0b; --text: #f9fafb; --text-dim: #94a3b8; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 1000; backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); }
+        .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 5% 60px; }
+        .badge { background: rgba(99, 102, 241, 0.1); color: var(--accent); padding: 6px 16px; border-radius: 30px; font-weight: 700; font-size: 0.75rem; border: 1px solid var(--accent); margin-bottom: 20px; }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { color: var(--text-dim); font-size: clamp(1rem, 4vw, 1.2rem); max-width: 700px; margin-bottom: 40px; }
+        .cta-group { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; }
+        @media (min-width: 768px) { .cta-group { flex-direction: row; max-width: none; justify-content: center; } }
+        .btn { padding: 16px 32px; border-radius: 14px; font-weight: 800; cursor: pointer; text-decoration: none; transition: 0.3s; border: none; text-align: center; }
+        .btn-main { background: var(--accent); color: white; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
+        .btn-secondary { background: var(--glass); border: 1px solid var(--border); color: white; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">IJMB<span>PRO</span></div>
+        <div style="display:flex; gap:15px; align-items:center;">
+            <a href="pricing.html" style="color:var(--text-dim); text-decoration:none; font-size:0.9rem;">Pricing</a>
+            <a href="index.html" class="btn-secondary" style="padding: 8px 16px; border-radius:10px; text-decoration:none;">Login</a>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="badge">OFFICIAL 2026 ARCHIVE</div>
+        <h1>Master Theory.<br><span>Secure Your A.</span></h1>
+        <p>Access Nigeria's most detailed IJMB archive. Real marking schemes, visual diagrams, and community leaderboards.</p>
+        <div class="cta-group">
+            <a href="index.html" class="btn btn-main">Get Free Access</a>
+            <a href="pricing.html" class="btn btn-secondary">View Pro Plans</a>
+        </div>
+    </section>
+</body>
+</html>
