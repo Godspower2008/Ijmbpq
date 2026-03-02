@@ -3,66 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB Admin | Add Questions</title>
+    <title>Physics Theory | IJMB Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --text: #f1f5f9; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 40px; }
-        .admin-container { max-width: 600px; margin: 0 auto; background: var(--panel); padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--accent); }
-        input, textarea, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; }
-        button { width: 100%; padding: 15px; background: var(--accent); color: var(--bg); border: none; border-radius: 8px; font-weight: 800; cursor: pointer; margin-top: 10px; }
-        .preview { margin-top: 30px; padding: 20px; border: 1px dashed #444; border-radius: 10px; display: none; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .theory-card { background: var(--panel); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; transition: 0.3s; }
+        .toggle-btn { background: var(--accent); color: #0f172a; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+        .solution-area { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #444; }
+        .solution-area.open { display: block; }
+        #progress-container { background: var(--panel); padding: 15px; border-radius: 10px; margin-bottom: 30px; border: 1px solid var(--accent); }
     </style>
 </head>
 <body>
 
-<div class="admin-container">
-    <h2>Add New Theory Question</h2>
-    <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 20px;">Use this to populate your database.</p>
+<div class="container">
+    <header style="margin-bottom: 30px;">
+        <a href="index.html" style="color: var(--accent); text-decoration: none;">← Back to Dashboard</a>
+        <h1 id="subject-title">Physics Archive</h1>
+        
+        <div id="progress-container">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <span>Your Study Progress</span>
+                <span id="progress-text">0% Completed</span>
+            </div>
+            <div style="width:100%; background:#0f172a; height:10px; border-radius:5px; overflow:hidden;">
+                <div id="progress-bar" style="width:0%; height:100%; background:#10b981; transition: 0.5s;"></div>
+            </div>
+        </div>
+    </header>
 
-    <div class="form-group">
-        <label>Subject</label>
-        <select id="subject">
-            <option value="Physics">Physics</option>
-            <option value="Chemistry">Chemistry</option>
-            <option value="Economics">Economics</option>
-            <option value="Government">Government</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Question Text</label>
-        <textarea id="qText" rows="4" placeholder="e.g. State the three laws of thermodynamics..."></textarea>
-    </div>
-
-    <div class="form-group">
-        <label>Solution / Marking Scheme</label>
-        <textarea id="sText" rows="6" placeholder="Break it down into steps..."></textarea>
-    </div>
-
-    <div class="form-group">
-        <label>Marks Awarded</label>
-        <input type="text" id="marks" placeholder="e.g. 10 Marks">
-    </div>
-
-    <button onclick="saveQuestion()">Save to Database</button>
-    
-    <div id="status" style="margin-top: 15px; text-align: center; color: #10b981;"></div>
+    <div id="questions-container">Loading IJMB Database...</div>
 </div>
-<div id="login-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-    <h2 style="color:var(--accent);">Admin Portal Secure Access</h2>
-    <input type="email" id="adminEmail" placeholder="Email" style="width:300px; margin-bottom:10px;">
-    <input type="password" id="adminPass" placeholder="Password" style="width:300px; margin-bottom:10px;">
-    <button onclick="loginAdmin()" style="width:300px;">Authorize Session</button>
-</div>
- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
-  // Your specific configuration
   const firebaseConfig = {
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
     authDomain: "ijmb-portal.firebaseapp.com",
@@ -70,63 +49,57 @@
     projectId: "ijmb-portal",
     storageBucket: "ijmb-portal.firebasestorage.app",
     messagingSenderId: "521270251438",
-    appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f",
-    measurementId: "G-7PPD26XKQ9"
+    appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f"
   };
 
-  // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
-  const auth = firebase.auth();
+  const currentSubject = "Physics"; // Update this for other pages
 
-  // 2. THE MISSING LOGIN FUNCTION
-  function loginAdmin() {
-    const email = document.getElementById('adminEmail').value;
-    const pass = document.getElementById('adminPass').value;
-    const btn = document.querySelector('#login-screen button');
+  function loadQuestions() {
+    const container = document.getElementById('questions-container');
+    database.ref('questions/' + currentSubject).on('value', (snapshot) => {
+      const data = snapshot.val();
+      container.innerHTML = "";
+      if (!data) { container.innerHTML = "No questions uploaded yet."; return; }
 
-    btn.innerText = "Checking Credentials...";
+      let total = 0, solved = 0;
+      for (let id in data) {
+        total++;
+        const q = data[id];
+        const isSolved = localStorage.getItem('solved_' + id) === 'true';
+        if(isSolved) solved++;
 
-    auth.signInWithEmailAndPassword(email, pass)
-      .then((userCredential) => {
-        // Success! Hide the login screen
-        document.getElementById('login-screen').style.display = 'none';
-        console.log("Logged in as:", userCredential.user.email);
-      })
-      .catch((error) => {
-        // Failure! Show error
-        alert("Login Failed: " + error.message);
-        btn.innerText = "Authorize Session";
-      });
-  }
-
-  // 3. THE CLEAN FIREBASE SAVE FUNCTION
-  function saveQuestion() {
-    const subject = document.getElementById('subject').value;
-    const qText = document.getElementById('qText').value;
-    const sText = document.getElementById('sText').value;
-    const marks = document.getElementById('marks').value;
-
-    if(!qText || !sText) {
-        alert("Please fill in the question and solution!");
-        return;
-    }
-
-    const newRef = database.ref('questions/' + subject).push();
-
-    newRef.set({
-      text: qText,
-      solution: sText,
-      marks: marks,
-      timestamp: Date.now()
-    }).then(() => {
-      document.getElementById('status').innerText = "✅ Saved to " + subject + " Successfully!";
-      document.getElementById('qText').value = "";
-      document.getElementById('sText').value = "";
-    }).catch((error) => {
-      document.getElementById('status').innerText = "❌ Error: " + error.message;
+        container.innerHTML += `
+          <div class="theory-card" id="card-${id}" style="border-color: ${isSolved ? '#10b981' : 'rgba(255,255,255,0.1)'}">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <label style="cursor:pointer; color:#94a3b8; font-size:0.8rem;">
+                    <input type="checkbox" ${isSolved ? 'checked' : ''} onchange="markSolved('${id}', this)"> MARK AS SOLVED
+                </label>
+                <span style="color:#10b981; font-weight:bold;">${q.marks}</span>
+            </div>
+            <div class="question-body" style="opacity: ${isSolved ? '0.5' : '1'}">${q.text}</div>
+            <button class="toggle-btn" onclick="this.nextElementSibling.classList.toggle('open')">View Solution</button>
+            <div class="solution-area">${q.solution}</div>
+          </div>`;
+      }
+      updateProgress(solved, total);
+      if (window.MathJax) MathJax.typeset();
     });
   }
+
+  function markSolved(id, cb) {
+    localStorage.setItem('solved_' + id, cb.checked);
+    location.reload(); // Refresh to update progress bar
+  }
+
+  function updateProgress(s, t) {
+    const percent = t > 0 ? Math.round((s / t) * 100) : 0;
+    document.getElementById('progress-bar').style.width = percent + "%";
+    document.getElementById('progress-text').innerText = percent + "% Completed";
+  }
+
+  window.onload = loadQuestions;
 </script>
 </body>
 </html>
