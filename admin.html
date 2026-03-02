@@ -3,46 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics Theory | IJMB Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Admin | IJMB Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --text: #f1f5f9; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .theory-card { background: var(--panel); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; transition: 0.3s; }
-        .toggle-btn { background: var(--accent); color: #0f172a; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
-        .solution-area { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #444; }
-        .solution-area.open { display: block; }
-        #progress-container { background: var(--panel); padding: 15px; border-radius: 10px; margin-bottom: 30px; border: 1px solid var(--accent); }
+        :root { --bg: #0f172a; --accent: #38bdf8; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; padding: 40px; }
+        .box { max-width: 500px; margin: auto; background: #1e293b; padding: 30px; border-radius: 15px; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; }
+        button { width: 100%; padding: 15px; background: var(--accent); color: #0f172a; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        #login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 1000; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header style="margin-bottom: 30px;">
-        <a href="index.html" style="color: var(--accent); text-decoration: none;">← Back to Dashboard</a>
-        <h1 id="subject-title">Physics Archive</h1>
-        
-        <div id="progress-container">
-            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                <span>Your Study Progress</span>
-                <span id="progress-text">0% Completed</span>
-            </div>
-            <div style="width:100%; background:#0f172a; height:10px; border-radius:5px; overflow:hidden;">
-                <div id="progress-bar" style="width:0%; height:100%; background:#10b981; transition: 0.5s;"></div>
-            </div>
-        </div>
-    </header>
+<div id="login-screen">
+    <div class="box">
+        <h2>Admin Login</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="pass" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+</div>
 
-    <div id="questions-container">Loading IJMB Database...</div>
+<div class="box">
+    <h2>Add Question</h2>
+    <select id="subject">
+        <option>Physics</option><option>Chemistry</option><option>Biology</option><option>Economics</option>
+    </select>
+    <textarea id="q" placeholder="Question"></textarea>
+    <textarea id="s" placeholder="Solution (Use HTML for diagrams)"></textarea>
+    <input type="text" id="m" placeholder="Marks (e.g. 8 Marks)">
+    <button onclick="save()">Upload to Cloud</button>
+    <p id="stat" style="text-align:center; color:#10b981; margin-top:10px;"></p>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
-  const firebaseConfig = {
+  const config = {
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
     authDomain: "ijmb-portal.firebaseapp.com",
     databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com",
@@ -51,55 +51,29 @@
     messagingSenderId: "521270251438",
     appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f"
   };
+  firebase.initializeApp(config);
+  const db = firebase.database();
+  const auth = firebase.auth();
 
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-  const currentSubject = "Physics"; // Update this for other pages
+  function login() {
+    auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value)
+      .then(() => document.getElementById('login-screen').style.display='none')
+      .catch(e => alert(e.message));
+  }
 
-  function loadQuestions() {
-    const container = document.getElementById('questions-container');
-    database.ref('questions/' + currentSubject).on('value', (snapshot) => {
-      const data = snapshot.val();
-      container.innerHTML = "";
-      if (!data) { container.innerHTML = "No questions uploaded yet."; return; }
-
-      let total = 0, solved = 0;
-      for (let id in data) {
-        total++;
-        const q = data[id];
-        const isSolved = localStorage.getItem('solved_' + id) === 'true';
-        if(isSolved) solved++;
-
-        container.innerHTML += `
-          <div class="theory-card" id="card-${id}" style="border-color: ${isSolved ? '#10b981' : 'rgba(255,255,255,0.1)'}">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <label style="cursor:pointer; color:#94a3b8; font-size:0.8rem;">
-                    <input type="checkbox" ${isSolved ? 'checked' : ''} onchange="markSolved('${id}', this)"> MARK AS SOLVED
-                </label>
-                <span style="color:#10b981; font-weight:bold;">${q.marks}</span>
-            </div>
-            <div class="question-body" style="opacity: ${isSolved ? '0.5' : '1'}">${q.text}</div>
-            <button class="toggle-btn" onclick="this.nextElementSibling.classList.toggle('open')">View Solution</button>
-            <div class="solution-area">${q.solution}</div>
-          </div>`;
-      }
-      updateProgress(solved, total);
-      if (window.MathJax) MathJax.typeset();
+  function save() {
+    const sub = document.getElementById('subject').value;
+    const ref = db.ref('questions/' + sub).push();
+    ref.set({
+      text: document.getElementById('q').value,
+      solution: document.getElementById('s').value,
+      marks: document.getElementById('m').value
+    }).then(() => {
+        document.getElementById('stat').innerText = "Saved!";
+        document.getElementById('q').value = "";
+        document.getElementById('s').value = "";
     });
   }
-
-  function markSolved(id, cb) {
-    localStorage.setItem('solved_' + id, cb.checked);
-    location.reload(); // Refresh to update progress bar
-  }
-
-  function updateProgress(s, t) {
-    const percent = t > 0 ? Math.round((s / t) * 100) : 0;
-    document.getElementById('progress-bar').style.width = percent + "%";
-    document.getElementById('progress-text').innerText = percent + "% Completed";
-  }
-
-  window.onload = loadQuestions;
 </script>
 </body>
 </html>
