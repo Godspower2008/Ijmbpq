@@ -3,105 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal | Login & Sign Up</title>
+    <title>Auth | IJMB Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --text: #f1f5f9; --error: #ef4444; }
+        :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --text: #f1f5f9; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .auth-card { background: var(--panel); padding: 40px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; }
-        h2 { margin-bottom: 10px; color: var(--accent); }
-        p { font-size: 0.9rem; color: #94a3b8; margin-bottom: 30px; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--accent); color: var(--bg); border: none; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
-        .toggle-link { margin-top: 20px; font-size: 0.85rem; cursor: pointer; color: var(--accent); display: inline-block; }
-        #auth-status { margin-top: 15px; font-size: 0.9rem; font-weight: 600; }
+        .auth-card { background: var(--panel); padding: 40px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        input { width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: var(--accent); color: var(--bg); border: none; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .toggle-link { margin-top: 20px; font-size: 0.85rem; color: var(--accent); cursor: pointer; display: block; }
     </style>
 </head>
 <body>
 
 <div class="auth-card">
-    <h2 id="auth-title">Student Login</h2>
-    <p id="auth-desc">Welcome back! Please enter your details.</p>
-
-    <div id="auth-form">
-        <input type="email" id="email" placeholder="Email Address">
-        <input type="password" id="password" placeholder="Password">
-        <button id="main-btn" onclick="handleAuth()">Login to Portal</button>
-    </div>
-
-    <div id="auth-status"></div>
-
-    <span class="toggle-link" id="toggle-mode" onclick="toggleMode()">Don't have an account? Sign Up</span>
+    <h2 id="title">Student Login</h2>
+    <p id="subtitle" style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Enter your details to access the archive.</p>
+    
+    <input type="email" id="email" placeholder="Email Address">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="handleSubmit()" id="btn-text">Login</button>
+    
+    <span class="toggle-link" onclick="toggle()">Don't have an account? Sign Up</span>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
 <script>
-  const firebaseConfig = {
+  firebase.initializeApp({
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
     authDomain: "ijmb-portal.firebaseapp.com",
-    databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com",
     projectId: "ijmb-portal",
-    storageBucket: "ijmb-portal.firebasestorage.app",
-    messagingSenderId: "521270251438",
     appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f"
-  };
+  });
 
-  firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
+  let mode = 'login';
 
-  let isLoginMode = true;
-
-  function toggleMode() {
-    isLoginMode = !isLoginMode;
-    document.getElementById('auth-title').innerText = isLoginMode ? "Student Login" : "Create Account";
-    document.getElementById('auth-desc').innerText = isLoginMode ? "Welcome back! Please enter your details." : "Join thousands of students preparing for IJMB.";
-    document.getElementById('main-btn').innerText = isLoginMode ? "Login to Portal" : "Sign Up Now";
-    document.getElementById('toggle-mode').innerText = isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Login";
-    document.getElementById('auth-status').innerText = "";
+  function toggle() {
+    mode = (mode === 'login') ? 'signup' : 'login';
+    document.getElementById('title').innerText = mode === 'login' ? 'Student Login' : 'Create Account';
+    document.getElementById('btn-text').innerText = mode === 'login' ? 'Login' : 'Sign Up';
   }
 
-  function handleAuth() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const status = document.getElementById('auth-status');
+  function handleSubmit() {
+    const e = document.getElementById('email').value;
+    const p = document.getElementById('password').value;
 
-    if (!email || !password) {
-        status.style.color = "var(--error)";
-        status.innerText = "Please fill in all fields.";
-        return;
-    }
-
-    status.style.color = "var(--accent)";
-    status.innerText = isLoginMode ? "Logging in..." : "Creating account...";
-
-    if (isLoginMode) {
-        // LOGIN LOGIC
-        auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                window.location.href = "index.html"; // Redirect to dashboard
-            })
-            .catch((error) => {
-                status.style.color = "var(--error)";
-                status.innerText = error.message;
-            });
+    if(mode === 'login') {
+        auth.signInWithEmailAndPassword(e, p)
+            .then(() => window.location.href = "index.html")
+            .catch(err => alert(err.message));
     } else {
-        // SIGN UP LOGIC
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                status.style.color = "#10b981";
-                status.innerText = "Account Created! Redirecting...";
-                setTimeout(() => { window.location.href = "index.html"; }, 1500);
-            })
-            .catch((error) => {
-                status.style.color = "var(--error)";
-                status.innerText = error.message;
-            });
+        auth.createUserWithEmailAndPassword(e, p)
+            .then(() => window.location.href = "index.html")
+            .catch(err => alert(err.message));
     }
   }
 </script>
-
 </body>
 </html>
