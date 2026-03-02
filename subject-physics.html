@@ -3,39 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics Archive | IJMB Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Physics Archive | IJMB Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --accent: #38bdf8; --text-main: #f1f5f9; --text-muted: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); padding: 3rem; }
+        :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --text: #f1f5f9; --success: #10b981; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
         .container { max-width: 800px; margin: 0 auto; }
-        .back { color: var(--accent); text-decoration: none; margin-bottom: 20px; display: block; }
-        .year-row { border-bottom: 1px solid var(--border); padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
-        .paper-link { background: var(--card); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; border: 1px solid var(--border); transition: 0.2s; }
-        .paper-link:hover { border-color: var(--accent); background: rgba(56, 189, 248, 0.1); }
+        
+        /* Progress Bar Styles */
+        #progress-container { background: var(--panel); padding: 20px; border-radius: 15px; margin-bottom: 30px; border: 1px solid var(--accent); }
+        .bar-bg { width: 100%; background: #0f172a; height: 12px; border-radius: 6px; overflow: hidden; margin-top: 10px; }
+        #bar-fill { width: 0%; height: 100%; background: var(--success); transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Question Card Styles */
+        .theory-card { background: var(--panel); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; transition: 0.3s; position: relative; }
+        .theory-card.is-solved { border-color: var(--success); }
+        .q-body { font-size: 1.1rem; margin-bottom: 20px; }
+        .q-body.dim { opacity: 0.5; }
+        
+        .toggle-btn { background: var(--accent); color: #0f172a; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
+        .solution-area { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #444; animation: fadeIn 0.3s; }
+        .solution-area.open { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back">← Back to Dashboard</a>
-        <h1 style="margin-bottom: 10px;">Physics Archive</h1>
-        <p style="color: var(--text-muted); margin-bottom: 40px;">Select a year to view theory solutions.</p>
-        
-        <div class="year-row">
-            <div>
-                <h3 style="margin:0">2024 Series</h3>
-                <small style="color:var(--text-muted)">Paper II: Theory & Essay</small>
-            </div>
-            <a href="physics-2024-theory.html" class="paper-link">View Solutions</a>
-        </div>
 
-        <div class="year-row">
-            <div>
-                <h3 style="margin:0">2023 Series</h3>
-                <small style="color:var(--text-muted)">Paper II: Theory & Essay</small>
-            </div>
-            <a href="#" class="paper-link">Locked</a>
+<div class="container">
+    <header style="margin-bottom: 30px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <a href="index.html" style="color: var(--accent); text-decoration: none; font-weight: 600;">← Back</a>
+            <span id="user-tag" style="font-size: 0.8rem; color: #94a3b8;">Checking user...</span>
         </div>
+        <h1 style="font-size: 2rem; margin: 10px 0;">Physics Theory Archive</h1>
+        
+        <div id="progress-container">
+            <div style="display:flex; justify-content:space-between; font-weight: 600;">
+                <span>Topic Mastery</span>
+                <span id="progress-text">0%</span>
+            </div>
+            <div class="bar-bg"><div id="bar-fill"></div></div>
+        </div>
+    </header>
+
+    <div id="questions-container">
+        <p style="text-align:center; color:#94a3b8;">Connecting to IJMB Cloud...</p>
     </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
+    authDomain: "ijmb-portal.firebaseapp.com",
+    databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com",
+    projectId: "ijmb-portal",
+    storageBucket: "ijmb-portal.firebasestorage.app",
+    messagingSenderId: "521270251438",
+    appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+  const currentSubject = "Physics"; // Change this for Biology, Chemistry, etc.
+
+  let currentUser = null;
+  let userSolvedData = {};
+
+  // 1. Check Auth State
+  auth.onAuthStateChanged((user) => {
+    currentUser = user;
+    const tag = document.getElementById('user-tag');
+    if (user) {
+        tag.innerText = "Logged in: " + user.email;
+        // Load user's solved questions from Firebase
+        db.ref('users/' + user.uid + '/progress/' + currentSubject).on('value', (snapshot) => {
+            userSolvedData = snapshot.val() || {};
+            loadQuestions(); 
+        });
+    } else {
+        tag.innerHTML = '<a href="auth.html" style="color:var(--accent)">Login for Cloud Sync</a>';
+        loadQuestions(); // Load anyway (guest mode uses local memory)
+    }
+  });
+
+  // 2. Load Questions from Database
+  function loadQuestions() {
+    const container = document.getElementById('questions-container');
+    db.ref('questions/' + currentSubject).on('value', (snapshot) => {
+      const questions = snapshot.val();
+      container.innerHTML = "";
+      
+      if (!questions) {
+        container.innerHTML = "<p>No questions found in this archive.</p>";
+        return;
+      }
+
+      let total = 0;
+      let solvedCount = 0;
+
+      for (let id in questions) {
+        total++;
+        const q = questions[id];
+        // Priority: Firebase Data > LocalStorage (for guests)
+        const isSolved = userSolvedData[id] || localStorage.getItem('guest_solved_' + id) === 'true';
+        if (isSolved) solvedCount++;
+
+        container.innerHTML += `
+          <div class="theory-card ${isSolved ? 'is-solved' : ''}" id="card-${id}">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <label style="display:flex; align-items:center; cursor:pointer; font-size:0.8rem; color:#94a3b8;">
+                    <input type="checkbox" ${isSolved ? 'checked' : ''} onchange="toggleSolved('${id}', this)" style="margin-right:8px; accent-color:var(--success);">
+                    ${isSolved ? 'SOLVED' : 'MARK AS SOLVED'}
+                </label>
+                <span style="color:var(--success); font-weight:bold;">${q.marks || 'Theory'}</span>
+            </div>
+            <div class="q-body ${isSolved ? 'dim' : ''}">${q.text}</div>
+            <button class="toggle-btn" onclick="this.nextElementSibling.classList.toggle('open')">Reveal Marking Scheme</button>
+            <div class="solution-area">${q.solution}</div>
+          </div>
+        `;
+      }
+      updateProgressBar(solvedCount, total);
+      if (window.MathJax) MathJax.typeset();
+    });
+  }
+
+  // 3. Toggle Solved Status
+  function toggleSolved(qId, checkbox) {
+    if (currentUser) {
+        // Save to Firebase for logged-in users
+        db.ref('users/' + currentUser.uid + '/progress/' + currentSubject + '/' + qId)
+          .set(checkbox.checked ? true : null);
+    } else {
+        // Save to LocalStorage for guests
+        if (checkbox.checked) {
+            localStorage.setItem('guest_solved_' + qId, 'true');
+        } else {
+            localStorage.removeItem('guest_solved_' + qId);
+        }
+        loadQuestions(); // Refresh UI for guest
+    }
+  }
+
+  // 4. Update Progress UI
+  function updateProgressBar(solved, total) {
+    const percent = total > 0 ? Math.round((solved / total) * 100) : 0;
+    document.getElementById('bar-fill').style.width = percent + "%";
+    document.getElementById('progress-text').innerText = percent + "% Mastery";
+  }
+</script>
 </body>
 </html>
