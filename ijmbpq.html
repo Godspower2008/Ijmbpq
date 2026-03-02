@@ -11,18 +11,19 @@
         .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
         @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
         nav { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: 20px; background: var(--glass); border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .card { background: var(--glass); padding: 20px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .card { background: var(--glass); padding: 25px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
         .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .sub-btn { background: var(--accent); color: white; padding: 20px; border-radius: 15px; text-decoration: none; text-align: center; font-weight: 700; transition: 0.3s; }
-        .sub-btn:hover { transform: translateY(-5px); }
+        .sub-btn { background: var(--accent); color: white; padding: 25px; border-radius: 18px; text-decoration: none; text-align: center; font-weight: 800; transition: 0.3s; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2); }
+        .sub-btn:hover { transform: translateY(-5px); filter: brightness(1.2); }
     </style>
 </head>
 <body>
     <div class="container">
-        <nav><div style="font-weight:800;">IJMB<span>PRO</span></div><button onclick="firebase.auth().signOut().then(()=>location.href='landing.html')" style="background:none; border:none; color:white; cursor:pointer;">Logout</button></nav>
+        <nav><div style="font-weight:800;">IJMB<span>PRO</span></div><button onclick="firebase.auth().signOut().then(()=>location.href='landing.html')" style="background:none; border:1px solid var(--border); color:white; padding:8px 15px; border-radius:8px; cursor:pointer;">Logout</button></nav>
         <main>
-            <h1 id="userGreet" style="margin-bottom:20px;">Hi Scholar</h1>
-            <div class="card"><h3>Subject Archives</h3><br>
+            <h1 id="userGreet" style="margin-bottom:25px;">Welcome back</h1>
+            <div class="card">
+                <h3 style="margin-bottom:15px;">Your Subject Archive</h3>
                 <div class="subject-grid">
                     <a href="subject-physics.html" class="sub-btn">Physics</a>
                     <a href="subject-chemistry.html" class="sub-btn">Chemistry</a>
@@ -30,7 +31,10 @@
                 </div>
             </div>
         </main>
-        <aside class="card"><h3>🏆 Leaderboard</h3><div id="lBoard" style="margin-top:20px; font-size:0.9rem;"></div></aside>
+        <aside class="card">
+            <h3 style="color:var(--gold);">🏆 Leaderboard</h3>
+            <div id="lBoard" style="margin-top:20px; font-size:0.9rem; line-height:2;">Loading scores...</div>
+        </aside>
     </div>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
@@ -39,14 +43,18 @@
         const firebaseConfig = { apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", authDomain: "ijmb-portal.firebaseapp.com", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", projectId: "ijmb-portal", appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.database();
+
         auth.onAuthStateChanged(user => {
             if(!user || !user.emailVerified) location.href="landing.html";
-            db.ref(`users/${user.uid}/profile`).on('value', snap => { document.getElementById('userGreet').innerText = "Hi, " + snap.val().fullName; });
+            db.ref(`users/${user.uid}/profile`).on('value', snap => { 
+                if(snap.val()) document.getElementById('userGreet').innerText = "Ready to Study, " + snap.val().fullName.split(' ')[0] + "?"; 
+            });
         });
+
         db.ref('users').on('value', snap => {
             let list = []; for(let id in snap.val()){ if(snap.val()[id].profile) list.push(snap.val()[id].profile); }
             list.sort((a,b) => b.score - a.score);
-            document.getElementById('lBoard').innerHTML = list.slice(0,5).map((u,i) => `<div>#${i+1} ${u.fullName} - ${u.score}pts</div>`).join('<br>');
+            document.getElementById('lBoard').innerHTML = list.slice(0,5).map((u,i) => `<div style="display:flex; justify-content:space-between;"><span>#${i+1} ${u.fullName}</span><b>${u.score}pts</b></div>`).join('');
         });
     </script>
 </body>
