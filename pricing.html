@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans | IJMB Pro-Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030712;
+            --glass: rgba(17, 24, 39, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #6366f1;
+            --gold: #f59e0b;
+            --text: #f9fafb;
+            --text-dim: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(circle at top right, #1e1b4b, transparent),
+                              radial-gradient(circle at bottom left, #0f172a, transparent);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 100px 5% 50px 5%;
+        }
+
+        .header { text-align: center; margin-bottom: 60px; }
+        .header h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 15px; }
+        .header p { color: var(--text-dim); font-size: 1.1rem; }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .price-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 50px 40px;
+            position: relative;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .price-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        .price-card.popular {
+            border: 2px solid var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .plan-name { font-size: 1.2rem; font-weight: 700; color: var(--text-dim); margin-bottom: 10px; }
+        .amount { font-size: 3.5rem; font-weight: 800; margin-bottom: 30px; }
+        .amount span { font-size: 1rem; color: var(--text-dim); }
+
+        .features-list { text-align: left; margin-bottom: 40px; flex-grow: 1; }
+        .features-list li {
+            list-style: none;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .features-list li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: 900;
+        }
+
+        .btn-buy {
+            padding: 18px;
+            border-radius: 16px;
+            border: none;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: white; }
+        
+        .btn-buy:hover { opacity: 0.9; transform: scale(1.02); }
+
+        .back-link { margin-top: 40px; color: var(--text-dim); text-decoration: none; font-size: 0.9rem; }
+        .back-link:hover { color: var(--text); }
+
+        @media (max-width: 768px) {
+            .pricing-grid { grid-template-columns: 1fr; }
+            .price-card { padding: 40px 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Invest in your <span>Future.</span></h1>
+        <p>Unlock premium theory archives and secure your IJMB success.</p>
+    </div>
+
+    <div class="pricing-grid">
+        <div class="price-card">
+            <p class="plan-name">Standard Access</p>
+            <div class="amount">₦5,000<span>/mo</span></div>
+            <ul class="features-list">
+                <li>Access to all 3 Subject Vaults</li>
+                <li>Professional Marking Schemes</li>
+                <li>Standard Support</li>
+                <li>Real-time Leaderboard</li>
+            </ul>
+            <a href="contact.html" class="btn-buy btn-outline">Select Plan</a>
+        </div>
+
+        <div class="price-card popular">
+            <div class="popular-badge">MOST POPULAR</div>
+            <p class="plan-name">Full Season Pro</p>
+            <div class="amount">₦15,000<span>/session</span></div>
+            <ul class="features-list">
+                <li>Everything in Standard</li>
+                <li>Unlimited access until exams</li>
+                <li><b>Priority</b> WhatsApp Support</li>
+                <li>Exclusive Study Diagrams</li>
+                <li>Mastery PDF Summaries</li>
+            </ul>
+            <a href="contact.html" class="btn-buy btn-primary">Go Full Pro</a>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-link">← Back to Dashboard</a>
+
+</body>
+</html>
