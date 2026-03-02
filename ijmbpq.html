@@ -3,84 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB Pro | Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg: #0f172a; --sidebar: #1e293b; --accent: #38bdf8; --text-main: #f1f5f9; --text-muted: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); display: flex; min-height: 100vh; }
-        aside { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 2rem; position: fixed; height: 100vh; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--accent); margin-bottom: 3rem; }
-        .nav-item { padding: 12px; color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 10px; border-radius: 8px; }
-        .nav-item.active { background: rgba(56, 189, 248, 0.1); color: var(--accent); }
-        main { margin-left: 260px; flex: 1; padding: 3rem; }
-        .header { margin-bottom: 2rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: var(--sidebar); padding: 25px; border-radius: 16px; border: 1px solid var(--border); transition: 0.3s; }
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
-        .btn { color: var(--accent); text-decoration: none; font-weight: 700; margin-top: 15px; display: inline-block; }
-    </style>
-</head>
-<body>
-    <aside>
-        <div class="logo">IJMB.PRO</div>
-        <a href="index.html" class="nav-item active">Dashboard</a>
-        <a href="#" class="nav-item">Syllabus</a>
-        <a href="#" class="nav-item">CBT Mode</a>
-    </aside>
-    <main>
-        <div class="header">
-            <h1>Welcome, Candidate</h1>
-            <p style="color: var(--text-muted)">Select a subject to begin your revision.</p>
-        </div>
-        <div class="grid">
-            <div class="card">
-                <h3 style="margin-bottom: 10px;">Physics</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">15 Years of Solved Theory & Objectives.</p>
-                <a href="subject-physics.html" class="btn">Open Archive →</a>
-            </div>
-            <div class="card">
-                <h3>Chemistry</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Organic, Inorganic, and Physical Chemistry.</p>
-                <a href="#" class="btn">Coming Soon</a>
-            </div>
-        </div>
-    </main>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal | Login & Sign Up</title>
+    <title>IJMB Pro-Archive | Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --text: #f1f5f9; --error: #ef4444; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .auth-card { background: var(--panel); padding: 40px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; }
-        h2 { margin-bottom: 10px; color: var(--accent); }
-        p { font-size: 0.9rem; color: #94a3b8; margin-bottom: 30px; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--accent); color: var(--bg); border: none; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
-        .toggle-link { margin-top: 20px; font-size: 0.85rem; cursor: pointer; color: var(--accent); display: inline-block; }
-        #auth-status { margin-top: 15px; font-size: 0.9rem; font-weight: 600; }
+        :root { --bg: #0f172a; --panel: #1e293b; --accent: #38bdf8; --text: #f1f5f9; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 280px; background: #020617; border-right: 1px solid #1e293b; display: flex; flex-direction: column; padding: 30px; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--accent); margin-bottom: 40px; }
+        .nav-link { padding: 12px; color: #94a3b8; text-decoration: none; border-radius: 8px; margin-bottom: 10px; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background: #1e293b; color: white; }
+        
+        /* Main Content */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .user-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .subject-card { background: var(--panel); padding: 30px; border-radius: 20px; text-decoration: none; color: white; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .subject-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        
+        /* Auth UI */
+        #user-info { font-size: 0.9rem; color: #94a3b8; }
+        .auth-btn { padding: 10px 20px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
+        .login-btn { background: var(--accent); color: var(--bg); }
+        .logout-btn { background: #ef4444; color: white; display: none; }
     </style>
 </head>
 <body>
 
-<div class="auth-card">
-    <h2 id="auth-title">Student Login</h2>
-    <p id="auth-desc">Welcome back! Please enter your details.</p>
+<div class="sidebar">
+    <div class="logo">IJMB PRO</div>
+    <a href="index.html" class="nav-link active">Dashboard</a>
+    <a href="subject-physics.html" class="nav-link">Physics</a>
+    <a href="#" class="nav-link">Chemistry</a>
+    <a href="#" class="nav-link">Biology</a>
+    <a href="admin.html" class="nav-link" style="margin-top: auto; color: #fbbf24;">Admin Panel</a>
+</div>
 
-    <div id="auth-form">
-        <input type="email" id="email" placeholder="Email Address">
-        <input type="password" id="password" placeholder="Password">
-        <button id="main-btn" onclick="handleAuth()">Login to Portal</button>
+<div class="main-content">
+    <div class="user-header">
+        <div>
+            <h1 style="margin:0;">Welcome Back</h1>
+            <p id="user-info">Guest Access</p>
+        </div>
+        <button id="login-redirect" class="auth-btn login-btn" onclick="window.location.href='auth.html'">Login</button>
+        <button id="logout-btn" class="auth-btn logout-btn" onclick="handleLogout()">Sign Out</button>
     </div>
 
-    <div id="auth-status"></div>
-
-    <span class="toggle-link" id="toggle-mode" onclick="toggleMode()">Don't have an account? Sign Up</span>
+    <div class="subject-grid">
+        <a href="subject-physics.html" class="subject-card">
+            <h3 style="color: var(--accent);">Physics</h3>
+            <p style="font-size: 0.8rem; color: #94a3b8;">Theory solutions & formulas</p>
+        </a>
+        <a href="#" class="subject-card">
+            <h3 style="color: #10b981;">Chemistry</h3>
+            <p style="font-size: 0.8rem; color: #94a3b8;">Reaction mechanisms & labs</p>
+        </a>
+        <a href="#" class="subject-card">
+            <h3 style="color: #f59e0b;">Biology</h3>
+            <p style="font-size: 0.8rem; color: #94a3b8;">Anatomy & Genetic diagrams</p>
+        </a>
+    </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -100,59 +83,25 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
-  let isLoginMode = true;
+  auth.onAuthStateChanged((user) => {
+    const info = document.getElementById('user-info');
+    const loginBtn = document.getElementById('login-redirect');
+    const logoutBtn = document.getElementById('logout-btn');
 
-  function toggleMode() {
-    isLoginMode = !isLoginMode;
-    document.getElementById('auth-title').innerText = isLoginMode ? "Student Login" : "Create Account";
-    document.getElementById('auth-desc').innerText = isLoginMode ? "Welcome back! Please enter your details." : "Join thousands of students preparing for IJMB.";
-    document.getElementById('main-btn').innerText = isLoginMode ? "Login to Portal" : "Sign Up Now";
-    document.getElementById('toggle-mode').innerText = isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Login";
-    document.getElementById('auth-status').innerText = "";
-  }
-
-  function handleAuth() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const status = document.getElementById('auth-status');
-
-    if (!email || !password) {
-        status.style.color = "var(--error)";
-        status.innerText = "Please fill in all fields.";
-        return;
-    }
-
-    status.style.color = "var(--accent)";
-    status.innerText = isLoginMode ? "Logging in..." : "Creating account...";
-
-    if (isLoginMode) {
-        // LOGIN LOGIC
-        auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                window.location.href = "index.html"; // Redirect to dashboard
-            })
-            .catch((error) => {
-                status.style.color = "var(--error)";
-                status.innerText = error.message;
-            });
+    if (user) {
+        info.innerText = "Logged in as: " + user.email;
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "block";
     } else {
-        // SIGN UP LOGIC
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                status.style.color = "#10b981";
-                status.innerText = "Account Created! Redirecting...";
-                setTimeout(() => { window.location.href = "index.html"; }, 1500);
-            })
-            .catch((error) => {
-                status.style.color = "var(--error)";
-                status.innerText = error.message;
-            });
+        info.innerText = "Guest Mode (Progress not synced)";
+        loginBtn.style.display = "block";
+        logoutBtn.style.display = "none";
     }
+  });
+
+  function handleLogout() {
+    auth.signOut().then(() => alert("Signed out!"));
   }
 </script>
-
-</body>
-</html>
-<script src="app.js"></script>
 </body>
 </html>
