@@ -3,13 +3,13 @@
 A high-performance web portal for IJMB students featuring cloud-synced theory solutions, marking schemes, and real-time search.
 
 ## 🚀 Quick Access
-* **[View Student Dashboard](index.html)** - Start here to browse subjects.
+* **[View Student Dashboard](ijmbpq.html)** - Start here to browse subjects.
 * **[Admin Control Panel](admin.html)** - 🔐 Private: Use this to upload new questions and solutions to Firebase.
 
 ---
 
 ## 🛠 Project Structure
-* `index.html` - The main entry point for students.
+* `ijmbpq.html` - The main entry point for students.
 * `admin.html` - Secure interface connected to **Firebase Realtime Database**.
 * `app.js` - The "Global Brain" handling navigation, search, and shared UI components.
 * `subject-physics.html` - Example subject page using the **Live Viewer** script.
