@@ -16,8 +16,9 @@
         .hero h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
         .hero h1 span { color: var(--accent); }
         .hero p { color: var(--text-dim); font-size: clamp(1rem, 4vw, 1.2rem); max-width: 700px; margin-bottom: 40px; }
-        .btn { padding: 16px 32px; border-radius: 14px; font-weight: 800; cursor: pointer; transition: 0.3s; border: none; text-decoration: none; }
+        .btn { padding: 16px 32px; border-radius: 14px; font-weight: 800; cursor: pointer; transition: 0.3s; border: none; text-decoration: none; display: inline-block; }
         .btn-main { background: var(--accent); color: white; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
+        .btn-secondary { background: var(--glass); border: 1px solid var(--border); color: white; }
         .scroll-down { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; cursor: pointer; color: var(--text-dim); font-size: 0.7rem; letter-spacing: 2px; text-align: center; }
         .arrow { width: 10px; height: 10px; border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(45deg); margin: 5px auto; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); } 40% { transform: translate(-50%, -10px); } }
@@ -30,7 +31,7 @@
 <body>
     <div class="modal-overlay" id="authModal">
         <div class="modal">
-            <h2 id="mTitle" style="text-align:center; margin-bottom:20px;">Login</h2>
+            <h2 id="mTitle" style="text-align:center; margin-bottom:20px;">Student Login</h2>
             <input type="text" id="regName" class="reg-only" placeholder="Full Name" style="display:none;">
             <input type="email" id="email" placeholder="Email Address">
             <select id="regCombo" class="reg-only" style="display:none;">
@@ -42,12 +43,18 @@
             <p onclick="toggleAuth()" id="mToggle" style="text-align:center; font-size:0.8rem; margin-top:20px; cursor:pointer; color:var(--accent);">New student? Register</p>
         </div>
     </div>
-    <nav><div class="logo">IJMB<span>PRO</span></div><button onclick="openAuth()" class="btn" style="background:var(--glass); border:1px solid var(--border); color:white; padding:8px 18px;">Login</button></nav>
+    <nav>
+        <div class="logo">IJMB<span>PRO</span></div>
+        <button onclick="openAuth()" class="btn-secondary" style="padding:8px 18px; border-radius:10px;">Login</button>
+    </nav>
     <section class="hero">
         <h1>Master Theory.<br><span>Secure Your A.</span></h1>
-        <p>Verified archives for IJMB candidates. Get real marking schemes and track your progress.</p>
-        <button onclick="openAuth()" class="btn btn-main">Create Verified Account</button>
-        <div class="scroll-down">EXPLORE<div class="arrow"></div></div>
+        <p>Verified archives for 2026 IJMB candidates. Get real marking schemes and track your progress.</p>
+        <div style="display:flex; gap:15px;">
+            <button onclick="openAuth()" class="btn btn-main">Get Free Access</button>
+            <a href="pricing.html" class="btn btn-secondary">View Pro Plans</a>
+        </div>
+        <div class="scroll-down" onclick="document.getElementById('features').scrollIntoView()">EXPLORE<div class="arrow"></div></div>
     </section>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -58,21 +65,34 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.database();
         let isLogin = true;
+
         function openAuth() { document.getElementById('authModal').style.display='flex'; }
-        function toggleAuth() { isLogin = !isLogin; document.querySelectorAll('.reg-only').forEach(el => el.style.display = isLogin ? 'none' : 'block'); document.getElementById('mTitle').innerText = isLogin ? 'Login' : 'Register'; }
+        function toggleAuth() { 
+            isLogin = !isLogin; 
+            document.querySelectorAll('.reg-only').forEach(el => el.style.display = isLogin ? 'none' : 'block'); 
+            document.getElementById('mTitle').innerText = isLogin ? 'Student Login' : 'Join Pro Archive'; 
+            document.getElementById('mBtn').innerText = isLogin ? 'Sign In' : 'Create Account';
+        }
+
         async function handleAuth() {
             const e = document.getElementById('email').value, p = document.getElementById('pass').value;
             if(isLogin) {
-                auth.signInWithEmailAndPassword(e,p).then(res => { if(res.user.emailVerified) location.href="index.html"; else alert("Verify your email first!"); });
+                auth.signInWithEmailAndPassword(e,p).then(res => { 
+                    if(res.user.emailVerified) location.href="index.html"; 
+                    else alert("Please verify your email first! Check your inbox."); 
+                }).catch(err => alert(err.message));
             } else {
                 const n = document.getElementById('regName').value, c = document.getElementById('regCombo').value;
-                const res = await auth.createUserWithEmailAndPassword(e,p);
-                await db.ref(`users/${res.user.uid}/profile`).set({ fullName: n, combo: c, score: 0, isVerified: false });
-                await res.user.sendEmailVerification();
-                alert("Verification link sent! Check your inbox.");
-                location.reload();
+                try {
+                    const res = await auth.createUserWithEmailAndPassword(e,p);
+                    await db.ref(`users/${res.user.uid}/profile`).set({ fullName: n, combo: c, score: 0, isVerified: false });
+                    await res.user.sendEmailVerification();
+                    alert("Account created! A verification link has been sent to " + e);
+                    location.reload();
+                } catch(err) { alert(err.message); }
             }
         }
+        auth.onAuthStateChanged(user => { if(user && user.emailVerified) location.href="index.html"; });
     </script>
 </body>
 </html>
