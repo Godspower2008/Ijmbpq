@@ -14,11 +14,18 @@
             --accent: #6366f1; 
             --text: #f8fafc; 
             --text-dim: #94a3b8; 
-            --section-gap: 100px;
+            --section-gap: 120px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            line-height: 1.6;
+            background-image: radial-gradient(circle at 100% 0%, #1e1b4b 0%, #020617 50%);
+        }
 
         /* --- NAVIGATION --- */
         nav { 
@@ -27,165 +34,174 @@
             backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
             background: rgba(2, 6, 23, 0.7);
         }
-        .logo { font-weight: 800; font-size: 1.4rem; }
+        .logo { font-weight: 800; font-size: 1.4rem; color: var(--text); }
         .logo span { color: var(--accent); }
 
-        /* --- HERO --- */
-        .hero { padding: 180px 8% 100px; display: flex; align-items: center; gap: 60px; max-width: 1300px; margin: 0 auto; }
+        /* --- HERO SECTION --- */
+        .hero { 
+            padding: 180px 8% 100px; 
+            display: flex; align-items: center; gap: 60px;
+            max-width: 1300px; margin: 0 auto;
+        }
         .hero-content { flex: 1; }
-        .hero-content h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; margin-bottom: 25px; }
+        .hero-content h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 25px; }
         .hero-content h1 span { color: var(--accent); }
-        .hero-content p { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 40px; }
+        .hero-content p { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 40px; max-width: 550px; }
 
-        /* --- BUTTONS --- */
+        .hero-image { 
+            flex: 1; position: relative; display: flex; justify-content: center;
+        }
+        /* Visual Placeholder for Dashboard Preview */
+        .dashboard-preview {
+            width: 100%; max-width: 500px; height: 350px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 24px; border: 1px solid var(--border);
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .dashboard-preview::before {
+            content: "\f080"; font-family: "Font Awesome 6 Free"; font-weight: 900;
+            font-size: 8rem; color: rgba(99, 102, 241, 0.1);
+        }
+
+        /* --- STATS SECTION --- */
+        .stats-bar { 
+            background: rgba(99, 102, 241, 0.05); border-top: 1px solid var(--border); 
+            border-bottom: 1px solid var(--border); padding: 50px 8%;
+            display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px;
+        }
+        .stat-item { text-align: center; }
+        .stat-item h2 { font-size: 2.5rem; color: var(--accent); }
+        .stat-item p { color: var(--text-dim); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
+
+        /* --- TESTIMONIALS --- */
+        .testimonials { padding: var(--section-gap) 8%; text-align: center; }
+        .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 60px; }
+        .test-card { 
+            background: var(--glass); padding: 40px; border-radius: 24px; 
+            border: 1px solid var(--border); text-align: left;
+        }
+        .test-card p { font-style: italic; color: var(--text-dim); margin-bottom: 20px; }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-info img { width: 50px; height: 50px; border-radius: 50%; background: var(--accent); }
+        .user-info b { display: block; font-size: 1rem; }
+        .user-info span { font-size: 0.8rem; color: var(--accent); }
+
+        /* --- BOTTOM CTA --- */
+        .final-cta { 
+            padding: 100px 8%; text-align: center; 
+            background: linear-gradient(to top, #1e1b4b, transparent);
+        }
+
         .btn-main { 
-            padding: 18px 35px; background: var(--accent); color: white; border-radius: 12px; 
-            text-decoration: none; font-weight: 800; border: none; cursor: pointer; transition: 0.3s;
+            padding: 20px 45px; background: var(--accent); color: white; 
+            border-radius: 14px; text-decoration: none; font-weight: 800; 
+            display: inline-block; transition: 0.3s; border: none; cursor: pointer;
         }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4); }
 
-        /* --- AUTH MODAL --- */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-            z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px);
+        /* --- MOBILE ADAPTATION --- */
+        @media (max-width: 900px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 140px; }
+            .hero-content p { margin: 0 auto 40px; }
+            .stats-bar { gap: 40px; }
         }
-        .modal-card {
-            background: #0f172a; width: 90%; max-width: 450px; padding: 40px;
-            border-radius: 24px; border: 1px solid var(--border); position: relative;
-        }
-        .modal-card h2 { margin-bottom: 10px; font-weight: 800; }
-        .modal-card input, .modal-card select {
-            width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 10px;
-            background: #1e293b; border: 1px solid var(--border); color: white; outline: none;
-        }
-        .close-modal { position: absolute; top: 20px; right: 20px; cursor: pointer; color: var(--text-dim); }
-
-        .toggle-text { text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-dim); }
-        .toggle-text span { color: var(--accent); cursor: pointer; font-weight: 700; }
-
-        @media (max-width: 900px) { .hero { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
 
     <nav>
         <div class="logo">IJMB<span>PRO</span></div>
-        <button onclick="toggleModal()" class="btn-main" style="padding: 10px 25px; font-size: 0.9rem;">Sign In</button>
+        <button onclick="document.getElementById('authModal').style.display='flex'" class="btn-main" style="padding: 10px 25px; font-size: 0.9rem;">Sign In</button>
     </nav>
 
-    <section class="hero">
+    <header class="hero">
         <div class="hero-content">
-            <h1>The Archive for <span>Serious Scholars.</span></h1>
-            <p>Access the most comprehensive library of IJMB past questions, marking schemes, and high-resolution diagrams.</p>
-            <button onclick="toggleModal()" class="btn-main">Get Started for Free</button>
+            <h1>Practice Past Questions. <span>Boost Your Score.</span></h1>
+            <p>Master IJMB theoretical questions with authentic marking schemes, visual diagrams, and performance tracking used by 1,000+ students.</p>
+            <button onclick="document.getElementById('authModal').style.display='flex'" class="btn-main">Start Practising Now — It's Free</button>
+        </div>
+        <div class="hero-image">
+            <div class="dashboard-preview">
+                <div style="position:absolute; bottom:20px; left:20px; background:var(--accent); padding:10px 20px; border-radius:10px; font-weight:700; font-size:0.8rem;">
+                    <i class="fa-solid fa-chart-line"></i> Performance: 92%
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="stats-bar">
+        <div class="stat-item">
+            <h2>1,200+</h2>
+            <p>Active Students</p>
+        </div>
+        <div class="stat-item">
+            <h2>85%</h2>
+            <p>Scored A/B Points</p>
+        </div>
+        <div class="stat-item">
+            <h2>10+ Years</h2>
+            <p>Solved Archives</p>
         </div>
     </section>
 
-    <div class="modal-overlay" id="authModal">
-        <div class="modal-card">
-            <i class="fa-solid fa-xmark close-modal" onclick="toggleModal()"></i>
-            
-            <div id="loginFields">
-                <h2>Welcome Back</h2>
-                <p style="color: var(--text-dim); margin-bottom: 25px;">Sign in to continue your progress.</p>
+    <section style="padding: var(--section-gap) 8%;">
+        <h2 style="text-align:center; font-size: 2.5rem; margin-bottom: 60px;">Why Scholars Choose Pro-Archive</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+            <div style="padding: 30px; border: 1px solid var(--border); border-radius: 20px;">
+                <i class="fa-solid fa-check-double" style="color:var(--accent); font-size: 2rem; margin-bottom: 20px;"></i>
+                <h3>Official Marking Schemes</h3>
+                <p style="color:var(--text-dim);">Learn exactly how examiners award marks so you don't leave points on the table.</p>
             </div>
-
-            <div id="registerFields" style="display: none;">
-                <h2>Create Account</h2>
-                <p style="color: var(--text-dim); margin-bottom: 25px;">Join 1,000+ scholars today.</p>
-                <input type="text" id="regName" placeholder="Full Name (e.g. John Doe)">
-                <select id="regCombo">
-                    <option value="">Select Combo</option>
-                    <option value="PCM">PCM (Phy/Chem/Math)</option>
-                    <option value="PCB">PCB (Phy/Chem/Bio)</option>
-                    <option value="EGB">EGB (Eco/Gov/Lit)</option>
-                </select>
+            <div style="padding: 30px; border: 1px solid var(--border); border-radius: 20px;">
+                <i class="fa-solid fa-image" style="color:var(--accent); font-size: 2rem; margin-bottom: 20px;"></i>
+                <h3>Visual Learning</h3>
+                <p style="color:var(--text-dim);">High-quality labeled diagrams for Biology and Physics to help you memorize faster.</p>
             </div>
-
-            <input type="email" id="authEmail" placeholder="Email Address">
-            <input type="password" id="authPass" placeholder="Password">
-
-            <button onclick="handleAuth()" class="btn-main" style="width: 100%;" id="authBtn">
-                <span id="btnText">Continue</span>
-            </button>
-
-            <p class="toggle-text" id="toggleMsg">
-                New here? <span onclick="switchMode(true)">Create an account</span>
-            </p>
-            <p class="toggle-text" id="toggleMsgBack" style="display: none;">
-                Already have an account? <span onclick="switchMode(false)">Sign In</span>
-            </p>
+            <div style="padding: 30px; border: 1px solid var(--border); border-radius: 20px;">
+                <i class="fa-solid fa-users" style="color:var(--accent); font-size: 2rem; margin-bottom: 20px;"></i>
+                <h3>Live Leaderboard</h3>
+                <p style="color:var(--text-dim);">Compete with other students and see your rank improve as you complete topics.</p>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <section class="testimonials">
+        <span style="color:var(--accent); font-weight:800; text-transform:uppercase;">Real Success Stories</span>
+        <h2 style="font-size:2.5rem; margin-top:10px;">Hear From Our Scholars</h2>
+        <div class="test-grid">
+            <div class="test-card">
+                <p>"The marking schemes were a game changer. I realized I was answering questions wrong all along. I ended up with 14 points!"</p>
+                <div class="user-info">
+                    <div style="width:40px; height:40px; background:#4f46e5; border-radius:50%; display:flex; align-items:center; justify-content:center;">O</div>
+                    <div>
+                        <b>Olawale J.</b>
+                        <span>Physics/Chem/Math</span>
+                    </div>
+                </div>
+            </div>
+            <div class="test-card">
+                <p>"The visual diagrams for Biology are so clear. It’s much better than my textbooks. Highly recommended for any IJMB student."</p>
+                <div class="user-info">
+                    <div style="width:40px; height:40px; background:#10b981; border-radius:50%; display:flex; align-items:center; justify-content:center;">C</div>
+                    <div>
+                        <b>Chidi A.</b>
+                        <span>Bio/Chem/Phy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <script>
-        // REPLACE WITH YOUR ACTUAL CONFIG
-        const firebaseConfig = { 
-            apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", 
-            authDomain: "ijmb-portal.firebaseapp.com", 
-            databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", 
-            projectId: "ijmb-portal", 
-            appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" 
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.database();
+    <section class="final-cta">
+        <h2 style="font-size:2.5rem; margin-bottom:20px;">Ready to Secure Your 15 Points?</h2>
+        <p style="color:var(--text-dim); margin-bottom:40px;">Join 1,000+ students already preparing for the next IJMB exam.</p>
+        <button onclick="document.getElementById('authModal').style.display='flex'" class="btn-main">Create Your Free Account</button>
+    </section>
 
-        let isRegistering = false;
+    <div id="authModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(10px);">
+        </div>
 
-        function toggleModal() {
-            const modal = document.getElementById('authModal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-        }
-
-        function switchMode(reg) {
-            isRegistering = reg;
-            document.getElementById('loginFields').style.display = reg ? 'none' : 'block';
-            document.getElementById('registerFields').style.display = reg ? 'block' : 'none';
-            document.getElementById('toggleMsg').style.display = reg ? 'none' : 'block';
-            document.getElementById('toggleMsgBack').style.display = reg ? 'block' : 'none';
-            document.getElementById('btnText').innerText = reg ? 'Create Account' : 'Sign In';
-        }
-
-        async function handleAuth() {
-            const e = document.getElementById('authEmail').value;
-            const p = document.getElementById('authPass').value;
-            const btn = document.getElementById('authBtn');
-
-            if(!e || !p) return alert("Please fill all fields");
-            btn.disabled = true;
-
-            try {
-                if(isRegistering) {
-                    const n = document.getElementById('regName').value;
-                    const c = document.getElementById('regCombo').value;
-                    if(!n || !c) throw new Error("Name and Combo are required");
-
-                    const res = await auth.createUserWithEmailAndPassword(e, p);
-                    await db.ref(`users/${res.user.uid}/profile`).set({
-                        fullName: n, combo: c, score: 0
-                    });
-                    await res.user.sendEmailVerification();
-                    alert("Verification email sent! Please check your inbox.");
-                    toggleModal();
-                } else {
-                    const res = await auth.signInWithEmailAndPassword(e, p);
-                    if(res.user.emailVerified) {
-                        window.location.href = "ijmbpq.html";
-                    } else {
-                        alert("Please verify your email first.");
-                        auth.signOut();
-                    }
-                }
-            } catch (err) {
-                alert(err.message);
-            }
-            btn.disabled = false;
-        }
-    </script>
 </body>
 </html>
