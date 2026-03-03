@@ -3,136 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard | IJMB PRO</title>
+    <title>Student Portal | IJMB PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --border: rgba(255,255,255,0.08); --live: #10b981; }
+        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --border: rgba(255,255,255,0.08); }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; margin: 0; }
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        
+        /* Unified Top Nav */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--card); border-bottom: 1px solid var(--border); }
+        .user-meta { display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .profile-pic { width: 35px; height: 35px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
 
-        /* Live Indicator */
-        .live-status { display: flex; align-items: center; gap: 10px; background: rgba(16, 185, 129, 0.1); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--live); width: fit-content; margin-bottom: 25px; }
-        .dot { width: 10px; height: 10px; background: var(--live); border-radius: 50%; box-shadow: 0 0 10px var(--live); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.7; } 70% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.7; } }
+        .main-layout { display: grid; grid-template-columns: 250px 1fr 300px; gap: 25px; max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        
+        /* Sidebar Menu */
+        .sidebar { background: var(--card); border-radius: 20px; padding: 20px; height: fit-content; }
+        .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px; color: #94a3b8; text-decoration: none; border-radius: 10px; transition: 0.3s; margin-bottom: 5px; }
+        .menu-item:hover, .menu-item.active { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
 
-        /* Layout Grid */
-        .portal-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
-        @media (max-width: 950px) { .portal-grid { grid-template-columns: 1fr; } }
+        /* Content Area */
+        .panel { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 25px; }
+        .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .sub-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 18px; text-decoration: none; color: white; transition: 0.3s; }
+        .sub-card:hover { border-color: var(--accent); background: rgba(99,102,241,0.05); }
 
-        /* Panels */
-        .panel { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 30px; position: relative; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .close-btn { background: none; border: none; color: #64748b; cursor: pointer; font-size: 1.3rem; transition: 0.3s; }
-        .close-btn:hover { color: #ef4444; }
+        /* Modal Settings */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: var(--card); padding: 30px; border-radius: 24px; width: 400px; border: 1px solid var(--accent); }
+        .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
 
-        /* Subject Cards */
-        .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
-        .sub-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 25px; border-radius: 20px; text-decoration: none; color: white; transition: 0.3s; text-align: center; }
-        .sub-card:hover { transform: translateY(-8px); border-color: var(--accent); background: rgba(99,102,241,0.1); box-shadow: 0 10px 30px rgba(99,102,241,0.2); }
-        .sub-card i { font-size: 2.2rem; color: var(--accent); margin-bottom: 15px; display: block; }
-        .sub-card h3 { margin: 0 0 8px; font-size: 1.15rem; }
-        .sub-card p { margin: 0; font-size: 0.85rem; color: #94a3b8; }
-
-        /* Leaderboard Items */
-        .rank-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .user-box { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 35px; height: 35px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
+        @media (max-width: 1100px) { .main-layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
     </style>
 </head>
 <body>
 
-    <header id="global-header"></header>
-
-    <div class="container">
-        <div class="live-status">
-            <span class="dot"></span>
-            <span style="color: var(--live); font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">
-                <span id="active-count">...</span> SCHOLARS ONLINE
-            </span>
+    <nav>
+        <div style="font-weight: 800; font-size: 1.2rem;">IJMB<span style="color:var(--accent)">PRO</span></div>
+        <div class="user-meta" onclick="toggleSettings()">
+            <div style="text-align: right;"><div style="font-size: 0.85rem; font-weight: 700;">Adebayo M.</div><div style="font-size: 0.7rem; color: #64748b;">ID: #99210</div></div>
+            <div class="profile-pic">AM</div>
         </div>
+    </nav>
 
-        <div class="portal-grid">
-            <main class="panel" id="main-archive">
-                <div class="panel-header">
-                    <h2><i class="fa-solid fa-book-open" style="margin-right: 10px; color:var(--accent)"></i> Academic Archives</h2>
-                    <button class="close-btn" onclick="closeSection('main-archive')"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="sub-grid">
-                    <a href="physics.html" class="sub-card">
-                        <i class="fa-solid fa-atom"></i>
-                        <h3>Physics</h3>
-                        <p>Theory questions + full marking schemes.</p>
-                    </a>
-                    <a href="chemistry.html" class="sub-card">
-                        <i class="fa-solid fa-flask"></i>
-                        <h3>Chemistry</h3>
-                        <p>Detailed solutions for 2020-2025 papers.</p>
-                    </a>
-                    <a href="biology.html" class="sub-card">
-                        <i class="fa-solid fa-dna"></i>
-                        <h3>Biology</h3>
-                        <p>Visual diagrams and explanatory notes.</p>
-                    </a>
-                </div>
-            </main>
+    <div class="main-layout">
+        <aside class="sidebar">
+            <a href="#" class="menu-item active"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-book"></i> My Subjects</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> Performance</a>
+            <a href="#" class="menu-item" onclick="toggleSettings()"><i class="fa-solid fa-gear"></i> Settings</a>
+            <hr style="border:0; border-top:1px solid var(--border); margin:15px 0;">
+            <a href="landing.html" class="menu-item" style="color:#ef4444;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </aside>
 
-            <aside class="panel" id="leaderboard-panel">
-                <div class="panel-header">
-                    <h2><i class="fa-solid fa-trophy" style="margin-right: 10px; color:var(--accent)"></i> Top Scholars</h2>
-                    <button class="close-btn" onclick="closeSection('leaderboard-panel')"><i class="fa-solid fa-xmark"></i></button>
+        <main class="panel">
+            <div style="display:flex; align-items:center; gap:10px; color:#10b981; font-size:0.8rem; font-weight:800; margin-bottom:15px;">
+                <span style="width:8px; height:8px; background:#10b981; border-radius:50%; box-shadow:0 0 10px #10b981;"></span> 124 SCHOLARS ONLINE
+            </div>
+            <h2>Academic Archives</h2>
+            <div class="sub-grid">
+                <a href="#" class="sub-card"><i class="fa-solid fa-atom" style="color:var(--accent)"></i><h3>Physics</h3><p>Past schemes & solutions</p></a>
+                <a href="#" class="sub-card"><i class="fa-solid fa-flask" style="color:var(--accent)"></i><h3>Chemistry</h3><p>Organic & Physical labs</p></a>
+                <a href="#" class="sub-card"><i class="fa-solid fa-dna" style="color:var(--accent)"></i><h3>Biology</h3><p>Diagrams & Theory vault</p></a>
+            </div>
+        </main>
+
+        <aside class="panel">
+            <h3>National Ranking</h3>
+            <div style="margin-top:20px;">
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
+                    <span>1. Adebayo M.</span><span style="color:var(--accent); font-weight:800;">15.0</span>
                 </div>
-                <div id="leaderboard-data">
-                    <div class="rank-item">
-                        <div class="user-box"><div class="avatar">AM</div> <span>Adebayo M.</span></div>
-                        <span style="color:var(--accent); font-weight:800;">15.0 pts</span>
-                    </div>
-                    <div class="rank-item">
-                        <div class="user-box"><div class="avatar">CO</div> <span>Chinelo O.</span></div>
-                        <span style="color:var(--accent); font-weight:800;">14.5 pts</span>
-                    </div>
-                    <div class="rank-item">
-                        <div class="user-box"><div class="avatar">SJ</div> <span>Samuel J.</span></div>
-                        <span style="color:var(--accent); font-weight:800;">14.0 pts</span>
-                    </div>
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
+                    <span>2. Chinelo O.</span><span style="color:var(--accent); font-weight:800;">14.5</span>
                 </div>
-            </aside>
+            </div>
+        </aside>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom:20px;">Portal Settings</h2>
+            <div class="settings-row"><span>Dark Mode</span><input type="checkbox" checked></div>
+            <div class="settings-row"><span>Email Alerts</span><input type="checkbox" checked></div>
+            <div class="settings-row"><span>Public Profile</span><input type="checkbox"></div>
+            <button class="btn-cta" onclick="toggleSettings()" style="margin-top:25px;">SAVE CHANGES</button>
+            <button onclick="toggleSettings()" style="width:100%; background:none; border:none; color:#64748b; margin-top:15px; cursor:pointer;">Close</button>
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <script src="app.js"></script>
-
     <script>
-        // Use your real Firebase Config here
-        const firebaseConfig = { 
-            apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", 
-            databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com" 
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        // 1. REAL-TIME PRESENCE (ACTUAL PEOPLE ONLINE)
-        const presenceRef = db.ref("online_users");
-        db.ref(".info/connected").on("value", (snap) => {
-            if (snap.val() === true) {
-                const myUserRef = presenceRef.push();
-                myUserRef.set(true);
-                myUserRef.onDisconnect().remove();
-            }
-        });
-
-        presenceRef.on("value", (snap) => {
-            document.getElementById('active-count').innerText = snap.numChildren();
-        });
-
-        // 2. PROFESSIONAL CLOSE LOGIC
-        function closeSection(id) {
-            const el = document.getElementById(id);
-            el.style.opacity = "0";
-            el.style.transform = "translateY(20px) scale(0.95)";
-            setTimeout(() => { el.style.display = "none"; }, 500);
+        function toggleSettings() {
+            const modal = document.getElementById('settingsModal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
         }
     </script>
 </body>
