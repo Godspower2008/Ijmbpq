@@ -12,47 +12,51 @@
         
         nav { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; background: var(--card); height: 60px; border-bottom: 1px solid var(--border); }
         
-        /* FLEX WORKSPACE FOR RESPONSIVENESS */
-        .workspace { 
-            display: flex; 
-            flex-direction: row; 
-            height: calc(100vh - 60px); 
-        }
-
-        .q-area { flex: 1; padding: 30px; overflow-y: auto; border-right: 1px solid var(--border); }
-        .e-area { flex: 1; padding: 30px; background: #0f172a; overflow-y: auto; position: relative; }
+        /* The Workspace: Responsive Flex */
+        .workspace { display: flex; flex-direction: row; height: calc(100vh - 60px); }
         
-        .option { background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; }
+        .q-side { flex: 1; padding: 40px; overflow-y: auto; border-right: 1px solid var(--border); }
+        .e-side { flex: 1; padding: 40px; background: #0f172a; overflow-y: auto; position: relative; }
+        
+        .option { background: var(--card); border: 1px solid var(--border); padding: 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; }
+        .option:hover { border-color: var(--accent); }
+        
+        .overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.98); backdrop-filter: blur(8px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; text-align: center; }
 
-        /* RESPONSIVE PHYSICS PAGE */
         @media (max-width: 850px) {
-            .workspace { flex-direction: column; height: auto; } /* Change from Split to Stack */
-            .q-area, .e-area { border-right: none; border-bottom: 1px solid var(--border); flex: none; width: 100%; }
-            body { overflow-y: auto; } /* Allow scrolling the whole page on mobile */
+            .workspace { flex-direction: column; height: auto; }
+            .q-side, .e-side { border-right: none; border-bottom: 1px solid var(--border); flex: none; width: 100%; }
         }
     </style>
 </head>
 <body>
     <nav>
-        <a href="ijmbpq.html" style="color:#94a3b8; text-decoration:none; font-size:0.8rem;">BACK</a>
-        <div id="timer" style="color:var(--cta); font-weight:800;">59:59</div>
+        <a href="ijmbpq.html" style="color:#94a3b8; text-decoration:none; font-weight:700; font-size:0.8rem;"><i class="fa-solid fa-arrow-left"></i> EXIT</a>
+        <div id="timer" style="color:var(--cta); font-weight:800; font-family:monospace;">59:59</div>
     </nav>
     <div class="workspace">
-        <section class="q-area">
-            <h3>Question 01</h3>
-            <p style="margin: 20px 0;">Calculate the force required to move a 5kg block at 2m/s².</p>
-            <div class="option">A. 5N</div>
-            <div class="option">B. 10N</div>
+        <section class="q-side">
+            <h3 style="margin-bottom:20px;">Question 01</h3>
+            <p style="font-size:1.2rem; margin-bottom:25px;">Find the P.E of a 5kg mass at a height of 10m ($g=10$).</p>
+            <div class="option" onclick="this.style.borderColor='var(--accent)'">A. 50J</div>
+            <div class="option" onclick="this.style.borderColor='var(--accent)'">B. 500J</div>
         </section>
-        <section class="e-area">
-            <div id="lock" style="text-align:center; padding: 20px; background: rgba(0,0,0,0.5); border-radius: 10px;">
-                <button onclick="this.parentElement.style.display='none'" style="background:var(--success); color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:800;">REVEAL SCHEME</button>
+        <section class="e-side">
+            <div id="lock" class="overlay">
+                <i class="fa-solid fa-lock" style="font-size:2rem; margin-bottom:15px; color:#475569;"></i>
+                <button onclick="document.getElementById('lock').style.display='none'" style="background:var(--success); color:white; border:none; padding:12px 25px; border-radius:10px; font-weight:800; cursor:pointer;">REVEAL SOLUTION</button>
             </div>
-            <div style="margin-top:20px; border:1px solid var(--success); padding:15px; border-radius:10px;">
+            <div style="border:1px solid var(--success); padding:20px; border-radius:15px; background:rgba(16,185,129,0.05);">
                 <h4 style="color:var(--success);">Solution</h4>
-                <p>F = m × a = 5 × 2 = 10N</p>
+                <p>P.E = mgh = 5 * 10 * 10 = 500 Joules.</p>
             </div>
         </section>
     </div>
+    <script>
+        let t = 3600; setInterval(() => { 
+            let m = Math.floor(t/60), s = t%60; 
+            document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`; t--; 
+        }, 1000);
+    </script>
 </body>
 </html>
