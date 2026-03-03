@@ -179,7 +179,69 @@
             <button onclick="closeModal()" style="margin-top:15px; background:none; border:none; color:var(--text-dim); cursor:pointer; width:100%;">Close</button>
         </div>
     </div>
+<div class="portal-grid">
+    <main class="card" id="subjects-section">
+        <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fa-solid fa-graduation-cap"></i> Academic Archives</span>
+            <button onclick="closeSection('subjects-section')" 
+                    style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.2rem;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <div class="subject-grid">
+            <a href="subject-physics.html" class="subject-box">
+                <i class="fa-solid fa-atom"></i>
+                <h3>Physics</h3>
+            </a>
+            </div>
+    </main>
 
+    <aside class="card" id="leaderboard-section">
+        <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fa-solid fa-trophy"></i> Top Scholars</span>
+            <button onclick="closeSection('leaderboard-section')" 
+                    style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.2rem;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div id="leaderboardList">
+            </div>
+    </aside>
+</div>
+
+<script>
+    function closeSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        // Add a fade-out effect
+        section.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+        section.style.opacity = "0";
+        section.style.transform = "scale(0.95)";
+        
+        setTimeout(() => {
+            section.style.display = "none";
+            
+            // Optional: If both are closed, show a "Restore" button
+            checkEmptyPortal();
+        }, 400);
+    }
+
+    function checkEmptyPortal() {
+        const subjects = document.getElementById('subjects-section');
+        const leaderboard = document.getElementById('leaderboard-section');
+        
+        if (subjects.style.display === "none" && leaderboard.style.display === "none") {
+            // If the screen is empty, show a button to bring it back
+            const restoreBtn = document.createElement('button');
+            restoreBtn.innerText = "Restore Dashboard View";
+            restoreBtn.className = "btn-primary"; // Uses your existing button style
+            restoreBtn.style.margin = "50px auto";
+            restoreBtn.style.display = "block";
+            restoreBtn.onclick = () => location.reload();
+            document.querySelector('.container').appendChild(restoreBtn);
+        }
+    }
+</script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script>
