@@ -1,317 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholar Dashboard | IJMB PRO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { 
-            --bg: #020617; 
-            --card: #0f172a;
-            --glass: rgba(30, 41, 59, 0.7); 
-            --border: rgba(99, 102, 241, 0.2); 
-            --accent: #6366f1; 
-            --text: #f8fafc; 
-            --text-dim: #94a3b8; 
-            --success: #10b981;
-            --gold: #f59e0b;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scholar Dashboard | IJMB PRO</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            background-image: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 50%);
-            min-height: 100vh;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        /* --- HEADER & NAVIGATION --- */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 1000;
-        }
-        .logo { font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
-        .logo span { color: var(--accent); }
+<style>
+:root { 
+    --bg: #020617; 
+    --card: #0f172a;
+    --glass: rgba(30, 41, 59, 0.7); 
+    --border: rgba(99, 102, 241, 0.2); 
+    --accent: #6366f1; 
+    --text: #f8fafc; 
+    --text-dim: #94a3b8; 
+    --success: #10b981;
+    --gold: #f59e0b;
+}
 
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* --- MAIN LAYOUT --- */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 30px;
-            max-width: 1300px;
-            margin: 40px auto;
-            padding: 0 5%;
-        }
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    background-image: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 50%);
+}
 
-        /* --- METRIC CARDS --- */
-        .metrics-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .metric-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-        }
-        .metric-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .metric-card i { font-size: 1.5rem; color: var(--accent); margin-bottom: 15px; }
-        .metric-card .label { color: var(--text-dim); font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-        .metric-card .value { font-size: 1.8rem; font-weight: 800; margin-top: 5px; }
+/* HEADER */
+header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 5%;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 1000;
+}
 
-        /* --- SUBJECT SECTION --- */
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .section-header h2 { font-size: 1.5rem; font-weight: 800; }
+.logo { font-weight: 800; font-size: 1.2rem; text-decoration: none; color: var(--text); }
+.logo span { color: var(--accent); }
 
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        .subject-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            color: inherit;
-        }
-        .subject-card:hover { border-color: var(--accent); box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.2); }
-        .subject-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 25px; display: block; }
-        
-        .progress-meta { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 10px; color: var(--text-dim); }
-        .progress-bar { height: 8px; background: #1e293b; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--accent); border-radius: 10px; width: 0; transition: width 1s ease-in-out; }
+.nav-links { display: flex; gap: 20px; }
+.nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.nav-links a:hover { color: var(--accent); }
 
-        .btn-start {
-            width: 100%; padding: 14px; background: rgba(99, 102, 241, 0.1);
-            border: 1px solid var(--accent); color: var(--accent); border-radius: 12px;
-            font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: 0.3s;
-        }
-        .subject-card:hover .btn-start { background: var(--accent); color: white; }
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 30px;
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 5%;
+}
 
-        /* --- LEADERBOARD SIDEBAR --- */
-        .sidebar-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 25px;
-            position: sticky;
-            top: 100px;
-        }
-        .rank-item {
-            display: flex; align-items: center; gap: 15px; padding: 15px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .rank-item:last-child { border-bottom: none; }
-        .rank-badge { font-size: 1.2rem; min-width: 30px; text-align: center; }
-        .rank-info b { display: block; font-size: 0.9rem; }
-        .rank-info span { font-size: 0.75rem; color: var(--text-dim); }
-        .rank-score { margin-left: auto; font-weight: 800; color: var(--accent); }
+/* METRICS */
+.metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
 
-        /* --- RESPONSIVENESS --- */
-        @media (max-width: 1024px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .sidebar-card { position: static; }
-        }
+.metric-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 25px;
+    border-radius: 20px;
+    transition: 0.3s;
+}
 
-        @media (max-width: 600px) {
-            header { padding: 15px 5%; }
-            .nav-links { display: none; }
-            .metrics-row { grid-template-columns: 1fr 1fr; }
-            .value { font-size: 1.4rem; }
-        }
-    </style>
+.metric-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+}
+
+.metric-card i {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: var(--accent);
+}
+
+.label {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.value {
+    font-size: 1.7rem;
+    font-weight: 800;
+}
+
+/* CONTINUE CARD */
+.continue-card {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    padding: 25px;
+    border-radius: 24px;
+    margin-bottom: 40px;
+}
+
+.continue-card h3 { font-weight: 800; margin-bottom: 10px; }
+.continue-card p { font-size: 0.85rem; opacity: 0.9; margin-bottom: 15px; }
+
+.continue-card button {
+    background: white;
+    color: #4f46e5;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+/* SUBJECTS */
+.subject-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.subject-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 25px;
+    transition: 0.3s;
+}
+
+.subject-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px -15px rgba(99,102,241,0.3);
+}
+
+.progress-bar {
+    height: 8px;
+    background: #1e293b;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 1.2s ease;
+}
+
+/* SIDEBAR */
+.sidebar-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 25px;
+    position: sticky;
+    top: 100px;
+}
+
+.rank-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.rank-item:last-child { border-bottom: none; }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .sidebar-card { position: static; }
+}
+</style>
 </head>
+
 <body>
 
-    <header>
-        <a href="#" class="logo">IJMB<span>PRO</span></a>
-        <nav class="nav-links">
-            <a href="ijmbpq.html">Dashboard</a>
-            <a href="#subjects">Subjects</a>
-            <a href="pricing.html">Upgrade</a>
-            <a href="contact.html">Support</a>
-        </nav>
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span id="userName" style="font-weight: 700; font-size: 0.85rem; color: var(--accent);">Scholar</span>
-            <div style="width: 35px; height: 35px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">
-                JD
-            </div>
-        </div>
-    </header>
+<header>
+    <a href="#" class="logo">IJMB<span>PRO</span></a>
+    <nav class="nav-links">
+        <a href="#">Dashboard</a>
+        <a href="#">Subjects</a>
+        <a href="#">Upgrade</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+</header>
 
-    <div class="dashboard-container">
-        <div class="dashboard-grid">
-            <main>
-                <div style="margin-bottom: 40px;">
-                    <h1 id="userGreet" style="font-size: 2.2rem; font-weight: 800; letter-spacing: -1px;">Welcome back, Scholar!</h1>
-                    <p style="color: var(--text-dim); margin-top: 5px;">You have <strong>3 new</strong> Economics marking schemes to review today.</p>
-                </div>
+<div class="dashboard-grid">
+<main>
 
-                <div class="metrics-row">
-                    <div class="metric-card">
-                        <i class="fa-solid fa-fire" style="color: var(--gold);"></i>
-                        <p class="label">Study Streak</p>
-                        <div class="value">5 Days</div>
-                    </div>
-                    <div class="metric-card">
-                        <i class="fa-solid fa-bullseye"></i>
-                        <p class="label">Avg. Accuracy</p>
-                        <div class="value">88%</div>
-                    </div>
-                    <div class="metric-card">
-                        <i class="fa-solid fa-trophy"></i>
-                        <p class="label">Global Rank</p>
-                        <div class="value">#14</div>
-                    </div>
-                    <div class="metric-card">
-                        <i class="fa-solid fa-clock-rotate-left"></i>
-                        <p class="label">Hours Studied</p>
-                        <div class="value">12.4h</div>
-                    </div>
-                </div>
+<h1 id="userGreet" style="margin-bottom: 25px;">Welcome back, Scholar!</h1>
 
-                <div class="section-header" id="subjects">
-                    <h2>Subject Channels</h2>
-                    <a href="#" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View All</a>
-                </div>
+<div class="continue-card">
+    <h3>Continue Last Session</h3>
+    <p>You were solving Economics Paper II – Elasticity theory.</p>
+    <button>Resume Practice</button>
+</div>
 
-                <div class="subject-grid">
-                    <a href="economics-2024-theory.html" class="subject-card">
-                        <i class="fa-solid fa-chart-line"></i>
-                        <h3>Economics</h3>
-                        <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 20px;">Master Macro & Micro theories with 2026 marking schemes.</p>
-                        <div class="progress-meta">
-                            <span>24/40 Solved</span>
-                            <span>60%</span>
-                        </div>
-                        <div class="progress-bar"><div class="progress-fill" style="width: 60%;"></div></div>
-                        <button class="btn-start">Start Practice</button>
-                    </a>
-
-                    <div class="subject-card">
-                        <i class="fa-solid fa-atom"></i>
-                        <h3>Physics</h3>
-                        <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 20px;">Labeled diagrams for Optics, Electricity, and Mechanics.</p>
-                        <div class="progress-meta">
-                            <span>4/40 Solved</span>
-                            <span>10%</span>
-                        </div>
-                        <div class="progress-bar"><div class="progress-fill" style="width: 10%;"></div></div>
-                        <button class="btn-start">Start Practice</button>
-                    </div>
-
-                    <div class="subject-card">
-                        <i class="fa-solid fa-dna"></i>
-                        <h3>Biology</h3>
-                        <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 20px;">Cell structures and Genetics Paper II preparation guides.</p>
-                        <div class="progress-meta">
-                            <span>0/40 Solved</span>
-                            <span>0%</span>
-                        </div>
-                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
-                        <button class="btn-start">Start Practice</button>
-                    </div>
-                </div>
-            </main>
-
-            <aside>
-                <div class="sidebar-card">
-                    <h3 style="margin-bottom: 20px; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 10px;">
-                        <i class="fa-solid fa-crown" style="color: var(--gold);"></i> Top Scholars
-                    </h3>
-                    
-                    <div id="leaderboard">
-                        <div class="rank-item">
-                            <span class="rank-badge">🥇</span>
-                            <div class="rank-info">
-                                <b>Musa Ibrahim</b>
-                                <span>PCM • 2,450 pts</span>
-                            </div>
-                        </div>
-                        <div class="rank-item">
-                            <span class="rank-badge">🥈</span>
-                            <div class="rank-info">
-                                <b>Olawale Johnson</b>
-                                <span>EGB • 2,120 pts</span>
-                            </div>
-                        </div>
-                        <div class="rank-item">
-                            <span class="rank-badge">🥉</span>
-                            <div class="rank-info">
-                                <b>Chidi Azu</b>
-                                <span>PCB • 1,980 pts</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button style="width: 100%; margin-top: 20px; background: none; border: 1px solid var(--border); color: var(--text-dim); padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer;">
-                        Full Leaderboard
-                    </button>
-                </div>
-
-                <div style="margin-top: 30px; background: linear-gradient(135deg, #6366f1, #4f46e5); padding: 25px; border-radius: 24px;">
-                    <h4 style="color: white; font-weight: 800;">Go Pro Archive</h4>
-                    <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin: 10px 0 20px;">Unlock 2015-2025 past questions & examiner secrets.</p>
-                    <a href="pricing.html" style="background: white; color: #4f46e5; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 0.85rem;">Upgrade Now</a>
-                </div>
-            </aside>
-        </div>
+<div class="metrics-row">
+    <div class="metric-card">
+        <i class="fa-solid fa-fire"></i>
+        <div class="label">Study Streak</div>
+        <div class="value">5 Days</div>
     </div>
+    <div class="metric-card">
+        <i class="fa-solid fa-bullseye"></i>
+        <div class="label">Avg Accuracy</div>
+        <div class="value">88%</div>
+    </div>
+    <div class="metric-card">
+        <i class="fa-solid fa-trophy"></i>
+        <div class="label">Global Rank</div>
+        <div class="value">#14</div>
+    </div>
+</div>
 
-    <footer style="text-align: center; padding: 60px 5%; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 60px;">
-        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
-            <a href="#" style="color: var(--text-dim); text-decoration: none;">About</a>
-            <a href="contact.html" style="color: var(--text-dim); text-decoration: none;">Support</a>
-            <a href="#" style="color: var(--text-dim); text-decoration: none;">Privacy</a>
-        </div>
-        <p>&copy; 2026 IJMB PRO Archive. All Rights Reserved.</p>
-    </footer>
+<h2 style="margin-bottom:20px;">Subject Channels</h2>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+<div class="subject-grid">
 
-    <script>
-        const firebaseConfig = { 
-            apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", 
-            authDomain: "ijmb-portal.firebaseapp.com", 
-            databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", 
-            projectId: "ijmb-portal", 
-            appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" 
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.database();
+<div class="subject-card">
+    <h3>Economics</h3>
+    <div class="progress-bar">
+        <div class="progress-fill" data-progress="60"></div>
+    </div>
+    <small>60% Completed</small>
+</div>
 
-        auth.onAuthStateChanged(user => {
-            if(!user || !user.emailVerified) window.location.href="landing.html";
-            
-            db.ref(`users/${user.uid}/profile`).on('value', snap => { 
-                if(snap.val()) {
-                    const firstName = snap.val().fullName.split(' ')[0];
-                    document.getElementById('userGreet').innerText = `Welcome back, ${firstName}!`;
-                    document.getElementById('userName').innerText = snap.val().fullName;
-                }
-            });
-        });
-    </script>
+<div class="subject-card">
+    <h3>Physics</h3>
+    <div class="progress-bar">
+        <div class="progress-fill" data-progress="25"></div>
+    </div>
+    <small>25% Completed</small>
+</div>
+
+<div class="subject-card">
+    <h3>Biology</h3>
+    <div class="progress-bar">
+        <div class="progress-fill" data-progress="10"></div>
+    </div>
+    <small>10% Completed</small>
+</div>
+
+</div>
+</main>
+
+<aside>
+<div class="sidebar-card">
+<h3 style="margin-bottom:15px;">Top Scholars</h3>
+
+<div class="rank-item"><span>🥇 Musa Ibrahim</span><b>2450 pts</b></div>
+<div class="rank-item"><span>🥈 Olawale Johnson</span><b>2120 pts</b></div>
+<div class="rank-item"><span>🥉 Chidi Azu</span><b>1980 pts</b></div>
+
+</div>
+</aside>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = { 
+    apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
+    authDomain: "ijmb-portal.firebaseapp.com"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+auth.onAuthStateChanged(user => {
+    if(!user) window.location.href="landing.html";
+});
+
+function logout(){
+    auth.signOut();
+    window.location.href="landing.html";
+}
+
+window.addEventListener("load", () => {
+    document.querySelectorAll(".progress-fill").forEach(bar => {
+        bar.style.width = bar.dataset.progress + "%";
+    });
+});
+</script>
+
 </body>
 </html>
