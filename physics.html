@@ -3,53 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice | IJMB PRO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Physics Exam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --border: rgba(255,255,255,0.08); --success: #10b981; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; margin: 0; }
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; background: var(--card); height: 70px; border-bottom: 1px solid var(--border); }
-        .workspace { display: flex; flex-direction: row; height: calc(100vh - 70px); }
-        .q-area { flex: 1; padding: 40px; overflow-y: auto; border-right: 1px solid var(--border); }
-        .e-area { flex: 1; padding: 40px; background: #0f172a; overflow-y: auto; position: relative; }
-        .option { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
-        .option:hover { border-color: var(--accent); }
-        .overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.98); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10; }
-        @media (max-width: 850px) { .workspace { flex-direction: column; height: auto; } .q-area, .e-area { flex: none; width: 100%; border: none; } }
+        body { font-family: 'Plus Jakarta Sans'; background: #020617; color: white; margin: 0; }
+        .header { display: flex; justify-content: space-between; padding: 15px 5%; background: #0f172a; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .exam-grid { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 60px); }
+        .q-part { padding: 40px; border-right: 1px solid rgba(255,255,255,0.1); }
+        .e-part { padding: 40px; background: #020617; }
+        @media (max-width: 800px) { .exam-grid { grid-template-columns: 1fr; height: auto; } }
     </style>
 </head>
 <body>
-    <nav>
-        <a href="ijmbpq.html" style="color:#94a3b8; text-decoration:none; font-weight:700;"><i class="fa-solid fa-arrow-left"></i> EXIT</a>
-        <div id="timer" style="color:var(--cta); font-weight:800;">59:59</div>
-    </nav>
-    <div class="workspace">
-        <section class="q-area">
-            <h3>Question 01</h3>
-            <p style="font-size:1.2rem; margin: 25px 0;">Calculate the refractive index of a medium if the angle of incidence is 45° and angle of refraction is 30°.</p>
-            <div class="option">A. 1.21</div>
-            <div class="option">B. 1.41</div>
-            <div class="option">C. 1.50</div>
-            <div class="option">D. 1.73</div>
-        </section>
-        <section class="e-area">
-            <div id="lock" class="overlay">
-                <button onclick="document.getElementById('lock').style.display='none'" style="background:var(--success); color:white; border:none; padding:15px 30px; border-radius:10px; font-weight:800; cursor:pointer;">REVEAL SOLUTION</button>
-            </div>
-            <div style="border:1px solid var(--success); padding:30px; border-radius:20px; background:rgba(16,185,129,0.05);">
-                <h4 style="color:var(--success);">Marking Scheme Solution</h4>
-                <p>Using Snell's Law: $n = \frac{\sin(i)}{\sin(r)}$</p>
-                <p>$n = \frac{\sin(45^\circ)}{\sin(30^\circ)} = \frac{0.7071}{0.5}$</p>
-                <p style="font-size:1.4rem; font-weight:800; color:var(--success); margin-top:10px;">$n = 1.41$</p>
-            </div>
-        </section>
+    <div class="header">
+        <div id="studentID" style="font-weight:800; color:#6366f1;">CANDIDATE: LOADING...</div>
+        <div style="font-weight:800; color:#f59e0b;">TIME: 59:59</div>
     </div>
+
+    <div class="exam-grid">
+        <div class="q-part">
+            <h3>Question 1</h3>
+            <p>What is the SI unit of Force?</p>
+            <div style="background:#0f172a; padding:15px; border-radius:10px; margin-bottom:10px;">A. Joule</div>
+            <div style="background:#0f172a; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #6366f1;">B. Newton</div>
+        </div>
+        <div class="e-part">
+            <h4 style="color:#10b981;">Marking Scheme Solution</h4>
+            <p>Force = Mass x Acceleration. Unit is kg·m/s² which is named after Sir Isaac Newton.</p>
+        </div>
+    </div>
+
     <script>
-        let time = 3599; setInterval(() => {
-            let m = Math.floor(time/60), s = time%60;
-            document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`; time--;
-        }, 1000);
+        // Extract name and display in the candidate header
+        const name = localStorage.getItem('scholarName') || "Guest";
+        document.getElementById('studentID').innerText = `CANDIDATE: ${name.toUpperCase()}`;
     </script>
 </body>
 </html>
