@@ -1,35 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Admin | IJMB Pro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | IJMB Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
     <style>
-        body { background: #020617; color: white; font-family: sans-serif; padding: 50px; }
-        .box { max-width: 500px; margin: 0 auto; background: #0f172a; padding: 30px; border-radius: 20px; }
-        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; background: #020617; color: white; }
-        button { width: 100%; padding: 15px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --border: rgba(255,255,255,0.1); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; margin: 0; }
+        .admin-box { max-width: 600px; margin: 50px auto; background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 14px; margin-bottom: 20px; border-radius: 12px; border: 1px solid var(--border); background: #020617; color: white; font-family: inherit; }
+        textarea { height: 150px; resize: none; }
+        button { width: 100%; padding: 16px; background: var(--accent); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 1rem; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2>Add Theory Question</h2>
-        <select id="sub"><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option></select>
-        <input type="number" id="marks" placeholder="Marks (e.g. 15)">
-        <textarea id="q" placeholder="Question Text..."></textarea>
-        <textarea id="sol" placeholder="Marking Scheme..."></textarea>
-        <button onclick="add()">Upload Question</button>
+    <header id="global-header"></header>
+
+    <div class="admin-box">
+        <h2 style="margin-top:0; text-align:center;">Theory Question Uploader</h2>
+        <label>Subject</label>
+        <select id="sub">
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+            <option value="Economics">Economics</option>
+        </select>
+        <label>Total Marks</label>
+        <input type="number" id="m" placeholder="e.g., 15">
+        <label>Question (HTML & LaTeX supported)</label>
+        <textarea id="q" placeholder="Enter the question text..."></textarea>
+        <label>Marking Scheme</label>
+        <textarea id="sol" placeholder="Enter the step-by-step solution..."></textarea>
+        <button onclick="upload()">Push to Database</button>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="app.js"></script>
     <script>
         firebase.initializeApp({ apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com" });
-        function add() {
+        const db = firebase.database();
+        function upload() {
             const s = document.getElementById('sub').value;
-            firebase.database().ref('questions/' + s).push({
-                marks: document.getElementById('marks').value,
+            db.ref('questions/' + s).push({
+                marks: document.getElementById('m').value,
                 text: document.getElementById('q').value,
                 solution: document.getElementById('sol').value
-            }).then(() => alert("Success!"));
+            }).then(() => { alert("Question Uploaded Successfully!"); location.reload(); });
         }
     </script>
 </body>
