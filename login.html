@@ -5,23 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | IJMB PRO</title>
     <style>
-        body { font-family: sans-serif; background: #020617; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; padding: 20px; }
-        .card { background: #0f172a; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #1e293b; background: #020617; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 14px; background: #6366f1; border: none; border-radius: 10px; color: white; font-weight: 800; cursor: pointer; }
+        body { font-family: sans-serif; background: #020617; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .card { background: #0f172a; padding: 45px; border-radius: 28px; width: 380px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; box-sizing: border-box; outline: none; }
+        .btn { width: 100%; padding: 18px; background: #6366f1; border: none; border-radius: 12px; color: white; font-weight: 800; cursor: pointer; margin-top: 15px; }
     </style>
 </head>
 <body>
     <div class="card">
         <h2>Welcome Back</h2>
         <input type="text" id="lName" placeholder="Full Name">
-        <input type="password" placeholder="Password">
-        <button class="btn" onclick="l()">LOG IN</button>
+        <button class="btn" onclick="login()">LOGIN</button>
     </div>
     <script>
-        function l() {
+        function login() {
             const n = document.getElementById('lName').value;
-            if(n) { localStorage.setItem('ijmb_user', n); window.location.href='ijmbpq.html'; }
+            if(n.length > 2) { 
+                localStorage.setItem('scholarName', n); 
+                window.location.href='ijmbpq.html'; 
+            }
         }
     </script>
 </body>
