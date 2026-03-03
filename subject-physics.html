@@ -1,33 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Physics Archive</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Theory | IJMB Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        body { background: #020617; color: white; font-family: sans-serif; padding: 20px; }
-        .q-card { background: #0f172a; padding: 25px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #334155; }
-        .sol { display: none; margin-top: 15px; color: #38bdf8; border-top: 1px solid #333; padding-top: 15px; }
+        :root { --bg: #020617; --accent: #6366f1; --text: #f8fafc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+        .content { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .q-card { background: #0f172a; padding: 30px; border-radius: 20px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .q-card:hover { border-color: var(--accent); }
+        .btn-sol { width: 100%; padding: 12px; background: var(--accent); border: none; color: white; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 15px; }
+        .sol-box { display: none; margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; border-left: 4px solid var(--accent); line-height: 1.8; }
     </style>
 </head>
 <body>
-    <h1>Physics Theory Archive</h1>
-    <div id="feed">Loading...</div>
+    <header id="global-header"></header>
+
+    <div class="content">
+        <h1 style="margin-bottom: 30px;">Physics Theory Archive</h1>
+        <div id="feed">Loading questions...</div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="app.js"></script>
     <script>
         firebase.initializeApp({ apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com" });
         firebase.database().ref('questions/Physics').on('value', snap => {
-            let html = "";
+            const feed = document.getElementById('feed'); feed.innerHTML = "";
             snap.forEach(child => {
                 const q = child.val();
-                html += `<div class="q-card">
-                    <b>(${q.marks} Marks)</b><p>${q.text}</p>
-                    <button onclick="this.nextElementSibling.style.display='block'">View Marking Scheme</button>
-                    <div class="sol">${q.solution}</div>
-                </div>`;
+                feed.innerHTML += `
+                    <div class="q-card">
+                        <span style="color: #6366f1; font-weight: 800; font-size: 0.8rem;">[${q.marks} MARKS]</span>
+                        <p style="margin-top: 10px; font-size: 1.1rem;">${q.text}</p>
+                        <button class="btn-sol" onclick="this.nextElementSibling.style.display='block'">View Marking Scheme</button>
+                        <div class="sol-box">${q.solution}</div>
+                    </div>
+                `;
             });
-            document.getElementById('feed').innerHTML = html;
             if(window.MathJax) MathJax.typeset();
         });
     </script>
