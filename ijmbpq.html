@@ -6,32 +6,39 @@
     <title>Dashboard | IJMB Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #030712; --glass: rgba(17, 24, 39, 0.7); --accent: #6366f1; --text: #f9fafb; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
-        .grid { display: grid; grid-template-columns: 1fr 300px; gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--glass); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
-        .subject-link { display: block; padding: 15px; background: #1e293b; color: white; text-decoration: none; border-radius: 12px; margin-bottom: 10px; font-weight: 700; }
-        .subject-link:hover { background: var(--accent); }
+        :root { --bg: #020617; --glass: rgba(15, 23, 42, 0.7); --accent: #6366f1; --text: #f8fafc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 320px; gap: 30px; }
+        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
+        
+        .card { background: var(--glass); padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); }
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .sub-box { background: #0f172a; padding: 20px; border-radius: 16px; text-decoration: none; color: white; border: 1px solid rgba(99, 102, 241, 0.1); transition: 0.3s; text-align: center; }
+        .sub-box:hover { border-color: var(--accent); transform: translateY(-5px); }
+        
+        .rank-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
-    <div class="grid">
+    <header id="global-header"></header>
+
+    <div class="container">
         <main>
             <div class="card">
-                <h1 id="userGreet">Loading Profile...</h1>
-                <p>Select a subject archive below to begin your theoretical mastery.</p>
-            </div>
-            <div class="card">
-                <h3>Theoretical Archives</h3>
-                <a href="subject-physics.html" class="subject-link">Physics Archive</a>
-                <a href="chemistry-2024-theory.html" class="subject-link">Chemistry Archive</a>
-                <a href="economics-2024-theory.html" class="subject-link">Economics Archive</a>
+                <h1 id="userGreet">Loading...</h1>
+                <p style="color: #94a3b8;">You are currently in the 2026 Premium Theoretical Archive.</p>
+                <div class="subject-grid">
+                    <a href="subject-physics.html" class="sub-box"><b>Physics</b></a>
+                    <a href="chemistry-2024-theory.html" class="sub-box"><b>Chemistry</b></a>
+                    <a href="biology-2024-theory.html" class="sub-box"><b>Biology</b></a>
+                </div>
             </div>
         </main>
+
         <aside>
             <div class="card">
-                <h3>Leaderboard</h3>
-                <div id="leaderboardList">Loading...</div>
+                <h3 style="margin-bottom: 20px;">Leaderboard</h3>
+                <div id="leaderboardList"></div>
             </div>
         </aside>
     </div>
@@ -39,6 +46,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="app.js"></script>
     <script>
         const firebaseConfig = { apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", authDomain: "ijmb-portal.firebaseapp.com", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", projectId: "ijmb-portal", appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" };
         firebase.initializeApp(firebaseConfig);
@@ -47,21 +55,16 @@
         auth.onAuthStateChanged(user => {
             if(!user || !user.emailVerified) location.href="landing.html";
             db.ref(`users/${user.uid}/profile`).on('value', snap => {
-                if(snap.val()) document.getElementById('userGreet').innerText = "Welcome, " + snap.val().fullName;
+                if(snap.val()) document.getElementById('userGreet').innerText = "Hello, " + snap.val().fullName;
             });
         });
 
-        db.ref('users').on('value', snap => {
+        db.ref('users').limitToFirst(10).on('value', snap => {
             let html = "";
-            const users = snap.val();
-            for(let id in users) {
-                if(users[id].profile) {
-                    html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #333;">
-                        <span>${users[id].profile.fullName}</span>
-                        <span style="color:var(--accent); font-weight:800;">${users[id].profile.score || 0} pts</span>
-                    </div>`;
-                }
-            }
+            snap.forEach(child => {
+                const u = child.val().profile;
+                if(u) html += `<div class="rank-item"><span>${u.fullName}</span><b style="color:#6366f1;">${u.score || 0}</b></div>`;
+            });
             document.getElementById('leaderboardList').innerHTML = html;
         });
     </script>
