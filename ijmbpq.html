@@ -3,50 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | IJMB Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <title>Dashboard | IJMB Pro-Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root { --bg: #020617; --glass: rgba(15, 23, 42, 0.7); --accent: #6366f1; --text: #f8fafc; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
-        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 320px; gap: 30px; }
-        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
+        :root {
+            --bg: #020617;
+            --glass: rgba(15, 23, 42, 0.7);
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --card-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- BACKGROUND GRADIENT --- */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+        .hero h1 { 
+            font-size: clamp(2.5rem, 5vw, 4rem); 
+            font-weight: 800; 
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        .hero p { color: var(--text-dim); font-size: 1.1rem; max-width: 600px; margin: 0 auto 30px; }
         
-        .card { background: var(--glass); padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); }
-        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .sub-box { background: #0f172a; padding: 20px; border-radius: 16px; text-decoration: none; color: white; border: 1px solid rgba(99, 102, 241, 0.1); transition: 0.3s; text-align: center; }
-        .sub-box:hover { border-color: var(--accent); transform: translateY(-5px); }
-        
-        .rank-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        /* --- ACTION CARDS (GRID) --- */
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 25px;
+            font-size: 1.3rem; font-weight: 700; color: var(--text-main);
+        }
+        .section-title i { color: var(--accent); }
+
+        /* --- SUBJECTS LIST --- */
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        .subject-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            padding: 24px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+        .subject-item:hover {
+            transform: translateY(-8px);
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+        .subject-icon {
+            width: 60px; height: 60px; background: var(--accent); 
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: white; margin-bottom: 15px;
+        }
+
+        /* --- LEADERBOARD --- */
+        .rank-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .rank-row:last-child { border: none; }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 35px; height: 35px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+        .score-pill { background: var(--accent-glow); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 60px 0; border-top: 1px solid var(--card-border);
+            background: rgba(0,0,0,0.2); text-align: center;
+        }
+        .footer-links { margin: 20px 0; display: flex; justify-content: center; gap: 30px; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        .footer-links a:hover { color: var(--accent); }
     </style>
 </head>
 <body>
+
     <header id="global-header"></header>
 
-    <div class="container">
-        <main>
-            <div class="card">
-                <h1 id="userGreet">Loading...</h1>
-                <p style="color: #94a3b8;">You are currently in the 2026 Premium Theoretical Archive.</p>
-                <div class="subject-grid">
-                    <a href="subject-physics.html" class="sub-box"><b>Physics</b></a>
-                    <a href="chemistry-2024-theory.html" class="sub-box"><b>Chemistry</b></a>
-                    <a href="biology-2024-theory.html" class="sub-box"><b>Biology</b></a>
-                </div>
+    <section class="hero container">
+        <h1 id="userGreet">Welcome, Scholar</h1>
+        <p>Access Nigeria's most comprehensive IJMB theoretical marking schemes and visual solutions. Your journey to an 'A' starts here.</p>
+    </section>
+
+    <div class="container grid">
+        <main class="card">
+            <div class="section-title"><i class="fa-solid fa-book-open"></i> Premium Archives</div>
+            <div class="subject-grid">
+                <a href="subject-physics.html" class="subject-item">
+                    <div class="subject-icon"><i class="fa-solid fa-atom"></i></div>
+                    <h3>Physics</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">Practical & Theory</p>
+                </a>
+                <a href="chemistry-2024-theory.html" class="subject-item">
+                    <div class="subject-icon"><i class="fa-solid fa-flask-vial"></i></div>
+                    <h3>Chemistry</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">Marking Schemes</p>
+                </a>
+                <a href="biology-2024-theory.html" class="subject-item">
+                    <div class="subject-icon"><i class="fa-solid fa-dna"></i></div>
+                    <h3>Biology</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">Visual Solutions</p>
+                </a>
+                <a href="economics-2024-theory.html" class="subject-item">
+                    <div class="subject-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3>Economics</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">Essay Analysis</p>
+                </a>
             </div>
         </main>
 
-        <aside>
-            <div class="card">
-                <h3 style="margin-bottom: 20px;">Leaderboard</h3>
-                <div id="leaderboardList"></div>
+        <aside class="card">
+            <div class="section-title"><i class="fa-solid fa-trophy"></i> Top Performers</div>
+            <div id="leaderboardList">
+                <div style="text-align: center; color: var(--text-dim); padding: 20px;">Fetching rankings...</div>
             </div>
         </aside>
     </div>
+
+    <footer>
+        <div class="container">
+            <div style="font-weight: 800; font-size: 1.2rem;">IJMB<span style="color: var(--accent);">PRO</span></div>
+            <div class="footer-links">
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Support</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+            <p style="color: var(--text-dim); font-size: 0.8rem;">&copy; 2026 IJMB Pro-Archive Portal. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="app.js"></script>
+    
     <script>
         const firebaseConfig = { apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", authDomain: "ijmb-portal.firebaseapp.com", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", projectId: "ijmb-portal", appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" };
         firebase.initializeApp(firebaseConfig);
@@ -55,17 +193,31 @@
         auth.onAuthStateChanged(user => {
             if(!user || !user.emailVerified) location.href="landing.html";
             db.ref(`users/${user.uid}/profile`).on('value', snap => {
-                if(snap.val()) document.getElementById('userGreet').innerText = "Hello, " + snap.val().fullName;
+                const data = snap.val();
+                if(data) document.getElementById('userGreet').innerText = "Welcome back, " + data.fullName.split(' ')[0] + "!";
             });
         });
 
-        db.ref('users').limitToFirst(10).on('value', snap => {
+        // Smart Leaderboard Logic
+        db.ref('users').orderByChild('profile/score').limitToLast(5).on('value', snap => {
             let html = "";
-            snap.forEach(child => {
-                const u = child.val().profile;
-                if(u) html += `<div class="rank-item"><span>${u.fullName}</span><b style="color:#6366f1;">${u.score || 0}</b></div>`;
+            let users = [];
+            snap.forEach(child => { 
+                if(child.val().profile) users.unshift(child.val().profile); 
             });
-            document.getElementById('leaderboardList').innerHTML = html;
+            
+            users.forEach(u => {
+                html += `
+                    <div class="rank-row">
+                        <div class="user-info">
+                            <div class="avatar">${u.fullName.charAt(0)}</div>
+                            <span style="font-weight:600;">${u.fullName}</span>
+                        </div>
+                        <span class="score-pill">${u.score || 0} pts</span>
+                    </div>
+                `;
+            });
+            document.getElementById('leaderboardList').innerHTML = html || "No rankings yet.";
         });
     </script>
 </body>
