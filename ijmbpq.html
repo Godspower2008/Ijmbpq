@@ -6,36 +6,36 @@
     <title>Dashboard | IJMB Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #030712; --glass: rgba(17, 24, 39, 0.7); --border: rgba(255, 255, 255, 0.1); --accent: #6366f1; --text: #f9fafb; --text-dim: #94a3b8; }
+        :root { --bg: #030712; --glass: rgba(17, 24, 39, 0.7); --accent: #6366f1; --text: #f9fafb; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
-        nav { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: 20px; background: var(--glass); border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .card { background: var(--glass); padding: 25px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .sub-btn { background: var(--accent); color: white; padding: 25px; border-radius: 18px; text-decoration: none; text-align: center; font-weight: 800; transition: 0.3s; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2); }
-        .sub-btn:hover { transform: translateY(-5px); filter: brightness(1.2); }
+        .grid { display: grid; grid-template-columns: 1fr 300px; gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--glass); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
+        .subject-link { display: block; padding: 15px; background: #1e293b; color: white; text-decoration: none; border-radius: 12px; margin-bottom: 10px; font-weight: 700; }
+        .subject-link:hover { background: var(--accent); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <nav><div style="font-weight:800;">IJMB<span>PRO</span></div><button onclick="firebase.auth().signOut().then(()=>location.href='landing.html')" style="background:none; border:1px solid var(--border); color:white; padding:8px 15px; border-radius:8px; cursor:pointer;">Logout</button></nav>
+    <div class="grid">
         <main>
-            <h1 id="userGreet" style="margin-bottom:25px;">Welcome back</h1>
             <div class="card">
-                <h3 style="margin-bottom:15px;">Your Subject Archive</h3>
-                <div class="subject-grid">
-                    <a href="subject-physics.html" class="sub-btn">Physics</a>
-                    <a href="subject-chemistry.html" class="sub-btn">Chemistry</a>
-                    <a href="subject-biology.html" class="sub-btn">Biology</a>
-                </div>
+                <h1 id="userGreet">Loading Profile...</h1>
+                <p>Select a subject archive below to begin your theoretical mastery.</p>
+            </div>
+            <div class="card">
+                <h3>Theoretical Archives</h3>
+                <a href="subject-physics.html" class="subject-link">Physics Archive</a>
+                <a href="chemistry-2024-theory.html" class="subject-link">Chemistry Archive</a>
+                <a href="economics-2024-theory.html" class="subject-link">Economics Archive</a>
             </div>
         </main>
-        <aside class="card">
-            <h3 style="color:var(--gold);">🏆 Leaderboard</h3>
-            <div id="lBoard" style="margin-top:20px; font-size:0.9rem; line-height:2;">Loading scores...</div>
+        <aside>
+            <div class="card">
+                <h3>Leaderboard</h3>
+                <div id="leaderboardList">Loading...</div>
+            </div>
         </aside>
     </div>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -46,15 +46,23 @@
 
         auth.onAuthStateChanged(user => {
             if(!user || !user.emailVerified) location.href="landing.html";
-            db.ref(`users/${user.uid}/profile`).on('value', snap => { 
-                if(snap.val()) document.getElementById('userGreet').innerText = "Ready to Study, " + snap.val().fullName.split(' ')[0] + "?"; 
+            db.ref(`users/${user.uid}/profile`).on('value', snap => {
+                if(snap.val()) document.getElementById('userGreet').innerText = "Welcome, " + snap.val().fullName;
             });
         });
 
         db.ref('users').on('value', snap => {
-            let list = []; for(let id in snap.val()){ if(snap.val()[id].profile) list.push(snap.val()[id].profile); }
-            list.sort((a,b) => b.score - a.score);
-            document.getElementById('lBoard').innerHTML = list.slice(0,5).map((u,i) => `<div style="display:flex; justify-content:space-between;"><span>#${i+1} ${u.fullName}</span><b>${u.score}pts</b></div>`).join('');
+            let html = "";
+            const users = snap.val();
+            for(let id in users) {
+                if(users[id].profile) {
+                    html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #333;">
+                        <span>${users[id].profile.fullName}</span>
+                        <span style="color:var(--accent); font-weight:800;">${users[id].profile.score || 0} pts</span>
+                    </div>`;
+                }
+            }
+            document.getElementById('leaderboardList').innerHTML = html;
         });
     </script>
 </body>
