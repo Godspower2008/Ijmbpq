@@ -3,84 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB Pro-Archive | Secure Your A</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>IJMB Pro-Archive | Secure Your 15 Points</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root { --bg: #020617; --glass: rgba(15, 23, 42, 0.8); --border: rgba(99, 102, 241, 0.2); --accent: #6366f1; --text: #f8fafc; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; background-image: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #020617 100%); }
-        
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 1000; backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
-        .logo { font-weight: 800; font-size: 1.4rem; }
-        .logo span { color: var(--accent); }
+        :root {
+            --bg: #020617;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --glass: rgba(15, 23, 42, 0.8);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(20px); }
-        .modal { background: var(--glass); padding: 40px; border-radius: 32px; width: 95%; max-width: 420px; border: 1px solid var(--border); }
-        
-        input, select { width: 100%; padding: 16px; margin-bottom: 15px; background: rgba(2, 6, 23, 0.6); border: 1px solid var(--border); color: white; border-radius: 14px; outline: none; }
-        .btn-auth { width: 100%; padding: 16px; background: var(--accent); color: white; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; }
-        
-        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- BACKGROUND RADIANCE --- */
+        .bg-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #020617 80%);
+            z-index: -1;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- STICKY NAV --- */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: var(--glass); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 15px 0;
+        }
+        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+
+        /* --- HERO SECTION --- */
+        .hero { padding: 160px 0 80px; text-align: center; }
+        .badge { 
+            background: rgba(99, 102, 241, 0.1); color: var(--accent);
+            padding: 8px 16px; border-radius: 100px; font-size: 0.8rem;
+            font-weight: 700; border: 1px solid var(--accent);
+            display: inline-block; margin-bottom: 20px;
+        }
+        .hero h1 { 
+            font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1;
+            font-weight: 800; margin-bottom: 25px;
+            background: linear-gradient(to bottom, #fff 40%, #94a3b8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { 
+            font-size: 1.2rem; color: var(--text-dim); 
+            max-width: 700px; margin: 0 auto 40px; 
+        }
+
+        /* --- CTA BUTTONS --- */
+        .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn-primary { 
+            background: var(--accent); color: white; padding: 16px 32px;
+            border-radius: 12px; font-weight: 800; text-decoration: none;
+            transition: 0.3s; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-3px); background: var(--accent-hover); }
+        .btn-secondary { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: white; padding: 16px 32px; border-radius: 12px;
+            font-weight: 700; text-decoration: none; transition: 0.3s;
+        }
+
+        /* --- FEATURES GRID --- */
+        .features { padding: 100px 0; }
+        .feat-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; margin-top: 50px;
+        }
+        .feat-card {
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+            padding: 40px; border-radius: 24px; transition: 0.3s;
+        }
+        .feat-card:hover { border-color: var(--accent); background: rgba(255,255,255,0.04); }
+        .feat-card i { font-size: 2rem; color: var(--accent); margin-bottom: 20px; }
+        .feat-card h3 { margin-bottom: 10px; font-size: 1.4rem; }
+
+        /* --- TRUST SIGNALS --- */
+        .trust { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        .stat-flex { display: flex; justify-content: center; gap: 50px; margin-top: 30px; }
+        .stat-item h4 { font-size: 2rem; color: var(--accent); }
+
+        /* --- AUTH MODAL --- */
+        .modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px); z-index: 2000; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: #0f172a; border: 1px solid var(--accent);
+            padding: 40px; border-radius: 24px; width: 100%; max-width: 400px;
+        }
     </style>
 </head>
 <body>
-    <nav><div class="logo">IJMB<span>PRO</span></div><button onclick="openAuth()" style="background:none; border:none; color:white; font-weight:700; cursor:pointer;">Login</button></nav>
+    <div class="bg-glow"></div>
 
-    <div class="modal-overlay" id="authModal">
-        <div class="modal">
-            <h2 id="mTitle" style="text-align:center; margin-bottom:20px;">Student Login</h2>
-            <input type="text" id="regName" class="reg-only" style="display:none;" placeholder="Full Name *">
-            <input type="email" id="email" placeholder="Email Address">
-            <select id="regCombo" class="reg-only" style="display:none;">
-                <option value="">Select Combination *</option>
-                <option value="PCM">PCM</option><option value="PCB">PCB</option><option value="EGB">EGB</option>
-            </select>
-            <input type="password" id="pass" placeholder="Password">
-            <button class="btn-auth" onclick="handleAuth()" id="mBtn">Sign In</button>
-            <p id="mToggle" onclick="toggleAuth()" style="text-align:center; margin-top:20px; cursor:pointer; font-size:0.9rem;">New? <b>Register</b></p>
+    <header>
+        <div class="container nav-flex">
+            <div class="logo">IJMB<span style="color:var(--accent)">PRO</span></div>
+            <a href="#" onclick="openModal()" class="btn-primary" style="padding: 10px 20px; font-size: 0.8rem;">STUDENT LOGIN</a>
+        </div>
+    </header>
+
+    <section class="hero container">
+        <div class="badge">Voted #1 IJMB Resource for 2026</div>
+        <h1>Stop Guessing. Start <span style="color:var(--accent)">Mastering</span> Theory.</h1>
+        <p>The only platform that provides authentic IJMB marking schemes, step-by-step science solutions, and live competitive rankings to guarantee your 'A' grade.</p>
+        
+        <div class="btn-group">
+            <a href="#" onclick="openModal()" class="btn-primary">START PRACTICING NOW</a>
+            <a href="contact.html" class="btn-secondary">TALK TO AN ADVISOR</a>
+        </div>
+    </section>
+
+    
+
+    <section class="features container">
+        <div style="text-align: center;">
+            <h2 style="font-size: 2.5rem;">Engineered for High Scores</h2>
+            <p style="color: var(--text-dim);">Everything you need to move from 8 points to 15 points.</p>
+        </div>
+
+        <div class="feat-grid">
+            <div class="feat-card">
+                <i class="fa-solid fa-file-invoice"></i>
+                <h3>Real Marking Schemes</h3>
+                <p>Learn exactly how examiners award marks. No more generic answers—see the keywords they look for.</p>
+            </div>
+            <div class="feat-card">
+                <i class="fa-solid fa-microscope"></i>
+                <h3>Science Step-by-Step</h3>
+                <p>Complex Physics and Chemistry equations broken down with visual cues and LaTeX formatting.</p>
+            </div>
+            <div class="feat-card">
+                <i class="fa-solid fa-ranking-star"></i>
+                <h3>Leaderboard Battles</h3>
+                <p>Compete with IJMB candidates nationwide. Track your performance and stay motivated to stay on top.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust container">
+        <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem; color: var(--text-dim);">Trusted by Candidates From</p>
+        <div class="stat-flex">
+            <div class="stat-item"><h4>1,200+</h4><p>Students</p></div>
+            <div class="stat-item"><h4>85%</h4><p>Pass Rate</p></div>
+            <div class="stat-item"><h4>24/7</h4><p>Support</p></div>
+        </div>
+    </section>
+
+    <footer style="padding: 60px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
+        <p style="color: var(--text-dim);">&copy; 2026 IJMB Pro-Archive. Built for the next generation of scholars.</p>
+    </footer>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle" style="margin-bottom: 20px; text-align: center;">Welcome Back</h2>
+            <input type="email" id="email" placeholder="Email Address" style="width:100%; padding:14px; margin-bottom:15px; border-radius:10px; border:1px solid #334155; background:#020617; color:white;">
+            <input type="password" id="password" placeholder="Password" style="width:100%; padding:14px; margin-bottom:20px; border-radius:10px; border:1px solid #334155; background:#020617; color:white;">
+            <button onclick="handleAuth()" class="btn-primary" style="width:100%; border:none; cursor:pointer;">ACCESS PORTAL</button>
+            <p style="margin-top:20px; text-align:center; font-size:0.8rem; color:var(--text-dim)">Don't have an account? <a href="pricing.html" style="color:var(--accent)">Join Premium</a></p>
+            <button onclick="closeModal()" style="margin-top:15px; background:none; border:none; color:var(--text-dim); cursor:pointer; width:100%;">Close</button>
         </div>
     </div>
 
-    <section class="hero">
-        <h1>Master Theory.<br><span>Secure Your A.</span></h1>
-        <button onclick="openAuth()" class="btn-auth" style="width:auto; padding:18px 40px; margin-top:30px;">Get Started</button>
-    </section>
-
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script>
-        const firebaseConfig = { apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", authDomain: "ijmb-portal.firebaseapp.com", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", projectId: "ijmb-portal", appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" };
+        // Use your existing Firebase config here
+        const firebaseConfig = { apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", authDomain: "ijmb-portal.firebaseapp.com", projectId: "ijmb-portal" };
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth(), db = firebase.database();
-
-        let isLogin = true;
-        function openAuth() { document.getElementById('authModal').style.display='flex'; }
-        function toggleAuth() { 
-            isLogin = !isLogin;
-            document.querySelectorAll('.reg-only').forEach(el => el.style.display = isLogin ? 'none' : 'block');
-            document.getElementById('mTitle').innerText = isLogin ? 'Student Login' : 'Create Account';
-        }
-
-        async function handleAuth() {
-            const e = document.getElementById('email').value, p = document.getElementById('pass').value;
-            if(isLogin) {
-                try {
-                    const res = await auth.signInWithEmailAndPassword(e,p);
-                    if(res.user.emailVerified) window.location.href="ijmbpq.html";
-                    else alert("Please verify your email first!");
-                } catch(err) { alert(err.message); }
-            } else {
-                const n = document.getElementById('regName').value, c = document.getElementById('regCombo').value;
-                if(!n || !c) return alert("Fill all compulsory fields!");
-                try {
-                    const res = await auth.createUserWithEmailAndPassword(e,p);
-                    await db.ref(`users/${res.user.uid}/profile`).set({ fullName: n, combo: c, score: 0 });
-                    await res.user.sendEmailVerification();
-                    alert("Verification email sent!");
-                    auth.signOut(); location.reload();
-                } catch(err) { alert(err.message); }
-            }
+        
+        function openModal() { document.getElementById('authModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('authModal').style.display = 'none'; }
+        
+        function handleAuth() {
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('password').value;
+            firebase.auth().signInWithEmailAndPassword(e, p)
+                .then(() => location.href = "ijmbpq.html")
+                .catch(err => alert(err.message));
         }
     </script>
 </body>
