@@ -177,7 +177,15 @@ nav {
 </section>
 
 <div id="authModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(10px);">
+    <div style="background:var(--glass); padding:40px; border-radius:20px; max-width:400px; width:90%; text-align:center; position:relative;">
+        <span onclick="document.getElementById('authModal').style.display='none'" 
+              style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:1.2rem;">&times;</span>
+        <h2 style="margin-bottom:20px;">Sign In / Create Account</h2>
+        <input type="email" placeholder="Email" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:none;">
+        <input type="password" placeholder="Password" style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:none;">
+        <button style="width:100%; padding:12px; border:none; border-radius:10px; background:var(--accent); color:white; font-weight:700;">Sign In</button>
+        <p style="margin-top:15px; font-size:0.85rem; color:var(--text-dim);">Or <span style="color:var(--accent); cursor:pointer;">Create a New Account</span></p>
+    </div>
 </div>
-
 </body>
 </html>
