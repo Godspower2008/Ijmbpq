@@ -1,33 +1,20 @@
-// 1. Centralized Navigation HTML
+// 1. Centralized Horizontal Navigation HTML
 const navigationHTML = `
-    <div class="logo">IJMB.PRO</div>
-    <a href="index.html" class="nav-item">Dashboard</a>
-    <a href="subject-physics.html" class="nav-item">Physics Archive</a>
-    <a href="economics-2024-theory.html" class="nav-item">Economics Archive</a>
-    <div style="margin-top: 20px; padding: 10px;">
-        <input type="text" id="globalSearch" placeholder="Search topics..." 
-        style="width:100%; padding:8px; border-radius:5px; border:1px solid #444; background:#0f172a; color:white;">
-    </div>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(99, 102, 241, 0.2); position: sticky; top: 0; z-index: 1000;">
+        <div class="logo" style="font-weight: 800; font-size: 1.4rem; color: #f8fafc;">IJMB<span style="color: #6366f1;">PRO</span></div>
+        <div class="nav-links" style="display: flex; gap: 20px; align-items: center;">
+            <a href="ijmbpq.html" style="color: #94a3b8; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Dashboard</a>
+            <a href="subject-physics.html" style="color: #94a3b8; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Physics</a>
+            <a href="chemistry-2024-theory.html" style="color: #94a3b8; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Chemistry</a>
+            <a href="admin.html" style="background: #6366f1; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.8rem;">Admin</a>
+        </div>
+    </nav>
 `;
 
-// 2. Inject Navigation into Sidebar
+// 2. Inject Navigation into Header
 document.addEventListener("DOMContentLoaded", () => {
-    const sidebar = document.querySelector('aside');
-    if (sidebar) {
-        sidebar.innerHTML = navigationHTML;
-    }
-
-    // 3. Search Logic
-    const searchInput = document.getElementById('globalSearch');
-    if (searchInput) {
-        searchInput.addEventListener('keyup', (e) => {
-            let query = e.target.value.toLowerCase();
-            let cards = document.querySelectorAll('.card, .q-wrapper, .year-row');
-            
-            cards.forEach(card => {
-                let text = card.innerText.toLowerCase();
-                card.style.display = text.includes(query) ? "block" : "none";
-            });
-        });
+    const headerElement = document.getElementById('global-header');
+    if (headerElement) {
+        headerElement.innerHTML = navigationHTML;
     }
 });
