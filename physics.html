@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Practice | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --cta: #f59e0b; --border: rgba(255,255,255,0.08); --success: #10b981; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; overflow: hidden; }
+
+        /* Top Bar */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 3%; background: var(--card); border-bottom: 1px solid var(--border); height: 70px; }
+        .exit-btn { color: #94a3b8; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s; }
+        .exit-btn:hover { color: #ef4444; }
+
+        /* Timer & Progress */
+        .quiz-meta { display: flex; align-items: center; gap: 20px; }
+        .timer { background: rgba(245, 158, 11, 0.1); color: var(--cta); padding: 8px 15px; border-radius: 8px; border: 1px solid var(--cta); font-weight: 800; font-family: monospace; }
+
+        /* Main Workspace */
+        .workspace { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 70px); }
+
+        /* Left Side: Question */
+        .question-area { padding: 40px; overflow-y: auto; border-right: 1px solid var(--border); background: #020617; }
+        .q-tag { background: var(--accent); color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-bottom: 15px; display: inline-block; }
+        .question-text { font-size: 1.3rem; line-height: 1.5; margin-bottom: 30px; font-weight: 600; }
+        
+        .option { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 15px; }
+        .option:hover { border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
+        .option.selected { border-color: var(--accent); background: rgba(99, 102, 241, 0.15); box-shadow: 0 0 15px rgba(99, 102, 241, 0.2); }
+        .opt-letter { width: 30px; height: 30px; background: rgba(255,255,255,0.05); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
+
+        /* Right Side: Marking Scheme */
+        .explanation-area { padding: 40px; background: #0f172a; overflow-y: auto; position: relative; }
+        .locked-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 10; }
+        .btn-reveal { background: var(--success); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px; }
+
+        .scheme-box { background: rgba(16, 185, 129, 0.05); border: 1px solid var(--success); border-radius: 16px; padding: 25px; }
+        .scheme-box h4 { color: var(--success); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+
+        /* Footer Controls */
+        .controls { position: fixed; bottom: 0; left: 0; width: 50%; background: var(--card); padding: 20px 40px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .btn-nav { background: #1e293b; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="display:flex; align-items:center; gap:20px;">
+            <a href="ijmbpq.html" class="exit-btn"><i class="fa-solid fa-arrow-left"></i> EXIT PORTAL</a>
+            <div style="font-weight: 800; font-size: 1.1rem;">Physics: <span style="color:#94a3b8; font-weight:400;">Mechanics Archive</span></div>
+        </div>
+        
+        <div class="quiz-meta">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #94a3b8;">PROGRESS: 1/40</div>
+            <div class="timer" id="timer">59:59</div>
+            <button class="btn-reveal" style="margin:0; background:var(--accent);">SUBMIT ARCHIVE</button>
+        </div>
+    </nav>
+
+    <div class="workspace">
+        <section class="question-area">
+            <span class="q-tag">QUESTION 01</span>
+            <p class="question-text">A car accelerates uniformly from rest at a rate of $2.0 m/s^2$ for 10 seconds. Calculate the total distance covered by the car during this period.</p>
+            
+            <div class="option" onclick="selectOption(this)">
+                <div class="opt-letter">A</div> <span>50 Meters</span>
+            </div>
+            <div class="option" onclick="selectOption(this)">
+                <div class="opt-letter">B</div> <span>100 Meters</span>
+            </div>
+            <div class="option" onclick="selectOption(this)">
+                <div class="opt-letter">C</div> <span>200 Meters</span>
+            </div>
+            <div class="option" onclick="selectOption(this)">
+                <div class="opt-letter">D</div> <span>400 Meters</span>
+            </div>
+
+            <div class="controls">
+                <button class="btn-nav"><i class="fa-solid fa-chevron-left"></i> Previous</button>
+                <button class="btn-nav" style="background:var(--accent);">Next Question <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </section>
+
+        <section class="explanation-area">
+            <div id="lockOverlay" class="locked-overlay">
+                <i class="fa-solid fa-lock" style="font-size: 2rem; color: #475569; margin-bottom: 15px;"></i>
+                <h4>Marking Scheme Hidden</h4>
+                <p style="color:#64748b; font-size: 0.85rem; max-width: 250px;">Select an answer or click reveal to view the examiner's step-by-step solution.</p>
+                <button class="btn-reveal" onclick="revealScheme()">REVEAL SOLUTION</button>
+            </div>
+
+            <div class="scheme-box">
+                <h4><i class="fa-solid fa-circle-check"></i> Official Marking Scheme</h4>
+                <p style="font-size: 0.95rem; color: #94a3b8; margin-bottom: 20px;">Using the second equation of motion: $s = ut + \frac{1}{2}at^2$</p>
+                
+                <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; font-family: monospace; font-size: 0.9rem;">
+                    u = 0 (Rest) [1 Mark]<br>
+                    a = 2.0 m/s² [1 Mark]<br>
+                    t = 10s [1 Mark]<br><br>
+                    s = 0(10) + 0.5(2.0)(10²)<br>
+                    s = 100 Meters [2 Marks]
+                </div>
+                
+                <p style="margin-top:20px; font-size: 0.85rem; color:var(--success); font-weight:700;">TOTAL MARKS: 5 POINTS</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 1. Reveal Logic
+        function revealScheme() {
+            document.getElementById('lockOverlay').style.display = 'none';
+        }
+
+        // 2. Select Logic
+        function selectOption(el) {
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        // 3. Pro Timer Logic
+        let time = 3600;
+        const timerEl = document.getElementById('timer');
+        setInterval(() => {
+            let mins = Math.floor(time / 60);
+            let secs = time % 60;
+            timerEl.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            if(time > 0) time--;
+        }, 1000);
+    </script>
+</body>
+</html>
