@@ -3,36 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB PRO | Join 2026</title>
+    <title>IJMB PRO | Join 2026 Archive</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #020617; --accent: #6366f1; --cta: #f59e0b; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .auth-card { background: #0f172a; padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; text-align: center; }
-        input { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 18px; background: var(--cta); color: #000; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        
+        .auth-card { background: #0f172a; padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .logo { font-size: 2rem; font-weight: 800; margin-bottom: 30px; }
+        
+        input { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--accent); }
+        
+        .btn-cta { width: 100%; padding: 18px; background: var(--cta); color: #000; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3); }
+        
+        p { color: #94a3b8; font-size: 0.9rem; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div class="auth-card">
-        <h2 style="margin-bottom:20px;">Create Account</h2>
-        <input type="text" id="uName" placeholder="Enter Your Full Name">
+        <div class="logo">IJMB<span style="color:var(--accent)">PRO</span></div>
+        <h2 style="margin-bottom:10px;">Create Scholar Account</h2>
+        <p style="margin-bottom:30px;">Access verified 2026 marking schemes.</p>
+        
+        <input type="text" id="uName" placeholder="Full Name" required>
         <input type="email" placeholder="Email Address">
-        <button class="btn" onclick="createAccount()">JOIN THE ARCHIVE</button>
+        <input type="password" placeholder="Create Password">
+        
+        <button class="btn-cta" onclick="createAccount()">JOIN THE ARCHIVE</button>
+        <p>Already have an account? <a href="login.html" style="color:var(--accent); text-decoration:none;">Login here</a></p>
     </div>
 
     <script>
         function createAccount() {
-            const fullName = document.getElementById('uName').value;
-            
-            if(fullName.length > 2) {
-                // STEP 1: Save the name to browser memory
-                localStorage.setItem('scholarName', fullName);
-                
-                // STEP 2: Move to the dashboard
+            const name = document.getElementById('uName').value;
+            if(name.length > 2) {
+                // Save name to browser memory
+                localStorage.setItem('scholarName', name);
                 window.location.href = 'ijmbpq.html';
             } else {
-                alert("Please enter your real name to register.");
+                alert("Please enter your full name.");
             }
         }
     </script>
