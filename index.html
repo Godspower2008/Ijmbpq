@@ -3,53 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB PRO | Official 2026 Archive</title>
+    <title>IJMB PRO | 2026 Official Archive</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #020617; --accent: #6366f1; --cta: #f59e0b; --glass: rgba(15, 23, 42, 0.8); }
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; line-height: 1.6; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; overflow-x: hidden; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
-        .logo { font-size: 1.4rem; font-weight: 800; text-decoration: none; color: white; }
-
-        /* HERO AREA - Responsive Grid */
-        .hero { 
-            display: grid; 
-            grid-template-columns: 1.2fr 0.8fr; 
-            gap: 40px; 
-            padding: 60px 0; 
-            align-items: center; 
-        }
-
-        .hero-h1 { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
-        .auth-card { background: var(--glass); backdrop-filter: blur(20px); padding: 30px; border-radius: 24px; border: 1px solid rgba(99, 102, 241, 0.3); }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: white; }
         
-        input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #1e293b; background: #020617; color: white; outline: none; }
-        .btn-cta { width: 100%; padding: 16px; background: var(--cta); color: #000; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; padding: 60px 0; align-items: center; }
+        .hero-h1 { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        
+        .auth-card { background: var(--glass); backdrop-filter: blur(20px); padding: 30px; border-radius: 24px; border: 1px solid rgba(99, 102, 241, 0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        input { width: 100%; padding: 16px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; outline: none; }
+        .btn-cta { width: 100%; padding: 18px; background: var(--cta); color: #000; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        
+        .subject-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 50px 0; }
+        .s-card { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
 
-        /* SUBJECTS - Responsive Grid */
-        .subject-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 20px; 
-            padding: 40px 0; 
-        }
-        .s-card { background: rgba(255,255,255,0.03); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-
-        /* RESPONSIVE BREAKPOINTS */
         @media (max-width: 992px) {
-            .hero { grid-template-columns: 1fr; text-align: center; padding: 40px 0; }
-            .subject-grid { grid-template-columns: 1fr; } /* Stack cards on mobile */
-            .hero-text { order: 1; }
-            .auth-card { order: 2; margin-top: 20px; }
-        }
-
-        @media (max-width: 480px) {
-            .hero-h1 { font-size: 2rem; }
-            nav { flex-direction: column; gap: 15px; }
+            .hero { grid-template-columns: 1fr; text-align: center; }
+            .subject-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -57,18 +35,20 @@
     <div class="container">
         <nav>
             <a href="index.html" class="logo">IJMB<span style="color:var(--accent)">PRO</span></a>
-            <a href="#register" style="color:var(--accent); text-decoration:none; font-weight:700; font-size:0.9rem;">LOGIN ARCHIVE</a>
+            <div style="display:flex; gap:15px;">
+                <a href="login.html" style="color:#94a3b8; text-decoration:none; font-weight:700; font-size:0.9rem; padding:10px;">LOG IN</a>
+            </div>
         </nav>
         <section class="hero">
             <div class="hero-text">
-                <h1 class="hero-h1">Master the <span style="color:var(--accent)">Science</span>. <br>Secure the Points.</h1>
-                <p style="color:#94a3b8; margin-bottom: 25px;">Verified IJMB marking schemes for 2026.</p>
+                <h1 class="hero-h1">The 15-Point <br><span style="color:var(--accent)">Science</span> Engine.</h1>
+                <p style="color:#94a3b8; font-size:1.1rem;">Access the 2026 Archive of Physics, Chemistry, and Biology.</p>
             </div>
-            <div class="auth-card" id="register">
-                <h3 style="margin-bottom:15px; text-align:center;">Scholar Registration</h3>
-                <input type="text" id="uName" placeholder="Full Name">
+            <div class="auth-card">
+                <h3 style="margin-bottom:20px; text-align:center;">Scholar Access</h3>
+                <input type="text" id="uName" placeholder="Enter Full Name">
                 <input type="email" placeholder="Email Address">
-                <button class="btn-cta" onclick="join()">START PRACTICE</button>
+                <button class="btn-cta" onclick="join()">ENTER ARCHIVE</button>
             </div>
         </section>
         <div class="subject-grid">
@@ -80,8 +60,10 @@
     <script>
         function join() {
             const name = document.getElementById('uName').value;
-            if(name) { localStorage.setItem('ijmb_user', name); window.location.href = 'ijmbpq.html'; }
-            else { alert("Name required!"); }
+            if(name.length > 2) {
+                localStorage.setItem('ijmb_user', name);
+                window.location.href = 'ijmbpq.html';
+            } else { alert("Please enter your full name."); }
         }
     </script>
 </body>
