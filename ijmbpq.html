@@ -176,9 +176,11 @@ header {
 }
 
 .rank-item:last-child { border-bottom: none; }
+.hamburger { display: none; }
+header { position: relative; }
 
 /* RESPONSIVE */
-@/* Hide full nav on small screens */
+/* Hide full nav on small screens */
 @media (max-width: 768px) {
   .nav-links { display: none; flex-direction: column; gap: 15px; }
   .hamburger { display: flex; flex-direction: column; justify-content: space-around; width: 25px; height: 22px; cursor: pointer; }
