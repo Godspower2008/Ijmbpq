@@ -3,100 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal | IJMB PRO</title>
+    <title>Scholar Dashboard | IJMB PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --border: rgba(255,255,255,0.08); }
+        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --cta: #f59e0b; --border: rgba(255,255,255,0.08); }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; margin: 0; }
         
-        /* Unified Top Nav */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--card); border-bottom: 1px solid var(--border); }
-        .user-meta { display: flex; align-items: center; gap: 15px; cursor: pointer; }
-        .profile-pic { width: 35px; height: 35px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
+        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 280px 1fr 300px; gap: 25px; }
 
-        .main-layout { display: grid; grid-template-columns: 250px 1fr 300px; gap: 25px; max-width: 1400px; margin: 30px auto; padding: 0 20px; }
-        
-        /* Sidebar Menu */
-        .sidebar { background: var(--card); border-radius: 20px; padding: 20px; height: fit-content; }
-        .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px; color: #94a3b8; text-decoration: none; border-radius: 10px; transition: 0.3s; margin-bottom: 5px; }
-        .menu-item:hover, .menu-item.active { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
+        /* Sidebar Stats */
+        .stat-card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .progress-bar { height: 6px; background: #1e293b; border-radius: 10px; margin: 10px 0; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); width: 65%; }
 
-        /* Content Area */
-        .panel { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 25px; }
-        .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .sub-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 18px; text-decoration: none; color: white; transition: 0.3s; }
-        .sub-card:hover { border-color: var(--accent); background: rgba(99,102,241,0.05); }
+        /* Main Welcome */
+        .welcome-panel { background: linear-gradient(135deg, #1e1b4b, #0f172a); border-radius: 24px; padding: 40px; border: 1px solid var(--border); position: relative; margin-bottom: 30px; }
+        .streak-fire { position: absolute; top: 20px; right: 25px; color: var(--cta); font-weight: 800; font-size: 0.9rem; }
 
-        /* Modal Settings */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: var(--card); padding: 30px; border-radius: 24px; width: 400px; border: 1px solid var(--accent); }
-        .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
+        /* Subject Grid */
+        .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+        .sub-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; transition: 0.3s; text-decoration: none; color: white; }
+        .sub-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2); }
+        .sub-card i { font-size: 2rem; color: var(--accent); margin-bottom: 15px; display: block; }
 
-        @media (max-width: 1100px) { .main-layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+        /* Leaderboard */
+        .rank-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; }
+
+        @media (max-width: 1100px) { .container { grid-template-columns: 1fr; } .sidebar, .leaderboard-aside { display: none; } }
     </style>
 </head>
 <body>
 
     <nav>
-        <div style="font-weight: 800; font-size: 1.2rem;">IJMB<span style="color:var(--accent)">PRO</span></div>
-        <div class="user-meta" onclick="toggleSettings()">
-            <div style="text-align: right;"><div style="font-size: 0.85rem; font-weight: 700;">Adebayo M.</div><div style="font-size: 0.7rem; color: #64748b;">ID: #99210</div></div>
-            <div class="profile-pic">AM</div>
+        <div style="font-weight: 800; font-size: 1.3rem;">IJMB<span style="color:var(--accent)">PRO</span></div>
+        <div style="display:flex; align-items:center; gap:15px;">
+            <div style="text-align: right;"><div id="navName" style="font-size: 0.85rem; font-weight: 700;">Scholar</div><div style="font-size: 0.7rem; color: #64748b;">Rank: #142</div></div>
+            <div style="width:35px; height:35px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800;">S</div>
         </div>
     </nav>
 
-    <div class="main-layout">
+    <div class="container">
         <aside class="sidebar">
-            <a href="#" class="menu-item active"><i class="fa-solid fa-house"></i> Dashboard</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-book"></i> My Subjects</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> Performance</a>
-            <a href="#" class="menu-item" onclick="toggleSettings()"><i class="fa-solid fa-gear"></i> Settings</a>
-            <hr style="border:0; border-top:1px solid var(--border); margin:15px 0;">
-            <a href="landing.html" class="menu-item" style="color:#ef4444;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+            <div class="stat-card">
+                <h4 style="margin-bottom:15px;">Performance</h4>
+                <p style="font-size:0.75rem; color:#94a3b8;">Syllabus Mastery</p>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <div style="display:flex; justify-content:space-between; font-size:0.7rem;"><span>Progress</span><span>65%</span></div>
+            </div>
+            <div class="stat-card" style="background: rgba(99,102,241,0.05);">
+                <p style="font-size:0.7rem; color:#64748b; margin-bottom:5px;">WEAKEST SUBJECT</p>
+                <p style="font-weight:700;">Organic Chemistry</p>
+            </div>
         </aside>
 
-        <main class="panel">
-            <div style="display:flex; align-items:center; gap:10px; color:#10b981; font-size:0.8rem; font-weight:800; margin-bottom:15px;">
-                <span style="width:8px; height:8px; background:#10b981; border-radius:50%; box-shadow:0 0 10px #10b981;"></span> 124 SCHOLARS ONLINE
+        <main>
+            <div class="welcome-panel">
+                <div class="streak-fire"><i class="fa-solid fa-fire"></i> 3 DAY STREAK</div>
+                <h1 id="welcomeGreeting">Welcome Back, Scholar 👑</h1>
+                <p style="color:#94a3b8; margin: 15px 0 30px;">You're doing great! You need 15 more questions in Physics to move to Rank #120.</p>
+                <div style="display:flex; gap:15px;">
+                    <a href="quiz-physics.html" style="background:var(--cta); color:black; padding:12px 25px; border-radius:12px; text-decoration:none; font-weight:800; font-size:0.9rem;">CONTINUE LAST QUIZ</a>
+                    <a href="#archives" style="background:rgba(255,255,255,0.05); color:white; padding:12px 25px; border-radius:12px; text-decoration:none; font-weight:700; font-size:0.9rem; border:1px solid var(--border);">VIEW ARCHIVES</a>
+                </div>
             </div>
-            <h2>Academic Archives</h2>
+
+            <h2 id="archives" style="margin-bottom:20px;">Academic Archives</h2>
             <div class="sub-grid">
-                <a href="#" class="sub-card"><i class="fa-solid fa-atom" style="color:var(--accent)"></i><h3>Physics</h3><p>Past schemes & solutions</p></a>
-                <a href="#" class="sub-card"><i class="fa-solid fa-flask" style="color:var(--accent)"></i><h3>Chemistry</h3><p>Organic & Physical labs</p></a>
-                <a href="#" class="sub-card"><i class="fa-solid fa-dna" style="color:var(--accent)"></i><h3>Biology</h3><p>Diagrams & Theory vault</p></a>
+                <a href="physics.html" class="sub-card">
+                    <i class="fa-solid fa-atom"></i>
+                    <h3>Physics</h3>
+                    <p style="font-size:0.85rem; color:#94a3b8;">120+ Solved marking schemes for Theory & Practicals.</p>
+                </a>
+                <a href="chemistry.html" class="sub-card">
+                    <i class="fa-solid fa-flask"></i>
+                    <h3>Chemistry</h3>
+                    <p style="font-size:0.85rem; color:#94a3b8;">Master Inorganic & Organic equations with explanations.</p>
+                </a>
+                <a href="biology.html" class="sub-card">
+                    <i class="fa-solid fa-dna"></i>
+                    <h3>Biology</h3>
+                    <p style="font-size:0.85rem; color:#94a3b8;">Annotated diagrams and past theory essay guides.</p>
+                </a>
             </div>
         </main>
 
-        <aside class="panel">
-            <h3>National Ranking</h3>
-            <div style="margin-top:20px;">
-                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
-                    <span>1. Adebayo M.</span><span style="color:var(--accent); font-weight:800;">15.0</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
-                    <span>2. Chinelo O.</span><span style="color:var(--accent); font-weight:800;">14.5</span>
-                </div>
+        <aside class="leaderboard-aside">
+            <div class="stat-card">
+                <h4 style="margin-bottom:20px;"><i class="fa-solid fa-trophy" style="color:var(--cta)"></i> Top Scholars</h4>
+                <div class="rank-item"><span>🥇 John D.</span><span>94%</span></div>
+                <div class="rank-item"><span>🥈 Sarah O.</span><span>89%</span></div>
+                <div class="rank-item"><span>🥉 Mike A.</span><span>82%</span></div>
+                <div class="rank-item" style="border:none; opacity:0.6;"><span>4. You</span><span>65%</span></div>
+                <button style="width:100%; background:none; border:1px solid var(--border); color:#94a3b8; padding:10px; border-radius:10px; margin-top:15px; cursor:pointer;">FULL RANKINGS</button>
             </div>
         </aside>
     </div>
 
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom:20px;">Portal Settings</h2>
-            <div class="settings-row"><span>Dark Mode</span><input type="checkbox" checked></div>
-            <div class="settings-row"><span>Email Alerts</span><input type="checkbox" checked></div>
-            <div class="settings-row"><span>Public Profile</span><input type="checkbox"></div>
-            <button class="btn-cta" onclick="toggleSettings()" style="margin-top:25px;">SAVE CHANGES</button>
-            <button onclick="toggleSettings()" style="width:100%; background:none; border:none; color:#64748b; margin-top:15px; cursor:pointer;">Close</button>
-        </div>
-    </div>
-
     <script>
-        function toggleSettings() {
-            const modal = document.getElementById('settingsModal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-        }
+        // Set dynamic name from Landing Page
+        const storedName = localStorage.getItem('scholarName') || "Scholar";
+        document.getElementById('welcomeGreeting').innerText = `Welcome Back, ${storedName.split(' ')[0]} 👑`;
+        document.getElementById('navName').innerText = storedName;
     </script>
 </body>
 </html>
