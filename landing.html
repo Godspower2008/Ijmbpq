@@ -3,16 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB Pro-Archive | Secure Your 15 Points</title>
+    <title>IJMB Pro-Archive | Master Your Theory Exams</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+<section class="hero container">
+    <div class="hero-badge">🎓 Over 4,500 Questions Solved</div>
+    
+    <div id="live-counter" style="margin-bottom: 15px; font-size: 0.9rem; color: #10b981; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px #10b981; animation: pulse 1.5s infinite;"></span>
+        <span id="active-count">124</span> Scholars Studying Now
+    </div>
+
+    <h1>Your Shortcut to <span style="color:var(--accent)">15 Points</span> starts here.</h1>
+    <p>Master IJMB Physics, Chemistry, and Biology with the only portal providing verified marking schemes and interactive step-by-step solutions.</p>
+    <a href="Auth.html" class="cta-btn">START PRACTICING NOW — IT'S FREE</a>
+</section>
+
+<style>
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+</style>
+
+<script>
+    // Live Counter Animation
+    function animateCounter() {
+        const countElement = document.getElementById('active-count');
+        let currentCount = parseInt(countElement.innerText);
+        
+        // Randomly fluctuate the count to make it look "Live"
+        setInterval(() => {
+            const change = Math.floor(Math.random() * 5) - 2; // -2 to +2
+            currentCount += change;
+            if(currentCount < 100) currentCount = 105; // Keep it looking busy
+            countElement.innerText = currentCount;
+        }, 3000);
+    }
+    window.onload = animateCounter;
+</script>
     <style>
         :root {
             --bg: #020617;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --glass: rgba(15, 23, 42, 0.8);
+            --accent: #6366f1; /* Indigo */
+            --cta: #f59e0b;    /* High-Contrast Amber */
+            --glass: rgba(15, 23, 42, 0.9);
             --text-main: #f8fafc;
             --text-dim: #94a3b8;
         }
@@ -22,243 +59,161 @@
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: var(--bg); 
             color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
         }
 
-        /* --- BACKGROUND RADIANCE --- */
-        .bg-glow {
+        /* Background Visuals */
+        .glow {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #020617 80%);
+            background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 40%);
             z-index: -1;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-        /* --- STICKY NAV --- */
+        /* --- 1. CLEAR HIERARCHY NAV (Z-Pattern Start) --- */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: var(--glass); backdrop-filter: blur(10px);
+            background: var(--glass); backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding: 15px 0;
+            padding: 18px 0;
         }
         .nav-flex { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .logo { font-size: 1.6rem; font-weight: 800; letter-spacing: -1px; }
 
-        /* --- HERO SECTION --- */
-        .hero { padding: 160px 0 80px; text-align: center; }
-        .badge { 
-            background: rgba(99, 102, 241, 0.1); color: var(--accent);
-            padding: 8px 16px; border-radius: 100px; font-size: 0.8rem;
-            font-weight: 700; border: 1px solid var(--accent);
-            display: inline-block; margin-bottom: 20px;
+        /* --- 2. HERO SECTION (Above the Fold) --- */
+        .hero { padding: 180px 0 100px; text-align: center; }
+        .hero-badge {
+            display: inline-block; padding: 6px 14px; border-radius: 100px;
+            background: rgba(99, 102, 241, 0.1); border: 1px solid var(--accent);
+            color: var(--accent); font-size: 0.8rem; font-weight: 700; margin-bottom: 25px;
         }
-        .hero h1 { 
-            font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1;
-            font-weight: 800; margin-bottom: 25px;
-            background: linear-gradient(to bottom, #fff 40%, #94a3b8);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.2rem); font-weight: 800; line-height: 1.1;
+            margin-bottom: 25px; letter-spacing: -2px;
         }
-        .hero p { 
-            font-size: 1.2rem; color: var(--text-dim); 
-            max-width: 700px; margin: 0 auto 40px; 
+        .hero p {
+            font-size: 1.25rem; color: var(--text-dim); max-width: 750px;
+            margin: 0 auto 45px;
         }
 
-        /* --- CTA BUTTONS --- */
-        .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-        .btn-primary { 
-            background: var(--accent); color: white; padding: 16px 32px;
-            border-radius: 12px; font-weight: 800; text-decoration: none;
-            transition: 0.3s; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        /* --- 3. HIGH-CONTRAST CTA --- */
+        .cta-btn {
+            background: var(--cta); color: #000; padding: 18px 40px;
+            border-radius: 14px; font-weight: 800; text-decoration: none;
+            display: inline-block; font-size: 1.1rem; transition: 0.3s;
+            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.3);
         }
-        .btn-primary:hover { transform: translateY(-3px); background: var(--accent-hover); }
-        .btn-secondary { 
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: white; padding: 16px 32px; border-radius: 12px;
-            font-weight: 700; text-decoration: none; transition: 0.3s;
-        }
+        .cta-btn:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(245, 158, 11, 0.4); }
 
-        /* --- FEATURES GRID --- */
-        .features { padding: 100px 0; }
-        .feat-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 30px; margin-top: 50px;
+        /* --- 4. FEATURE ICONS & CARDS --- */
+        .features { padding: 80px 0; }
+        .feature-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; margin-top: 60px;
         }
         .feat-card {
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
             padding: 40px; border-radius: 24px; transition: 0.3s;
         }
-        .feat-card:hover { border-color: var(--accent); background: rgba(255,255,255,0.04); }
-        .feat-card i { font-size: 2rem; color: var(--accent); margin-bottom: 20px; }
-        .feat-card h3 { margin-bottom: 10px; font-size: 1.4rem; }
+        .feat-card:hover { border-color: var(--accent); background: rgba(255,255,255,0.05); }
+        .feat-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; }
+        .feat-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
 
-        /* --- TRUST SIGNALS --- */
-        .trust { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); }
-        .stat-flex { display: flex; justify-content: center; gap: 50px; margin-top: 30px; }
-        .stat-item h4 { font-size: 2rem; color: var(--accent); }
-
-        /* --- AUTH MODAL --- */
-        .modal {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px); z-index: 2000; align-items: center; justify-content: center;
+        /* --- 5. SOCIAL PROOF (Testimonials) --- */
+        .proof { padding: 100px 0; background: rgba(0,0,0,0.2); text-align: center; }
+        .testimonial-grid {
+            display: flex; gap: 20px; overflow-x: auto; padding: 20px 0;
+            scrollbar-width: none; justify-content: center;
         }
-        .modal-content {
-            background: #0f172a; border: 1px solid var(--accent);
-            padding: 40px; border-radius: 24px; width: 100%; max-width: 400px;
+        .testi-card {
+            min-width: 300px; background: var(--bg); border: 1px solid var(--accent);
+            padding: 30px; border-radius: 20px; text-align: left;
+        }
+        .user-info { display: flex; align-items: center; gap: 12px; margin-top: 15px; }
+        .user-img { width: 45px; height: 45px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .testimonial-grid { justify-content: flex-start; padding-left: 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
+    <div class="glow"></div>
 
     <header>
         <div class="container nav-flex">
             <div class="logo">IJMB<span style="color:var(--accent)">PRO</span></div>
-            <a href="#" onclick="openModal()" class="btn-primary" style="padding: 10px 20px; font-size: 0.8rem;">STUDENT LOGIN</a>
+            <a href="Auth.html" class="cta-btn" style="padding: 10px 25px; font-size: 0.9rem;">LOGIN</a>
         </div>
     </header>
 
     <section class="hero container">
-        <div class="badge">Voted #1 IJMB Resource for 2026</div>
-        <h1>Stop Guessing. Start <span style="color:var(--accent)">Mastering</span> Theory.</h1>
-        <p>The only platform that provides authentic IJMB marking schemes, step-by-step science solutions, and live competitive rankings to guarantee your 'A' grade.</p>
-        
-        <div class="btn-group">
-            <a href="#" onclick="openModal()" class="btn-primary">START PRACTICING NOW</a>
-            <a href="contact.html" class="btn-secondary">TALK TO AN ADVISOR</a>
-        </div>
+        <div class="hero-badge">🎓 Over 4,500 Questions Solved</div>
+        <h1>Your Shortcut to <span style="color:var(--accent)">15 Points</span> starts here.</h1>
+        <p>Master IJMB Physics, Chemistry, and Biology with the only portal providing verified marking schemes and interactive step-by-step solutions.</p>
+        <a href="Auth.html" class="cta-btn">START PRACTICING NOW — IT'S FREE</a>
     </section>
 
     
 
     <section class="features container">
         <div style="text-align: center;">
-            <h2 style="font-size: 2.5rem;">Engineered for High Scores</h2>
-            <p style="color: var(--text-dim);">Everything you need to move from 8 points to 15 points.</p>
+            <h2 style="font-size: 2.5rem;">Built for Academic Excellence</h2>
         </div>
-
-        <div class="feat-grid">
+        <div class="feature-grid">
             <div class="feat-card">
-                <i class="fa-solid fa-file-invoice"></i>
-                <h3>Real Marking Schemes</h3>
-                <p>Learn exactly how examiners award marks. No more generic answers—see the keywords they look for.</p>
+                <i class="fa-solid fa-scroll"></i>
+                <h3>Marking Schemes</h3>
+                <p>Don't just read answers. Learn how marks are distributed to maximize your score in Theory exams.</p>
             </div>
             <div class="feat-card">
-                <i class="fa-solid fa-microscope"></i>
-                <h3>Science Step-by-Step</h3>
-                <p>Complex Physics and Chemistry equations broken down with visual cues and LaTeX formatting.</p>
+                <i class="fa-solid fa-calculator"></i>
+                <h3>Worked Solutions</h3>
+                <p>Step-by-step calculations for complex Science problems using standard IJMB methodologies.</p>
             </div>
             <div class="feat-card">
-                <i class="fa-solid fa-ranking-star"></i>
-                <h3>Leaderboard Battles</h3>
-                <p>Compete with IJMB candidates nationwide. Track your performance and stay motivated to stay on top.</p>
+                <i class="fa-solid fa-medal"></i>
+                <h3>Leaderboard</h3>
+                <p>Track your progress against thousands of students nationwide. Fight for the #1 spot.</p>
             </div>
         </div>
     </section>
 
-    <section class="trust container">
-        <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem; color: var(--text-dim);">Trusted by Candidates From</p>
-        <div class="stat-flex">
-            <div class="stat-item"><h4>1,200+</h4><p>Students</p></div>
-            <div class="stat-item"><h4>85%</h4><p>Pass Rate</p></div>
-            <div class="stat-item"><h4>24/7</h4><p>Support</p></div>
+    <section class="proof">
+        <div class="container">
+            <h2 style="margin-bottom: 50px;">Trusted by Top Scholars</h2>
+            <div class="testimonial-grid">
+                <div class="testi-card">
+                    <p>"The marking schemes helped me understand exactly what the examiners wanted. I got 14 points!"</p>
+                    <div class="user-info">
+                        <div class="user-img">A</div>
+                        <div><strong>Adebayo R.</strong><br><small style="color:var(--accent)">14 Points (PCM)</small></div>
+                    </div>
+                </div>
+                <div class="testi-card" style="border-color: var(--cta);">
+                    <p>"Visualizing the Chemistry practicals before the exam day gave me so much confidence. Highly recommended."</p>
+                    <div class="user-info">
+                        <div class="user-img">C</div>
+                        <div><strong>Chinelo O.</strong><br><small style="color:var(--accent)">13 Points (BCM)</small></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <footer style="padding: 60px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
-        <p style="color: var(--text-dim);">&copy; 2026 IJMB Pro-Archive. Built for the next generation of scholars.</p>
+    <footer style="padding: 80px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="logo" style="margin-bottom: 20px;">IJMB<span style="color:var(--accent)">PRO</span></div>
+        <p style="color: var(--text-dim);">&copy; 2026 IJMB Pro-Archive. The gold standard in IJMB preparation.</p>
+        <div style="margin-top: 20px;">
+            <a href="contact.html" style="color: var(--accent); text-decoration: none; margin: 0 10px;">Contact</a>
+            <a href="pricing.html" style="color: var(--accent); text-decoration: none; margin: 0 10px;">Pricing</a>
+        </div>
     </footer>
 
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle" style="margin-bottom: 20px; text-align: center;">Welcome Back</h2>
-            <input type="email" id="email" placeholder="Email Address" style="width:100%; padding:14px; margin-bottom:15px; border-radius:10px; border:1px solid #334155; background:#020617; color:white;">
-            <input type="password" id="password" placeholder="Password" style="width:100%; padding:14px; margin-bottom:20px; border-radius:10px; border:1px solid #334155; background:#020617; color:white;">
-            <button onclick="handleAuth()" class="btn-primary" style="width:100%; border:none; cursor:pointer;">ACCESS PORTAL</button>
-            <p style="margin-top:20px; text-align:center; font-size:0.8rem; color:var(--text-dim)">Don't have an account? <a href="pricing.html" style="color:var(--accent)">Join Premium</a></p>
-            <button onclick="closeModal()" style="margin-top:15px; background:none; border:none; color:var(--text-dim); cursor:pointer; width:100%;">Close</button>
-        </div>
-    </div>
-<div class="portal-grid">
-    <main class="card" id="subjects-section">
-        <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
-            <span><i class="fa-solid fa-graduation-cap"></i> Academic Archives</span>
-            <button onclick="closeSection('subjects-section')" 
-                    style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.2rem;">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-        
-        <div class="subject-grid">
-            <a href="subject-physics.html" class="subject-box">
-                <i class="fa-solid fa-atom"></i>
-                <h3>Physics</h3>
-            </a>
-            </div>
-    </main>
-
-    <aside class="card" id="leaderboard-section">
-        <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
-            <span><i class="fa-solid fa-trophy"></i> Top Scholars</span>
-            <button onclick="closeSection('leaderboard-section')" 
-                    style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.2rem;">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-        <div id="leaderboardList">
-            </div>
-    </aside>
-</div>
-
-<script>
-    function closeSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        // Add a fade-out effect
-        section.style.transition = "opacity 0.4s ease, transform 0.4s ease";
-        section.style.opacity = "0";
-        section.style.transform = "scale(0.95)";
-        
-        setTimeout(() => {
-            section.style.display = "none";
-            
-            // Optional: If both are closed, show a "Restore" button
-            checkEmptyPortal();
-        }, 400);
-    }
-
-    function checkEmptyPortal() {
-        const subjects = document.getElementById('subjects-section');
-        const leaderboard = document.getElementById('leaderboard-section');
-        
-        if (subjects.style.display === "none" && leaderboard.style.display === "none") {
-            // If the screen is empty, show a button to bring it back
-            const restoreBtn = document.createElement('button');
-            restoreBtn.innerText = "Restore Dashboard View";
-            restoreBtn.className = "btn-primary"; // Uses your existing button style
-            restoreBtn.style.margin = "50px auto";
-            restoreBtn.style.display = "block";
-            restoreBtn.onclick = () => location.reload();
-            document.querySelector('.container').appendChild(restoreBtn);
-        }
-    }
-</script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script>
-        // Use your existing Firebase config here
-        const firebaseConfig = { apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", authDomain: "ijmb-portal.firebaseapp.com", projectId: "ijmb-portal" };
-        firebase.initializeApp(firebaseConfig);
-        
-        function openModal() { document.getElementById('authModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('authModal').style.display = 'none'; }
-        
-        function handleAuth() {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('password').value;
-            firebase.auth().signInWithEmailAndPassword(e, p)
-                .then(() => location.href = "ijmbpq.html")
-                .catch(err => alert(err.message));
-        }
-    </script>
 </body>
 </html>
