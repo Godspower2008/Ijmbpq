@@ -9,53 +9,46 @@
     <style>
         :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --border: rgba(255,255,255,0.08); --success: #10b981; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; margin: 0; }
-        
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; background: var(--card); height: 60px; border-bottom: 1px solid var(--border); }
-        
-        /* The Workspace: Responsive Flex */
-        .workspace { display: flex; flex-direction: row; height: calc(100vh - 60px); }
-        
-        .q-side { flex: 1; padding: 40px; overflow-y: auto; border-right: 1px solid var(--border); }
-        .e-side { flex: 1; padding: 40px; background: #0f172a; overflow-y: auto; position: relative; }
-        
-        .option { background: var(--card); border: 1px solid var(--border); padding: 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; background: var(--card); height: 70px; border-bottom: 1px solid var(--border); }
+        .workspace { display: flex; flex-direction: row; height: calc(100vh - 70px); }
+        .q-area { flex: 1; padding: 40px; overflow-y: auto; border-right: 1px solid var(--border); }
+        .e-area { flex: 1; padding: 40px; background: #0f172a; overflow-y: auto; position: relative; }
+        .option { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
         .option:hover { border-color: var(--accent); }
-        
-        .overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.98); backdrop-filter: blur(8px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; text-align: center; }
-
-        @media (max-width: 850px) {
-            .workspace { flex-direction: column; height: auto; }
-            .q-side, .e-side { border-right: none; border-bottom: 1px solid var(--border); flex: none; width: 100%; }
-        }
+        .overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.98); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10; }
+        @media (max-width: 850px) { .workspace { flex-direction: column; height: auto; } .q-area, .e-area { flex: none; width: 100%; border: none; } }
     </style>
 </head>
 <body>
     <nav>
-        <a href="ijmbpq.html" style="color:#94a3b8; text-decoration:none; font-weight:700; font-size:0.8rem;"><i class="fa-solid fa-arrow-left"></i> EXIT</a>
-        <div id="timer" style="color:var(--cta); font-weight:800; font-family:monospace;">59:59</div>
+        <a href="ijmbpq.html" style="color:#94a3b8; text-decoration:none; font-weight:700;"><i class="fa-solid fa-arrow-left"></i> EXIT</a>
+        <div id="timer" style="color:var(--cta); font-weight:800;">59:59</div>
     </nav>
     <div class="workspace">
-        <section class="q-side">
-            <h3 style="margin-bottom:20px;">Question 01</h3>
-            <p style="font-size:1.2rem; margin-bottom:25px;">Find the P.E of a 5kg mass at a height of 10m ($g=10$).</p>
-            <div class="option" onclick="this.style.borderColor='var(--accent)'">A. 50J</div>
-            <div class="option" onclick="this.style.borderColor='var(--accent)'">B. 500J</div>
+        <section class="q-area">
+            <h3>Question 01</h3>
+            <p style="font-size:1.2rem; margin: 25px 0;">Calculate the refractive index of a medium if the angle of incidence is 45° and angle of refraction is 30°.</p>
+            <div class="option">A. 1.21</div>
+            <div class="option">B. 1.41</div>
+            <div class="option">C. 1.50</div>
+            <div class="option">D. 1.73</div>
         </section>
-        <section class="e-side">
+        <section class="e-area">
             <div id="lock" class="overlay">
-                <i class="fa-solid fa-lock" style="font-size:2rem; margin-bottom:15px; color:#475569;"></i>
-                <button onclick="document.getElementById('lock').style.display='none'" style="background:var(--success); color:white; border:none; padding:12px 25px; border-radius:10px; font-weight:800; cursor:pointer;">REVEAL SOLUTION</button>
+                <button onclick="document.getElementById('lock').style.display='none'" style="background:var(--success); color:white; border:none; padding:15px 30px; border-radius:10px; font-weight:800; cursor:pointer;">REVEAL SOLUTION</button>
             </div>
-            <div style="border:1px solid var(--success); padding:20px; border-radius:15px; background:rgba(16,185,129,0.05);">
-                <h4 style="color:var(--success);">Solution</h4>
-                <p>P.E = mgh = 5 * 10 * 10 = 500 Joules.</p>
+            <div style="border:1px solid var(--success); padding:30px; border-radius:20px; background:rgba(16,185,129,0.05);">
+                <h4 style="color:var(--success);">Marking Scheme Solution</h4>
+                <p>Using Snell's Law: $n = \frac{\sin(i)}{\sin(r)}$</p>
+                <p>$n = \frac{\sin(45^\circ)}{\sin(30^\circ)} = \frac{0.7071}{0.5}$</p>
+                <p style="font-size:1.4rem; font-weight:800; color:var(--success); margin-top:10px;">$n = 1.41$</p>
             </div>
         </section>
     </div>
     <script>
-        let t = 3600; setInterval(() => { 
-            let m = Math.floor(t/60), s = t%60; 
-            document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`; t--; 
+        let time = 3599; setInterval(() => {
+            let m = Math.floor(time/60), s = time%60;
+            document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`; time--;
         }, 1000);
     </script>
 </body>
