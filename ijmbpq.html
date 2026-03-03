@@ -3,50 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | IJMB PRO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Scholar Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --border: rgba(255,255,255,0.08); }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; margin: 0; }
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--card); border-bottom: 1px solid var(--border); }
-        .container { max-width: 1300px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 280px 1fr; gap: 30px; }
-        .welcome-panel { background: linear-gradient(135deg, #1e1b4b, #0f172a); border-radius: 24px; padding: 40px; border: 1px solid var(--border); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
-        .sub-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 30px; text-decoration: none; color: white; transition: 0.3s; }
-        .sub-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .sidebar { display: none; } }
+        body { font-family: 'Plus Jakarta Sans'; background: #020617; color: white; margin: 0; }
+        nav { padding: 20px 5%; background: #0f172a; display: flex; justify-content: space-between; align-items: center; }
+        .welcome-box { padding: 60px 5%; background: linear-gradient(to right, #1e1b4b, #020617); border-radius: 20px; margin: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .btn-exam { background: #6366f1; color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: 800; display: inline-block; margin-top: 20px; }
     </style>
 </head>
 <body>
     <nav>
-        <div style="font-weight: 800;">IJMB<span style="color:var(--accent)">PRO</span></div>
-        <div id="uDisplay" style="font-size:0.9rem; font-weight:700;">Scholar</div>
+        <div style="font-weight:800; font-size:1.2rem;">IJMB<span style="color:#6366f1">PRO</span></div>
+        <div id="navName" style="font-weight:700; color:#94a3b8;">Scholar</div>
     </nav>
-    <div class="container">
-        <aside class="sidebar">
-            <div style="background:var(--card); padding:25px; border-radius:20px; border:1px solid var(--border);">
-                <h4>Course Progress</h4>
-                <div style="height:8px; background:#1e293b; border-radius:10px; margin:15px 0;"><div style="width:45%; background:var(--accent); height:100%;"></div></div>
-                <p style="font-size:0.7rem; color:#94a3b8;">45% Syllabus Completed</p>
-            </div>
-        </aside>
-        <main>
-            <div class="welcome-panel">
-                <h1 id="greet">Welcome!</h1>
-                <p style="color:#94a3b8; margin-top:10px;">Select a subject to continue your 15-point journey.</p>
-            </div>
-            <div class="grid">
-                <a href="physics.html" class="sub-card"><i class="fa-solid fa-atom" style="color:var(--accent); font-size:2rem; margin-bottom:15px;"></i><h3>Physics</h3></a>
-                <a href="#" class="sub-card"><i class="fa-solid fa-flask" style="color:var(--accent); font-size:2rem; margin-bottom:15px;"></i><h3>Chemistry</h3></a>
-                <a href="#" class="sub-card"><i class="fa-solid fa-dna" style="color:var(--accent); font-size:2rem; margin-bottom:15px;"></i><h3>Biology</h3></a>
-            </div>
-        </main>
+
+    <div class="welcome-box">
+        <h1 id="displayName">Welcome, Scholar! 👑</h1>
+        <p>Your 2026 Science Archive is ready for study.</p>
+        <a href="physics.html" class="btn-exam">START PHYSICS PRACTICE</a>
     </div>
+
     <script>
-        const name = localStorage.getItem('ijmb_user') || "Scholar";
-        document.getElementById('greet').innerText = `Welcome Back, ${name.split(' ')[0]}! 👑`;
-        document.getElementById('uDisplay').innerText = name;
+        // STEP 1: Extract the name from memory
+        const savedName = localStorage.getItem('scholarName');
+
+        // STEP 2: Check if name exists, then update the page
+        if (savedName) {
+            // Get just the first name (e.g. "John" from "John Doe")
+            const firstName = savedName.split(' ')[0];
+            
+            document.getElementById('displayName').innerText = `Welcome Back, ${firstName}! 👑`;
+            document.getElementById('navName').innerText = savedName;
+        }
     </script>
 </body>
 </html>
