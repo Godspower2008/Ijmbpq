@@ -1,44 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8"><title>Physics Archive</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        :root { --bg: #030712; --glass: rgba(17, 24, 39, 0.7); --border: rgba(255, 255, 255, 0.1); --accent: #6366f1; --text: #f9fafb; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
-        .q-card { background: var(--glass); border: 1px solid var(--border); padding: 25px; border-radius: 20px; margin-bottom: 20px; }
-        .reveal-btn { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; margin-top: 15px; }
-        .solution { display: none; margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.4); border-radius: 10px; border-left: 3px solid var(--accent); }
+        body { background: #020617; color: white; font-family: sans-serif; padding: 20px; }
+        .q-card { background: #0f172a; padding: 25px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #334155; }
+        .sol { display: none; margin-top: 15px; color: #38bdf8; border-top: 1px solid #333; padding-top: 15px; }
     </style>
 </head>
 <body>
-    <a href="index.html" style="color:var(--accent); text-decoration:none;">← Dashboard</a>
-    <h1 style="margin: 20px 0;">Physics Archive</h1>
-    <div id="feed">Loading questions...</div>
+    <h1>Physics Theory Archive</h1>
+    <div id="feed">Loading...</div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script>
-        const firebaseConfig = { apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", authDomain: "ijmb-portal.firebaseapp.com", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", projectId: "ijmb-portal", appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database(), auth = firebase.auth();
-        const subject = "Physics";
-
-        auth.onAuthStateChanged(user => {
-            db.ref('questions/' + subject).on('value', snap => {
-                const data = snap.val(); const feed = document.getElementById('feed'); feed.innerHTML = "";
-                for(let id in data) {
-                    feed.innerHTML += `
-                        <div class="q-card">
-                            <p>${data[id].text}</p>
-                            <button class="reveal-btn" onclick="this.nextElementSibling.style.display='block'">View Solution</button>
-                            <div class="solution">${data[id].solution}</div>
-                        </div>`;
-                }
+        firebase.initializeApp({ apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com" });
+        firebase.database().ref('questions/Physics').on('value', snap => {
+            let html = "";
+            snap.forEach(child => {
+                const q = child.val();
+                html += `<div class="q-card">
+                    <b>(${q.marks} Marks)</b><p>${q.text}</p>
+                    <button onclick="this.nextElementSibling.style.display='block'">View Marking Scheme</button>
+                    <div class="sol">${q.solution}</div>
+                </div>`;
             });
+            document.getElementById('feed').innerHTML = html;
+            if(window.MathJax) MathJax.typeset();
         });
     </script>
 </body>
