@@ -9,108 +9,99 @@
 <style>
 :root { 
     --bg: #020617; 
-    --glass: rgba(15, 23, 42, 0.8); 
+    --glass: rgba(15, 23, 42, 0.95); 
     --border: rgba(99, 102, 241, 0.2); 
     --accent: #6366f1; 
     --text: #f8fafc; 
     --text-dim: #94a3b8; 
-    --section-gap: 100px;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
 body { 
     font-family: 'Plus Jakarta Sans', sans-serif; 
     background: var(--bg); 
     color: var(--text); 
-    line-height: 1.6;
-    background-image: radial-gradient(circle at 100% 0%, #1e1b4b 0%, #020617 50%);
+    margin: 0; 
+    padding: 0; 
 }
 
-/* --- NAVIGATION --- */
+/* NAVIGATION */
 nav { 
     display: flex; justify-content: space-between; align-items: center; 
     padding: 15px 5%; 
     position: fixed; width: 100%; top: 0; z-index: 1000; 
     backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
-    background: rgba(2, 6, 23, 0.8);
+    background: rgba(2, 6, 23, 0.85);
 }
 .logo { font-weight: 800; font-size: 1.4rem; color: var(--text); }
 .logo span { color: var(--accent); }
 .btn-main { 
     padding: 12px 25px; background: var(--accent); color: white; 
     border-radius: 14px; font-weight: 800; border:none; cursor:pointer;
-    transition: 0.3s;
 }
 .btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(99,102,241,0.3); }
 
-/* --- HERO SECTION --- */
-.hero { 
-    padding: 140px 5% 80px; 
-    display: flex; align-items: center; gap: 50px;
-    max-width: 1300px; margin: 0 auto;
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
+/* AUTH MODAL */
+#authModal {
+    display:none;
+    position: fixed; inset:0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    align-items:center; justify-content:center;
 }
-.hero-content { flex: 1; min-width: 280px; }
-.hero-content h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
-.hero-content h1 span { color: var(--accent); }
-.hero-content p { font-size: 1rem; color: var(--text-dim); margin-bottom: 30px; max-width: 500px; margin-left:auto; margin-right:auto; }
-.hero-image { flex: 1; min-width: 280px; display:flex; justify-content:center; margin-top:20px; }
-.dashboard-preview {
-    width: 100%; max-width: 400px; height: 280px;
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    border-radius: 20px; border: 1px solid var(--border);
-    box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5);
-    display:flex; align-items:center; justify-content:center;
-    position: relative; overflow:hidden;
+
+.auth-box {
+    background: var(--glass);
+    padding: 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    text-align:center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
-.dashboard-preview::before {
-    content: "\f080"; font-family: "Font Awesome 6 Free"; font-weight: 900;
-    font-size: 6rem; color: rgba(99, 102, 241, 0.1);
+
+.auth-box h2 { margin-bottom: 20px; }
+.auth-box input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.1);
+    color: var(--text);
+    font-size: 1rem;
 }
-.dashboard-preview div { position:absolute; bottom:15px; left:15px; background:var(--accent); padding:8px 15px; border-radius:10px; font-weight:700; font-size:0.8rem; color:white; }
 
-/* --- STATS SECTION --- */
-.stats-bar { 
-    background: rgba(99, 102, 241, 0.05); border-top: 1px solid var(--border); 
-    border-bottom: 1px solid var(--border); padding: 50px 5%;
-    display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border:none;
+    font-weight:700;
+    cursor:pointer;
+    margin-bottom: 15px;
+    font-size:1rem;
+    transition:0.3s;
 }
-.stat-item { text-align: center; min-width:120px; }
-.stat-item h2 { font-size: 2rem; color: var(--accent); }
-.stat-item p { color: var(--text-dim); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }
 
-/* --- FEATURES --- */
-.features { padding: var(--section-gap) 5%; text-align:center; }
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top:40px; }
-.feature-card { padding:25px; border:1px solid var(--border); border-radius:20px; background:var(--glass); text-align:center; }
-.feature-card i { font-size:2rem; color:var(--accent); margin-bottom:15px; display:block; }
+#authButton { background: var(--accent); color:white; }
+#authButton:hover { transform:translateY(-2px); box-shadow: 0 5px 15px rgba(99,102,241,0.4); }
 
-/* --- TESTIMONIALS --- */
-.testimonials { padding: var(--section-gap) 5%; text-align: center; }
-.test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 25px; margin-top:40px; }
-.test-card { background: var(--glass); padding:30px; border-radius:20px; border:1px solid var(--border); text-align:left; }
-.test-card p { font-style:italic; color:var(--text-dim); margin-bottom:15px; }
-.user-info { display:flex; align-items:center; gap:12px; }
-.user-info div:first-child { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--accent); color:white; font-weight:700; }
-.user-info b { display:block; font-size:0.95rem; }
-.user-info span { font-size:0.75rem; color:var(--accent); }
+#googleSignIn { background:#DB4437; color:white; display:flex; align-items:center; justify-content:center; gap:10px; }
+#googleSignIn:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(219,68,55,0.4); }
 
-/* --- FINAL CTA --- */
-.final-cta { padding:80px 5%; text-align:center; background: linear-gradient(to top, #1e1b4b, transparent); }
-.final-cta h2 { font-size:2rem; margin-bottom:15px; }
-.final-cta p { color:var(--text-dim); margin-bottom:25px; }
+#toggleAuth { color: var(--accent); cursor:pointer; font-size:0.9rem; }
 
-/* --- MOBILE --- */
-@media(max-width:900px){
-    .hero { flex-direction: column; padding-top:120px; }
-    .hero-image { margin-top:25px; }
-    .hero-content h1 { font-size:2rem; }
-    .stats-bar { flex-direction:column; padding:40px 5%; gap:25px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .test-grid { grid-template-columns: 1fr; }
+#authMessage { color:#f87171; font-size:0.85rem; margin-top:10px; }
+
+.closeModal {
+    position:absolute; top:10px; right:15px; cursor:pointer; font-size:1.2rem;
+    color: var(--text-dim);
+}
+
+/* RESPONSIVE */
+@media(max-width:500px){
+    .auth-box { padding: 30px; }
 }
 </style>
 </head>
@@ -118,95 +109,34 @@ nav {
 
 <nav>
     <div class="logo">IJMB<span>PRO</span></div>
-    <button onclick="document.getElementById('authModal').style.display='flex'" class="btn-main">Sign In</button>
+    <button class="btn-main" onclick="document.getElementById('authModal').style.display='flex'">Sign In</button>
 </nav>
 
-<header class="hero">
-    <div class="hero-content">
-        <h1>Practice Past Questions. <span>Boost Your Score.</span></h1>
-        <p>Master IJMB theoretical questions with authentic marking schemes, visual diagrams, and performance tracking used by 1,000+ students.</p>
-        <button onclick="document.getElementById('authModal').style.display='flex'" class="btn-main">Start Practising Now — It's Free</button>
-    </div>
-    <div class="hero-image">
-        <div class="dashboard-preview">
-            <div><i class="fa-solid fa-chart-line"></i> Performance: 92%</div>
-        </div>
-    </div>
-</header>
-
-<section class="stats-bar">
-    <div class="stat-item"><h2>1,200+</h2><p>Active Students</p></div>
-    <div class="stat-item"><h2>85%</h2><p>Scored A/B Points</p></div>
-    <div class="stat-item"><h2>10+ Years</h2><p>Solved Archives</p></div>
-</section>
-
-<section class="features">
-    <h2>Why Scholars Choose Pro-Archive</h2>
-    <div class="features-grid">
-        <div class="feature-card"><i class="fa-solid fa-check-double"></i><h3>Official Marking Schemes</h3><p>Learn exactly how examiners award marks so you don't leave points on the table.</p></div>
-        <div class="feature-card"><i class="fa-solid fa-image"></i><h3>Visual Learning</h3><p>High-quality labeled diagrams for Biology and Physics to help you memorize faster.</p></div>
-        <div class="feature-card"><i class="fa-solid fa-users"></i><h3>Live Leaderboard</h3><p>Compete with other students and see your rank improve as you complete topics.</p></div>
-    </div>
-</section>
-
-<section class="testimonials">
-    <span style="color:var(--accent); font-weight:800; text-transform:uppercase;">Real Success Stories</span>
-    <h2>Hear From Our Scholars</h2>
-    <div class="test-grid">
-        <div class="test-card">
-            <p>"The marking schemes were a game changer. I realized I was answering questions wrong all along. I ended up with 14 points!"</p>
-            <div class="user-info">
-                <div>O</div>
-                <div><b>Olawale J.</b><span>Physics/Chem/Math</span></div>
-            </div>
-        </div>
-        <div class="test-card">
-            <p>"The visual diagrams for Biology are so clear. It’s much better than my textbooks. Highly recommended for any IJMB student."</p>
-            <div class="user-info">
-                <div>C</div>
-                <div><b>Chidi A.</b><span>Bio/Chem/Phy</span></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="final-cta">
-    <h2>Ready to Secure Your 15 Points?</h2>
-    <p>Join 1,000+ students already preparing for the next IJMB exam.</p>
-    <button onclick="document.getElementById('authModal').style.display='flex'" class="btn-main">Create Your Free Account</button>
-</section>
-
 <!-- AUTH MODAL -->
-<div id="authModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(10px);">
-  <div style="background:var(--glass); padding:40px; border-radius:20px; max-width:400px; width:90%; position:relative; text-align:center;">
-    <span onclick="closeModal()" 
-          style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:1.2rem;">&times;</span>
-    <h2 id="modalTitle" style="margin-bottom:20px;">Sign In</h2>
+<div id="authModal">
+  <div class="auth-box">
+    <span class="closeModal" onclick="closeModal()">&times;</span>
+    <h2 id="modalTitle">Sign In</h2>
 
-    <!-- FORM -->
-    <input type="email" id="email" placeholder="Email" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:none;">
-    <input type="password" id="password" placeholder="Password" style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:none;">
-    
-    <button id="authButton" style="width:100%; padding:12px; border:none; border-radius:10px; background:var(--accent); color:white; font-weight:700; margin-bottom:15px;">Sign In</button>
-<!-- Add this inside your auth modal BELOW the email/password button -->
-<button id="googleSignIn" style="width:100%; padding:12px; border:none; border-radius:10px; background:#DB4437; color:white; font-weight:700; margin-bottom:10px; display:flex; align-items:center; justify-content:center; gap:10px;">
-    <i class="fa-brands fa-google"></i> Sign In with Google
-</button>
-    
-    <p style="font-size:0.85rem; color:var(--text-dim);">
-      <span id="toggleAuth" style="color:var(--accent); cursor:pointer;">Create a New Account</span>
-    </p>
-    
-    <div id="authMessage" style="color:#f87171; font-size:0.85rem; margin-top:10px;"></div>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+
+    <button id="authButton" class="auth-btn">Sign In</button>
+
+    <button id="googleSignIn" class="auth-btn"><i class="fa-brands fa-google"></i> Sign In with Google</button>
+
+    <p><span id="toggleAuth">Create a New Account</span></p>
+
+    <div id="authMessage"></div>
   </div>
 </div>
 
-<!-- Firebase App -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<!-- Firebase Auth -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
 <script>
-  // --- FIREBASE CONFIG ---
+  // FIREBASE CONFIG
   const firebaseConfig = { 
       apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
       authDomain: "ijmb-portal.firebaseapp.com"
@@ -214,7 +144,12 @@ nav {
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
-  // --- MODAL CONTROLS ---
+  // MODAL CONTROLS
+  const modalTitle = document.getElementById('modalTitle');
+  const authButton = document.getElementById('authButton');
+  const toggleAuth = document.getElementById('toggleAuth');
+  let isSignIn = true;
+
   function closeModal() {
       document.getElementById('authModal').style.display = 'none';
       document.getElementById('authMessage').innerText = '';
@@ -222,77 +157,48 @@ nav {
       document.getElementById('password').value = '';
   }
 
-  const modalTitle = document.getElementById('modalTitle');
-  const authButton = document.getElementById('authButton');
-  const toggleAuth = document.getElementById('toggleAuth');
-  let isSignIn = true;
-
   toggleAuth.addEventListener('click', () => {
       isSignIn = !isSignIn;
-      if (isSignIn) {
-          modalTitle.innerText = 'Sign In';
-          authButton.innerText = 'Sign In';
-          toggleAuth.innerText = 'Create a New Account';
-      } else {
-          modalTitle.innerText = 'Create Account';
-          authButton.innerText = 'Create Account';
-          toggleAuth.innerText = 'Already have an account? Sign In';
-      }
+      modalTitle.innerText = isSignIn ? 'Sign In' : 'Create Account';
+      authButton.innerText = isSignIn ? 'Sign In' : 'Create Account';
+      toggleAuth.innerText = isSignIn ? 'Create a New Account' : 'Already have an account? Sign In';
   });
 
-  // --- AUTH FUNCTION ---
+  // EMAIL/PASSWORD AUTH
   authButton.addEventListener('click', () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const messageDiv = document.getElementById('authMessage');
+      const msg = document.getElementById('authMessage');
 
-      if (!email || !password) {
-          messageDiv.innerText = 'Please enter both email and password.';
-          return;
-      }
+      if(!email || !password){ msg.innerText = 'Please enter both email and password.'; return; }
 
-      if (isSignIn) {
-          // SIGN IN
-          auth.signInWithEmailAndPassword(email, password)
-              .then(() => { 
-                  closeModal();
-                  window.location.href = 'dashboard.html';
-              })
-              .catch(err => messageDiv.innerText = err.message);
+      if(isSignIn){
+          auth.signInWithEmailAndPassword(email,password)
+              .then(()=> { closeModal(); window.location.href='dashboard.html'; })
+              .catch(err=>msg.innerText=err.message);
       } else {
-          // CREATE ACCOUNT
-          auth.createUserWithEmailAndPassword(email, password)
-              .then(() => { 
-                  closeModal();
-                  window.location.href = 'dashboard.html';
-              })
-              .catch(err => messageDiv.innerText = err.message);
+          auth.createUserWithEmailAndPassword(email,password)
+              .then(()=> { closeModal(); window.location.href='dashboard.html'; })
+              .catch(err=>msg.innerText=err.message);
       }
   });
 
-  // --- AUTO REDIRECT IF LOGGED IN ---
+  // GOOGLE AUTH
+  const googleSignInBtn = document.getElementById('googleSignIn');
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  googleSignInBtn.addEventListener('click', () => {
+      auth.signInWithPopup(provider)
+          .then(()=> { closeModal(); window.location.href='dashboard.html'; })
+          .catch(err=>document.getElementById('authMessage').innerText = err.message);
+  });
+
+  // AUTO REDIRECT IF LOGGED IN
   auth.onAuthStateChanged(user => {
-      if (user) {
-          // Redirect already logged in users to dashboard
-          if (!window.location.href.includes('dashboard.html')) {
-              window.location.href = 'dashboard.html';
-          }
+      if(user && !window.location.href.includes('dashboard.html')){
+          window.location.href='dashboard.html';
       }
   });
-// --- GOOGLE SIGN-IN ---
-const googleSignIn = document.getElementById('googleSignIn');
-const provider = new firebase.auth.GoogleAuthProvider();
-
-googleSignIn.addEventListener('click', () => {
-    auth.signInWithPopup(provider)
-        .then((result) => {
-            closeModal();
-            window.location.href = 'dashboard.html';
-        })
-        .catch(err => {
-            document.getElementById('authMessage').innerText = err.message;
-        });
-});
 </script>
 </body>
 </html>
