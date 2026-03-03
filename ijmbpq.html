@@ -3,234 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholar Dashboard | IJMB PRO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>IJMB Pro-Archive | Master the Theory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { 
             --bg: #020617; 
-            --card: #0f172a;
-            --glass: rgba(30, 41, 59, 0.7); 
+            --glass: rgba(15, 23, 42, 0.8); 
             --border: rgba(99, 102, 241, 0.2); 
             --accent: #6366f1; 
             --text: #f8fafc; 
             --text-dim: #94a3b8; 
-            --success: #10b981;
-            --gold: #f59e0b;
+            --section-gap: 100px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            background-image: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 50%);
-            min-height: 100vh;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* --- 5. NAVIGATION POLISH --- */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 8%; background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 1000;
+        /* --- NAVIGATION --- */
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 8%; position: fixed; width: 100%; top: 0; z-index: 1000; 
+            backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
+            background: rgba(2, 6, 23, 0.7);
         }
-        .logo { font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
+        .logo { font-weight: 800; font-size: 1.4rem; }
         .logo span { color: var(--accent); }
 
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a { 
-            color: var(--text-dim); text-decoration: none; font-size: 0.9rem; 
-            font-weight: 600; transition: 0.3s; padding: 8px 12px; border-radius: 8px;
-        }
-        .nav-links a:hover { color: var(--accent); background: rgba(99, 102, 241, 0.1); }
+        /* --- HERO --- */
+        .hero { padding: 180px 8% 100px; display: flex; align-items: center; gap: 60px; max-width: 1300px; margin: 0 auto; }
+        .hero-content { flex: 1; }
+        .hero-content h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; margin-bottom: 25px; }
+        .hero-content h1 span { color: var(--accent); }
+        .hero-content p { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 40px; }
 
-        /* --- 6. MOBILE RESPONSIVE GRID --- */
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 30px;
-            max-width: 1300px;
-            margin: 40px auto;
-            padding: 0 5%;
+        /* --- BUTTONS --- */
+        .btn-main { 
+            padding: 18px 35px; background: var(--accent); color: white; border-radius: 12px; 
+            text-decoration: none; font-weight: 800; border: none; cursor: pointer; transition: 0.3s;
         }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
 
-        /* --- 2 & 3. VISUAL HIERARCHY & ICONS --- */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+        /* --- AUTH MODAL --- */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+            z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px);
         }
-        .metric-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
-            transition: 0.3s;
+        .modal-card {
+            background: #0f172a; width: 90%; max-width: 450px; padding: 40px;
+            border-radius: 24px; border: 1px solid var(--border); position: relative;
         }
-        .metric-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .metric-card i { font-size: 1.5rem; color: var(--accent); margin-bottom: 15px; display: block; }
-        .metric-card .label { color: var(--text-dim); font-size: 0.75rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
-        .metric-card .value { font-size: 1.8rem; font-weight: 800; margin-top: 5px; }
+        .modal-card h2 { margin-bottom: 10px; font-weight: 800; }
+        .modal-card input, .modal-card select {
+            width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 10px;
+            background: #1e293b; border: 1px solid var(--border); color: white; outline: none;
+        }
+        .close-modal { position: absolute; top: 20px; right: 20px; cursor: pointer; color: var(--text-dim); }
 
-        /* --- 7. INTERACTIVE SUBJECT CARDS --- */
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        .subject-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            transition: 0.3s;
-            text-decoration: none;
-            color: inherit;
-        }
-        .subject-card:hover { border-color: var(--accent); transform: scale(1.02); }
-        .subject-card i { font-size: 2.2rem; color: var(--accent); margin-bottom: 20px; display: block; }
-        
-        .progress-bar { height: 8px; background: #1e293b; border-radius: 10px; margin: 15px 0; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 1.5s ease-out; }
+        .toggle-text { text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-dim); }
+        .toggle-text span { color: var(--accent); cursor: pointer; font-weight: 700; }
 
-        .btn-action {
-            width: 100%; padding: 14px; background: rgba(99, 102, 241, 0.1);
-            border: 1px solid var(--accent); color: var(--accent); border-radius: 12px;
-            font-weight: 800; cursor: pointer; transition: 0.3s;
-        }
-        .subject-card:hover .btn-action { background: var(--accent); color: white; }
-
-        /* --- 4. IMPROVED LEADERBOARD --- */
-        .sidebar-panel {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 25px;
-            height: fit-content;
-        }
-        .rank-item {
-            display: flex; align-items: center; gap: 12px; padding: 15px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .rank-number { font-size: 1.2rem; min-width: 30px; }
-        .rank-avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
-        .rank-info b { font-size: 0.9rem; display: block; }
-        .rank-info span { font-size: 0.75rem; color: var(--text-dim); }
-
-        @media (max-width: 1024px) {
-            .dashboard-container { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 900px) { .hero { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="landing.html" class="logo">IJMB<span>PRO</span></a>
-        <nav class="nav-links">
-            <a href="ijmbpq.html">Dashboard</a>
-            <a href="#subjects">Archives</a>
-            <a href="pricing.html">Premium</a>
-            <a href="contact.html">Support</a>
-        </nav>
-        <div id="userHeader" style="font-weight: 800; font-size: 0.85rem; color: var(--accent);">SCHOLAR</div>
-    </header>
+    <nav>
+        <div class="logo">IJMB<span>PRO</span></div>
+        <button onclick="toggleModal()" class="btn-main" style="padding: 10px 25px; font-size: 0.9rem;">Sign In</button>
+    </nav>
 
-    <div class="dashboard-container">
-        <main>
-            <div style="margin-bottom: 40px;">
-                <h1 id="userGreet" style="font-size: 2.2rem; font-weight: 800;">Welcome back, Scholar!</h1>
-                <p style="color: var(--text-dim);">Your weekly goal: Complete 5 marking schemes. <strong>2 left to go.</strong></p>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>The Archive for <span>Serious Scholars.</span></h1>
+            <p>Access the most comprehensive library of IJMB past questions, marking schemes, and high-resolution diagrams.</p>
+            <button onclick="toggleModal()" class="btn-main">Get Started for Free</button>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-card">
+            <i class="fa-solid fa-xmark close-modal" onclick="toggleModal()"></i>
+            
+            <div id="loginFields">
+                <h2>Welcome Back</h2>
+                <p style="color: var(--text-dim); margin-bottom: 25px;">Sign in to continue your progress.</p>
             </div>
 
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <i class="fa-solid fa-fire" style="color: var(--gold);"></i>
-                    <p class="label">Study Streak</p>
-                    <div class="value">14 Days</div>
-                </div>
-                <div class="metric-card">
-                    <i class="fa-solid fa-bullseye"></i>
-                    <p class="label">Avg. Accuracy</p>
-                    <div class="value">92%</div>
-                </div>
-                <div class="metric-card">
-                    <i class="fa-solid fa-trophy"></i>
-                    <p class="label">Global Rank</p>
-                    <div class="value">#8</div>
-                </div>
+            <div id="registerFields" style="display: none;">
+                <h2>Create Account</h2>
+                <p style="color: var(--text-dim); margin-bottom: 25px;">Join 1,000+ scholars today.</p>
+                <input type="text" id="regName" placeholder="Full Name (e.g. John Doe)">
+                <select id="regCombo">
+                    <option value="">Select Combo</option>
+                    <option value="PCM">PCM (Phy/Chem/Math)</option>
+                    <option value="PCB">PCB (Phy/Chem/Bio)</option>
+                    <option value="EGB">EGB (Eco/Gov/Lit)</option>
+                </select>
             </div>
 
-            <h2 style="margin-bottom: 25px;" id="subjects">Subject Channels</h2>
-            <div class="subject-grid">
-                <div class="subject-card">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <h3>Economics</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Micro, Macro, and solved theoretical standard solutions.</p>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 20px;">
-                        <span>Progress: 18/30</span>
-                        <span>60%</span>
-                    </div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 60%;"></div></div>
-                    <a href="economics-2024-theory.html" style="text-decoration:none;"><button class="btn-action">Continue Practice</button></a>
-                </div>
+            <input type="email" id="authEmail" placeholder="Email Address">
+            <input type="password" id="authPass" placeholder="Password">
 
-                <div class="subject-card">
-                    <i class="fa-solid fa-atom"></i>
-                    <h3>Physics</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Calculation steps and high-res diagram archives.</p>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 20px;">
-                        <span>Progress: 4/30</span>
-                        <span>12%</span>
-                    </div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 12%;"></div></div>
-                    <button class="btn-action">Start Practice</button>
-                </div>
-            </div>
-        </main>
+            <button onclick="handleAuth()" class="btn-main" style="width: 100%;" id="authBtn">
+                <span id="btnText">Continue</span>
+            </button>
 
-        <aside>
-            <div class="sidebar-panel">
-                <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                    <i class="fa-solid fa-medal" style="color: var(--gold);"></i> Top Scholars
-                </h3>
-                <div id="leaderboard">
-                    <div class="rank-item">
-                        <span class="rank-number">🥇</span>
-                        <div class="rank-avatar">MA</div>
-                        <div class="rank-info">
-                            <b>Musa Ahmed</b>
-                            <span>PCM • 2,450 pts</span>
-                        </div>
-                    </div>
-                    <div class="rank-item">
-                        <span class="rank-number">🥈</span>
-                        <div class="rank-avatar">OJ</div>
-                        <div class="rank-info">
-                            <b>Olawale J.</b>
-                            <span>EGB • 2,100 pts</span>
-                        </div>
-                    </div>
-                    <div class="rank-item">
-                        <span class="rank-number">🥉</span>
-                        <div class="rank-badge">🥉</div>
-                        <div class="rank-info">
-                            <b>Blessing U.</b>
-                            <span>PCB • 1,980 pts</span>
-                        </div>
-                    </div>
-                </div>
-                <button style="width:100%; background:transparent; border:1px solid var(--border); color:var(--text-dim); padding:10px; border-radius:10px; margin-top:20px; cursor:pointer;">View All Rankings</button>
-            </div>
-        </aside>
+            <p class="toggle-text" id="toggleMsg">
+                New here? <span onclick="switchMode(true)">Create an account</span>
+            </p>
+            <p class="toggle-text" id="toggleMsgBack" style="display: none;">
+                Already have an account? <span onclick="switchMode(false)">Sign In</span>
+            </p>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <script>
+        // REPLACE WITH YOUR ACTUAL CONFIG
         const firebaseConfig = { 
             apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", 
             authDomain: "ijmb-portal.firebaseapp.com", 
@@ -242,16 +135,57 @@
         const auth = firebase.auth();
         const db = firebase.database();
 
-        auth.onAuthStateChanged(user => {
-            if(!user || !user.emailVerified) window.location.href="landing.html";
-            db.ref(`users/${user.uid}/profile`).on('value', snap => { 
-                if(snap.val()) {
-                    const name = snap.val().fullName.split(' ')[0];
-                    document.getElementById('userGreet').innerText = `Welcome back, ${name}!`;
-                    document.getElementById('userHeader').innerText = name.toUpperCase();
+        let isRegistering = false;
+
+        function toggleModal() {
+            const modal = document.getElementById('authModal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function switchMode(reg) {
+            isRegistering = reg;
+            document.getElementById('loginFields').style.display = reg ? 'none' : 'block';
+            document.getElementById('registerFields').style.display = reg ? 'block' : 'none';
+            document.getElementById('toggleMsg').style.display = reg ? 'none' : 'block';
+            document.getElementById('toggleMsgBack').style.display = reg ? 'block' : 'none';
+            document.getElementById('btnText').innerText = reg ? 'Create Account' : 'Sign In';
+        }
+
+        async function handleAuth() {
+            const e = document.getElementById('authEmail').value;
+            const p = document.getElementById('authPass').value;
+            const btn = document.getElementById('authBtn');
+
+            if(!e || !p) return alert("Please fill all fields");
+            btn.disabled = true;
+
+            try {
+                if(isRegistering) {
+                    const n = document.getElementById('regName').value;
+                    const c = document.getElementById('regCombo').value;
+                    if(!n || !c) throw new Error("Name and Combo are required");
+
+                    const res = await auth.createUserWithEmailAndPassword(e, p);
+                    await db.ref(`users/${res.user.uid}/profile`).set({
+                        fullName: n, combo: c, score: 0
+                    });
+                    await res.user.sendEmailVerification();
+                    alert("Verification email sent! Please check your inbox.");
+                    toggleModal();
+                } else {
+                    const res = await auth.signInWithEmailAndPassword(e, p);
+                    if(res.user.emailVerified) {
+                        window.location.href = "ijmbpq.html";
+                    } else {
+                        alert("Please verify your email first.");
+                        auth.signOut();
+                    }
                 }
-            });
-        });
+            } catch (err) {
+                alert(err.message);
+            }
+            btn.disabled = false;
+        }
     </script>
 </body>
 </html>
