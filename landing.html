@@ -6,93 +6,319 @@
     <title>IJMB Pro-Archive | Secure Your A</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #030712; --glass: rgba(17, 24, 39, 0.7); --border: rgba(255, 255, 255, 0.1); --accent: #6366f1; --gold: #f59e0b; --text: #f9fafb; --text-dim: #94a3b8; }
+        :root { 
+            --bg: #030712; 
+            --glass: rgba(17, 24, 39, 0.7); 
+            --border: rgba(255, 255, 255, 0.1); 
+            --accent: #6366f1; 
+            --gold: #f59e0b; 
+            --text: #f9fafb; 
+            --text-dim: #94a3b8; 
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; scroll-behavior: smooth; }
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 1000; backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); background: rgba(3, 7, 18, 0.8); }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth; 
+        }
+
+        /* --- NAVIGATION --- */
+        nav { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 5%; 
+            position: fixed; 
+            width: 100%; 
+            top: 0; 
+            z-index: 1000; 
+            backdrop-filter: blur(15px); 
+            border-bottom: 1px solid var(--border); 
+            background: rgba(3, 7, 18, 0.8); 
+        }
+
         .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -1px; }
         .logo span { color: var(--accent); }
-        .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 5% 60px; }
-        .hero h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+
+        /* --- HERO SECTION --- */
+        .hero { 
+            position: relative; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            padding: 120px 5% 60px; 
+        }
+
+        .hero h1 { 
+            font-size: clamp(2.5rem, 8vw, 4.5rem); 
+            font-weight: 800; 
+            line-height: 1.1; 
+            margin-bottom: 20px; 
+        }
+
         .hero h1 span { color: var(--accent); }
-        .hero p { color: var(--text-dim); font-size: clamp(1rem, 4vw, 1.2rem); max-width: 700px; margin-bottom: 40px; }
-        .btn { padding: 16px 32px; border-radius: 14px; font-weight: 800; cursor: pointer; transition: 0.3s; border: none; text-decoration: none; display: inline-block; }
-        .btn-main { background: var(--accent); color: white; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
-        .btn-secondary { background: var(--glass); border: 1px solid var(--border); color: white; }
-        .scroll-down { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; cursor: pointer; color: var(--text-dim); font-size: 0.7rem; letter-spacing: 2px; text-align: center; }
-        .arrow { width: 10px; height: 10px; border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(45deg); margin: 5px auto; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); } 40% { transform: translate(-50%, -10px); } }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(15px); }
-        .modal { background: #0f172a; padding: 35px; border-radius: 30px; width: 90%; max-width: 400px; border: 1px solid var(--border); position: relative; }
-        .modal input, .modal select { width: 100%; padding: 15px; margin-bottom: 12px; background: #020617; border: 1px solid var(--border); color: white; border-radius: 12px; outline: none; }
-        .btn-auth { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; }
+
+        .hero p { 
+            color: var(--text-dim); 
+            font-size: clamp(1rem, 4vw, 1.2rem); 
+            max-width: 700px; 
+            margin-bottom: 40px; 
+        }
+
+        /* --- BUTTONS --- */
+        .btn { 
+            padding: 16px 32px; 
+            border-radius: 14px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            border: none; 
+            text-decoration: none; 
+            display: inline-block;
+        }
+
+        .btn-main { 
+            background: var(--accent); 
+            color: white; 
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); 
+        }
+
+        .btn-secondary { 
+            background: var(--glass); 
+            border: 1px solid var(--border); 
+            color: white; 
+        }
+
+        /* --- AUTH MODAL --- */
+        .modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.95); 
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 2000; 
+            backdrop-filter: blur(15px); 
+        }
+
+        .modal { 
+            background: #0f172a; 
+            padding: 35px; 
+            border-radius: 30px; 
+            width: 90%; 
+            max-width: 400px; 
+            border: 1px solid var(--border); 
+            position: relative; 
+        }
+
+        .modal input, .modal select { 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 12px; 
+            background: #020617; 
+            border: 1px solid var(--border); 
+            color: white; 
+            border-radius: 12px; 
+            outline: none; 
+            font-family: inherit;
+        }
+
+        .btn-auth { 
+            width: 100%; 
+            padding: 15px; 
+            background: var(--accent); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            cursor: pointer; 
+        }
+
+        .close-modal { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            cursor: pointer; 
+            color: var(--text-dim); 
+        }
+
+        /* --- SCROLL INDICATOR --- */
+        .scroll-down { 
+            position: absolute; 
+            bottom: 30px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            animation: bounce 2s infinite; 
+            cursor: pointer; 
+            color: var(--text-dim); 
+            font-size: 0.7rem; 
+            letter-spacing: 2px; 
+        }
+
+        .arrow { 
+            width: 10px; 
+            height: 10px; 
+            border-right: 2px solid var(--accent); 
+            border-bottom: 2px solid var(--accent); 
+            transform: rotate(45deg); 
+            margin: 5px auto; 
+        }
+
+        @keyframes bounce { 
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); } 
+            40% { transform: translate(-50%, -10px); } 
+        }
     </style>
 </head>
 <body>
+
     <div class="modal-overlay" id="authModal">
         <div class="modal">
+            <span class="close-modal" onclick="closeAuth()">✕</span>
             <h2 id="mTitle" style="text-align:center; margin-bottom:20px;">Student Login</h2>
+            
             <input type="text" id="regName" class="reg-only" placeholder="Full Name" style="display:none;">
             <input type="email" id="email" placeholder="Email Address">
+            
             <select id="regCombo" class="reg-only" style="display:none;">
                 <option value="">Select Combination</option>
-                <option value="PCM">PCM</option><option value="PCB">PCB</option><option value="EGB">EGB</option>
+                <option value="PCM">PCM (Phy/Chm/Mth)</option>
+                <option value="PCB">PCB (Phy/Chm/Bio)</option>
+                <option value="EGB">EGB (Eco/Gov/Bus)</option>
             </select>
+            
             <input type="password" id="pass" placeholder="Password">
+            
             <button class="btn-auth" onclick="handleAuth()" id="mBtn">Sign In</button>
-            <p onclick="toggleAuth()" id="mToggle" style="text-align:center; font-size:0.8rem; margin-top:20px; cursor:pointer; color:var(--accent);">New student? Register</p>
+
+            <button id="resendBtn" onclick="resendVerification()" style="display:none; width:100%; background:none; border:none; color:var(--gold); margin-top:15px; cursor:pointer; font-weight:700; text-decoration:underline;">
+                Resend Verification Email
+            </button>
+            
+            <p onclick="toggleAuth()" id="mToggle" style="text-align:center; font-size:0.8rem; margin-top:20px; cursor:pointer; color:var(--accent);">
+                New student? Register
+            </p>
         </div>
     </div>
+
     <nav>
         <div class="logo">IJMB<span>PRO</span></div>
         <button onclick="openAuth()" class="btn-secondary" style="padding:8px 18px; border-radius:10px;">Login</button>
     </nav>
+
     <section class="hero">
         <h1>Master Theory.<br><span>Secure Your A.</span></h1>
-        <p>Verified archives for 2026 IJMB candidates. Get real marking schemes and track your progress.</p>
-        <div style="display:flex; gap:15px;">
+        <p>Verified archives for 2026 IJMB candidates. Get real marking schemes, professional diagrams, and track your progress on the national leaderboard.</p>
+        
+        <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center;">
             <button onclick="openAuth()" class="btn btn-main">Get Free Access</button>
             <a href="pricing.html" class="btn btn-secondary">View Pro Plans</a>
         </div>
-        <div class="scroll-down" onclick="document.getElementById('features').scrollIntoView()">EXPLORE<div class="arrow"></div></div>
+
+        <div class="scroll-down">
+            EXPLORE
+            <div class="arrow"></div>
+        </div>
     </section>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <script>
-        const firebaseConfig = { apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", authDomain: "ijmb-portal.firebaseapp.com", databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", projectId: "ijmb-portal", appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" };
+        // Your Firebase Configuration
+        const firebaseConfig = { 
+            apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", 
+            authDomain: "ijmb-portal.firebaseapp.com", 
+            databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com", 
+            projectId: "ijmb-portal", 
+            appId: "1:521270251438:web:3fdfd1ede0b0687c1bc23f" 
+        };
+
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth(), db = firebase.database();
+        const auth = firebase.auth();
+        const db = firebase.database();
+
         let isLogin = true;
 
         function openAuth() { document.getElementById('authModal').style.display='flex'; }
+        function closeAuth() { document.getElementById('authModal').style.display='none'; }
+
         function toggleAuth() { 
             isLogin = !isLogin; 
             document.querySelectorAll('.reg-only').forEach(el => el.style.display = isLogin ? 'none' : 'block'); 
             document.getElementById('mTitle').innerText = isLogin ? 'Student Login' : 'Join Pro Archive'; 
             document.getElementById('mBtn').innerText = isLogin ? 'Sign In' : 'Create Account';
+            document.getElementById('mToggle').innerText = isLogin ? 'New student? Register' : 'Already have an account? Login';
         }
 
         async function handleAuth() {
-            const e = document.getElementById('email').value, p = document.getElementById('pass').value;
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('pass').value;
+            
+            if(!e || !p) return alert("Please enter email and password");
+
             if(isLogin) {
-                auth.signInWithEmailAndPassword(e,p).then(res => { 
-                    if(res.user.emailVerified) location.href="index.html"; 
-                    else alert("Please verify your email first! Check your inbox."); 
-                }).catch(err => alert(err.message));
-            } else {
-                const n = document.getElementById('regName').value, c = document.getElementById('regCombo').value;
                 try {
-                    const res = await auth.createUserWithEmailAndPassword(e,p);
-                    await db.ref(`users/${res.user.uid}/profile`).set({ fullName: n, combo: c, score: 0, isVerified: false });
+                    const res = await auth.signInWithEmailAndPassword(e, p);
+                    if (res.user.emailVerified) {
+                        window.location.href = "index.html";
+                    } else {
+                        alert("Account not verified! Please check your email inbox (and spam folder).");
+                        document.getElementById('resendBtn').style.display = 'block';
+                    }
+                } catch (err) {
+                    alert("Login Error: " + err.message);
+                }
+            } else {
+                const n = document.getElementById('regName').value;
+                const c = document.getElementById('regCombo').value;
+                if (!n || !c) return alert("Please enter your name and combination");
+
+                try {
+                    // 1. Create User
+                    const res = await auth.createUserWithEmailAndPassword(e, p);
+                    
+                    // 2. Save Profile Data immediately
+                    await db.ref(`users/${res.user.uid}/profile`).set({
+                        fullName: n,
+                        combo: c,
+                        score: 0,
+                        isVerified: false
+                    });
+
+                    // 3. Send Verification Email
                     await res.user.sendEmailVerification();
-                    alert("Account created! A verification link has been sent to " + e);
+                    
+                    alert("Registration successful! A verification link has been sent to " + e + ". Verify your email to login.");
+                    
+                    // 4. Logout and reset
+                    auth.signOut();
                     location.reload();
-                } catch(err) { alert(err.message); }
+                } catch (err) {
+                    alert("Registration Error: " + err.message);
+                }
             }
         }
-        auth.onAuthStateChanged(user => { if(user && user.emailVerified) location.href="index.html"; });
-    </script>
-</body>
-</html>
+
+        async function resendVerification() {
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    await user.sendEmailVerification();
+                    alert("Verification link resent! Check your inbox.");
+                } catch (err) {
+                    alert("Error: " + err.message);
+                }
