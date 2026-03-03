@@ -3,84 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB PRO | Secure Your 15 Points</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>IJMB PRO | Join 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #020617; --accent: #6366f1; --cta: #f59e0b; --glass: rgba(15, 23, 42, 0.8); }
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; line-height: 1.6; overflow-x: hidden; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        
-        /* Responsive Navigation */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; position: relative; z-index: 1000; }
-        .logo { font-size: 1.6rem; font-weight: 800; text-decoration: none; color: white; }
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 600; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
-        .menu-btn { display: none; font-size: 1.5rem; cursor: pointer; }
-
-        /* Hero Section */
-        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; padding: 60px 0; align-items: center; }
-        .hero-text h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 25px; background: linear-gradient(to bottom, #fff 50%, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .auth-card { background: var(--glass); backdrop-filter: blur(20px); padding: 40px; border-radius: 32px; border: 1px solid rgba(99, 102, 241, 0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        input { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; outline: none; }
-        .btn-cta { width: 100%; padding: 18px; background: var(--cta); color: #000; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(245, 158, 11, 0.4); }
-
-        /* Subjects Grid */
-        .subject-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 80px 0; }
-        .s-card { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); text-align: center; transition: 0.3s; }
-        .s-card:hover { border-color: var(--accent); transform: translateY(-10px); }
-
-        @media (max-width: 992px) {
-            .hero { grid-template-columns: 1fr; text-align: center; }
-            .subject-grid { grid-template-columns: 1fr; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: var(--bg); padding: 20px; border-bottom: 1px solid var(--border); }
-            .nav-links.active { display: flex; }
-            .menu-btn { display: block; }
-        }
+        :root { --bg: #020617; --accent: #6366f1; --cta: #f59e0b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .auth-card { background: #0f172a; padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; text-align: center; }
+        input { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; box-sizing: border-box; }
+        .btn { width: 100%; padding: 18px; background: var(--cta); color: #000; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <nav>
-            <a href="#" class="logo">IJMB<span style="color:var(--accent)">PRO</span></a>
-            <div class="nav-links" id="navLinks">
-                <a href="#subjects">Subjects</a>
-                <a href="#register">Register</a>
-                <a href="login.html" style="color:white; background:var(--accent); padding:10px 20px; border-radius:10px;">Login</a>
-            </div>
-            <div class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
-        </nav>
-
-        <section class="hero">
-            <div class="hero-text">
-                <h1>Master the <br><span style="color:var(--accent)">Science</span> Archive.</h1>
-                <p style="color:#94a3b8; font-size:1.2rem;">The official 2026 practice engine with examiner-grade marking schemes for Physics, Chemistry, and Biology.</p>
-            </div>
-            <div class="auth-card" id="register">
-                <h3 style="margin-bottom:20px; text-align:center;">Begin Your Practice</h3>
-                <input type="text" id="uName" placeholder="Full Name">
-                <input type="email" placeholder="Email Address">
-                <button class="btn-cta" onclick="join()">Get 15 Points Access</button>
-            </div>
-        </section>
-
-        <section class="subject-grid" id="subjects">
-            <div class="s-card"><i class="fa-solid fa-atom" style="color:var(--accent); font-size:2rem; margin-bottom:15px;"></i><h3>Physics</h3></div>
-            <div class="s-card"><i class="fa-solid fa-flask" style="color:var(--accent); font-size:2rem; margin-bottom:15px;"></i><h3>Chemistry</h3></div>
-            <div class="s-card"><i class="fa-solid fa-dna" style="color:var(--accent); font-size:2rem; margin-bottom:15px;"></i><h3>Biology</h3></div>
-        </section>
+    <div class="auth-card">
+        <h2 style="margin-bottom:20px;">Create Account</h2>
+        <input type="text" id="uName" placeholder="Enter Your Full Name">
+        <input type="email" placeholder="Email Address">
+        <button class="btn" onclick="createAccount()">JOIN THE ARCHIVE</button>
     </div>
 
     <script>
-        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
-        function join() {
-            const name = document.getElementById('uName').value;
-            if(name) { localStorage.setItem('ijmb_user', name); window.location.href = 'ijmbpq.html'; }
-            else { alert("Enter your name!"); }
+        function createAccount() {
+            const fullName = document.getElementById('uName').value;
+            
+            if(fullName.length > 2) {
+                // STEP 1: Save the name to browser memory
+                localStorage.setItem('scholarName', fullName);
+                
+                // STEP 2: Move to the dashboard
+                window.location.href = 'ijmbpq.html';
+            } else {
+                alert("Please enter your real name to register.");
+            }
         }
     </script>
 </body>
