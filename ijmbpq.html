@@ -178,9 +178,12 @@ header {
 .rank-item:last-child { border-bottom: none; }
 
 /* RESPONSIVE */
-@media (max-width: 1024px) {
-    .dashboard-grid { grid-template-columns: 1fr; }
-    .sidebar-card { position: static; }
+@/* Hide full nav on small screens */
+@media (max-width: 768px) {
+  .nav-links { display: none; flex-direction: column; gap: 15px; }
+  .hamburger { display: flex; flex-direction: column; justify-content: space-around; width: 25px; height: 22px; cursor: pointer; }
+  .hamburger div { height: 3px; background: var(--text); border-radius: 2px; }
+  .nav-links.active { display: flex; position: absolute; top: 60px; right: 5%; background: var(--bg); padding: 20px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 }
 </style>
 </head>
@@ -195,6 +198,11 @@ header {
     <a href="upgrade.html">Upgrade</a>
     <a href="#" onclick="logout()">Logout</a>
 </nav>
+<div class="hamburger" onclick="toggleNav()">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
 </header>
 
 <div class="dashboard-grid">
@@ -302,6 +310,9 @@ window.addEventListener("load", () => {
         bar.style.width = bar.dataset.progress + "%";
     });
 });
+function toggleNav() {
+  document.querySelector('.nav-links').classList.toggle('active');
+}
 </script>
 
 </body>
