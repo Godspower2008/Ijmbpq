@@ -3,76 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB Pro-Archive | Secure Your 15 Points</title>
+    <title>IJMB PRO | Master Your Exams</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #020617; --accent: #6366f1; --cta: #f59e0b; --text-main: #f8fafc; --text-dim: #94a3b8; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        :root { --bg: #020617; --accent: #6366f1; --cta: #f59e0b; --glass: rgba(15, 23, 42, 0.9); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; margin: 0; line-height: 1.6; }
         
-        /* Background Glows */
-        .glow { position: fixed; inset: 0; background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #020617 80%); z-index: -1; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-
-        /* Header */
-        header { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 15px 0; }
-        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 800; }
+        /* Navigation Bar */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .nav-links a { color: #94a3b8; text-decoration: none; margin-left: 25px; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
 
         /* Hero Section */
-        .hero { padding: 160px 0 80px; text-align: center; }
-        .hero-badge { display: inline-block; padding: 8px 16px; border-radius: 100px; background: rgba(99, 102, 241, 0.1); color: var(--accent); font-size: 0.8rem; font-weight: 700; border: 1px solid var(--accent); margin-bottom: 20px; }
-        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 25px; background: linear-gradient(to bottom, #fff 40%, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero { padding: 120px 5% 80px; text-align: center; max-width: 900px; margin: 0 auto; }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; color: #94a3b8; margin-bottom: 40px; }
         
-        /* High Contrast CTA */
-        .cta-btn { background: var(--cta); color: #000; padding: 18px 40px; border-radius: 14px; font-weight: 800; text-decoration: none; display: inline-block; font-size: 1.1rem; box-shadow: 0 15px 30px rgba(245, 158, 11, 0.3); transition: 0.3s; }
-        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(245, 158, 11, 0.4); }
+        /* Buttons */
+        .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 16px 32px; border-radius: 12px; font-weight: 800; text-decoration: none; transition: 0.3s; display: inline-block; }
+        .btn-main { background: var(--cta); color: #000; box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3); }
+        .btn-main:hover { transform: translateY(-3px); }
+        .btn-outline { border: 1px solid rgba(255,255,255,0.1); color: #fff; background: rgba(255,255,255,0.05); }
 
-        /* Features */
-        .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 80px; }
-        .feat-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 24px; text-align: left; }
-        .feat-card i { font-size: 2rem; color: var(--accent); margin-bottom: 20px; }
-
-        @media (max-width: 768px) { .hero h1 { font-size: 2.8rem; } }
+        /* Social Proof */
+        .social-proof { margin-top: 60px; padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
-    <div class="glow"></div>
-    <header>
-        <div class="container nav-flex">
-            <div class="logo">IJMB<span style="color:var(--accent)">PRO</span></div>
-            <a href="login.html" class="cta-btn" style="padding: 10px 20px; font-size: 0.8rem;">STUDENT LOGIN</a>
+    <nav>
+        <div class="logo">IJMB<span style="color:var(--accent)">PRO</span></div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#subjects">Subjects</a>
+            <a href="login.html" style="background:var(--accent); color:white; padding:8px 20px; border-radius:8px;">Login</a>
         </div>
-    </header>
+    </nav>
 
-    <section class="hero container">
-        <div class="hero-badge">🎓 Official 2026 Archive Portal</div>
-        <h1>Stop Guessing. Start <span style="color:var(--accent)">Mastering</span> Theory.</h1>
-        <p style="font-size: 1.2rem; color: var(--text-dim); max-width: 700px; margin: 0 auto 40px;">Get instant access to authentic IJMB marking schemes and step-by-step solutions designed to secure your 15 points.</p>
-        <a href="login.html" class="cta-btn">START PRACTICING NOW</a>
+    <section class="hero">
+        <h1>Practice Past Papers. <span style="color:var(--accent)">Master Theory.</span> Track Your Rank.</h1>
+        <p>The all-in-one portal for IJMB candidates to access verified marking schemes, science solutions, and national leaderboards.</p>
+        
+        <div class="btn-group">
+            <a href="register.html" class="btn btn-main">GET STARTED NOW</a>
+            <a href="#subjects" class="btn btn-outline">EXPLORE SUBJECTS</a>
+        </div>
 
-        <div class="feat-grid">
-            <div class="feat-card">
-                <i class="fa-solid fa-scroll"></i>
-                <h3>Verified Schemes</h3>
-                <p>Study with the exact keywords IJMB examiners use to award marks.</p>
-            </div>
-            <div class="feat-card">
-                <i class="fa-solid fa-microscope"></i>
-                <h3>Science Vault</h3>
-                <p>Detailed Physics, Chemistry, and Biology worked solutions.</p>
-            </div>
-            <div class="feat-card">
-                <i class="fa-solid fa-ranking-star"></i>
-                <h3>Global Rankings</h3>
-                <p>See how you rank against candidates across Nigeria.</p>
-            </div>
+        <div class="social-proof">
+            <i class="fa-solid fa-users" style="margin-right: 8px;"></i> Trusted by 500+ IJMB Scholars Nationwide
         </div>
     </section>
-
-    <footer style="padding: 60px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
-        <p style="color: var(--text-dim); font-size: 0.9rem;">&copy; 2026 IJMB Pro-Archive. All rights reserved.</p>
-    </footer>
 </body>
 </html>
