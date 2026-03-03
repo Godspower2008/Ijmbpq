@@ -3,71 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | IJMB PRO</title>
+    <title>Student Dashboard | IJMB PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --border: rgba(255,255,255,0.08); }
+        :root { --bg: #020617; --card: #0f172a; --accent: #6366f1; --border: rgba(255,255,255,0.08); --live: #10b981; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; margin: 0; }
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-        
-        /* Card Styling */
-        .panel { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
-        h2 { font-size: 1.3rem; margin-top: 0; display: flex; align-items: center; gap: 10px; }
-        
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+
+        /* Live Indicator */
+        .live-status { display: flex; align-items: center; gap: 10px; background: rgba(16, 185, 129, 0.1); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--live); width: fit-content; margin-bottom: 25px; }
+        .dot { width: 10px; height: 10px; background: var(--live); border-radius: 50%; box-shadow: 0 0 10px var(--live); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.7; } 70% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.7; } }
+
+        /* Layout Grid */
+        .portal-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
+        @media (max-width: 950px) { .portal-grid { grid-template-columns: 1fr; } }
+
+        /* Panels */
+        .panel { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 30px; position: relative; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .close-btn { background: none; border: none; color: #64748b; cursor: pointer; font-size: 1.3rem; transition: 0.3s; }
+        .close-btn:hover { color: #ef4444; }
+
         /* Subject Cards */
-        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 25px; }
-        .sub-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 25px; border-radius: 20px; text-decoration: none; color: white; transition: 0.3s; }
-        .sub-card:hover { transform: translateY(-5px); border-color: var(--accent); background: rgba(99,102,241,0.1); }
-        .sub-card i { font-size: 2rem; color: var(--accent); margin-bottom: 15px; display: block; }
-        .sub-card h3 { margin: 0 0 8px; font-size: 1.1rem; }
+        .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+        .sub-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 25px; border-radius: 20px; text-decoration: none; color: white; transition: 0.3s; text-align: center; }
+        .sub-card:hover { transform: translateY(-8px); border-color: var(--accent); background: rgba(99,102,241,0.1); box-shadow: 0 10px 30px rgba(99,102,241,0.2); }
+        .sub-card i { font-size: 2.2rem; color: var(--accent); margin-bottom: 15px; display: block; }
+        .sub-card h3 { margin: 0 0 8px; font-size: 1.15rem; }
         .sub-card p { margin: 0; font-size: 0.85rem; color: #94a3b8; }
 
-        /* Real Leaderboard Items */
-        .rank-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .rank-item:last-child { border: none; }
-        .user { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 32px; height: 32px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.7rem; }
-        
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+        /* Leaderboard Items */
+        .rank-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .user-box { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 35px; height: 35px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <main class="panel">
-            <h2><i class="fa-solid fa-graduation-cap"></i> Academic Archives</h2>
-            <div class="subject-grid">
-                <a href="physics.html" class="sub-card">
-                    <i class="fa-solid fa-atom"></i>
-                    <h3>Physics</h3>
-                    <p>Theory questions + full step-by-step marking schemes.</p>
-                </a>
-                <a href="chemistry.html" class="sub-card">
-                    <i class="fa-solid fa-flask"></i>
-                    <h3>Chemistry</h3>
-                    <p>Comprehensive solutions for 2020-2025 past papers.</p>
-                </a>
-                <a href="biology.html" class="sub-card">
-                    <i class="fa-solid fa-dna"></i>
-                    <h3>Biology</h3>
-                    <p>Visual diagrams and explanatory theory notes.</p>
-                </a>
-            </div>
-        </main>
 
-        <aside class="panel">
-            <h2><i class="fa-solid fa-trophy"></i> Top Scholars</h2>
-            <div id="leaderboard">
-                <div class="rank-item">
-                    <div class="user"><div class="avatar">AM</div> <span>Adebayo M.</span></div>
-                    <span style="color:var(--accent); font-weight:800;">15.0</span>
+    <header id="global-header"></header>
+
+    <div class="container">
+        <div class="live-status">
+            <span class="dot"></span>
+            <span style="color: var(--live); font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">
+                <span id="active-count">...</span> SCHOLARS ONLINE
+            </span>
+        </div>
+
+        <div class="portal-grid">
+            <main class="panel" id="main-archive">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-book-open" style="margin-right: 10px; color:var(--accent)"></i> Academic Archives</h2>
+                    <button class="close-btn" onclick="closeSection('main-archive')"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <div class="rank-item">
-                    <div class="user"><div class="avatar">CO</div> <span>Chinelo O.</span></div>
-                    <span style="color:var(--accent); font-weight:800;">14.5</span>
+                <div class="sub-grid">
+                    <a href="physics.html" class="sub-card">
+                        <i class="fa-solid fa-atom"></i>
+                        <h3>Physics</h3>
+                        <p>Theory questions + full marking schemes.</p>
+                    </a>
+                    <a href="chemistry.html" class="sub-card">
+                        <i class="fa-solid fa-flask"></i>
+                        <h3>Chemistry</h3>
+                        <p>Detailed solutions for 2020-2025 papers.</p>
+                    </a>
+                    <a href="biology.html" class="sub-card">
+                        <i class="fa-solid fa-dna"></i>
+                        <h3>Biology</h3>
+                        <p>Visual diagrams and explanatory notes.</p>
+                    </a>
                 </div>
-            </div>
-        </aside>
+            </main>
+
+            <aside class="panel" id="leaderboard-panel">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-trophy" style="margin-right: 10px; color:var(--accent)"></i> Top Scholars</h2>
+                    <button class="close-btn" onclick="closeSection('leaderboard-panel')"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="leaderboard-data">
+                    <div class="rank-item">
+                        <div class="user-box"><div class="avatar">AM</div> <span>Adebayo M.</span></div>
+                        <span style="color:var(--accent); font-weight:800;">15.0 pts</span>
+                    </div>
+                    <div class="rank-item">
+                        <div class="user-box"><div class="avatar">CO</div> <span>Chinelo O.</span></div>
+                        <span style="color:var(--accent); font-weight:800;">14.5 pts</span>
+                    </div>
+                    <div class="rank-item">
+                        <div class="user-box"><div class="avatar">SJ</div> <span>Samuel J.</span></div>
+                        <span style="color:var(--accent); font-weight:800;">14.0 pts</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="app.js"></script>
+
+    <script>
+        // Use your real Firebase Config here
+        const firebaseConfig = { 
+            apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU", 
+            databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com" 
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // 1. REAL-TIME PRESENCE (ACTUAL PEOPLE ONLINE)
+        const presenceRef = db.ref("online_users");
+        db.ref(".info/connected").on("value", (snap) => {
+            if (snap.val() === true) {
+                const myUserRef = presenceRef.push();
+                myUserRef.set(true);
+                myUserRef.onDisconnect().remove();
+            }
+        });
+
+        presenceRef.on("value", (snap) => {
+            document.getElementById('active-count').innerText = snap.numChildren();
+        });
+
+        // 2. PROFESSIONAL CLOSE LOGIC
+        function closeSection(id) {
+            const el = document.getElementById(id);
+            el.style.opacity = "0";
+            el.style.transform = "translateY(20px) scale(0.95)";
+            setTimeout(() => { el.style.display = "none"; }, 500);
+        }
+    </script>
 </body>
 </html>
