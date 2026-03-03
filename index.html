@@ -3,63 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB PRO | Secure Your 15 Points</title>
+    <title>IJMB PRO | Official 2026 Archive</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #020617; --accent: #6366f1; --cta: #f59e0b; --glass: rgba(15, 23, 42, 0.8); }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow-x: hidden; }
-        .glow { position: absolute; width: 400px; height: 400px; background: var(--accent); filter: blur(150px); opacity: 0.15; z-index: -1; top: 10%; left: 10%; }
-        
-        .auth-container { width: 100%; max-width: 450px; padding: 20px; z-index: 1; }
-        .logo { font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 30px; letter-spacing: -1px; }
-        
-        .auth-card { background: var(--glass); backdrop-filter: blur(20px); padding: 40px; border-radius: 32px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        h1 { font-size: 1.5rem; text-align: center; margin-bottom: 10px; }
-        p { text-align: center; color: #94a3b8; font-size: 0.9rem; margin-bottom: 30px; }
-        
-        input { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2); }
-        
-        .btn-cta { width: 100%; padding: 18px; background: var(--cta); color: #000; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(245, 158, 11, 0.4); }
-        
-        .footer-link { text-align: center; margin-top: 25px; font-size: 0.85rem; color: #64748b; }
-        .footer-link a { color: var(--accent); text-decoration: none; font-weight: 700; }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; }
+        .logo { font-size: 1.6rem; font-weight: 800; text-decoration: none; color: white; }
+        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; padding: 80px 0; align-items: center; }
+        .hero-h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 25px; }
+        .auth-card { background: var(--glass); backdrop-filter: blur(20px); padding: 40px; border-radius: 32px; border: 1px solid rgba(99, 102, 241, 0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        input { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; outline: none; }
+        .btn-cta { width: 100%; padding: 18px; background: var(--cta); color: #000; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; width: 100%; }
+        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.4); }
+        .subject-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; padding: 60px 0; }
+        .s-card { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .s-card:hover { border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
+        @media (max-width: 900px) { .hero, .subject-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <div class="glow"></div>
-    <div class="auth-container">
-        <div class="logo">IJMB<span style="color:var(--accent)">PRO</span></div>
-        <div class="auth-card">
-            <h1>Scholar Access</h1>
-            <p>Enter your details to access the 2026 Archive</p>
-            
-            <input type="text" id="userName" placeholder="Full Name" required>
-            <input type="email" placeholder="Email Address">
-            <input type="password" placeholder="Create Password">
-            
-            <button class="btn-cta" onclick="handleLogin()">Enter Archive</button>
-            
-            <div class="footer-link">
-                Already a member? <a href="#">Sign In instead</a>
+    <div class="container">
+        <nav>
+            <a href="index.html" class="logo">IJMB<span style="color:var(--accent)">PRO</span></a>
+            <a href="#register" style="color:white; background:var(--accent); padding:10px 20px; border-radius:10px; text-decoration:none; font-weight:700;">GET STARTED</a>
+        </nav>
+        <section class="hero">
+            <div class="hero-text">
+                <div style="display:inline-block; padding:8px 16px; border-radius:100px; background:rgba(99,102,241,0.1); border:1px solid var(--accent); color:var(--accent); font-size:0.8rem; font-weight:700; margin-bottom:20px;">🎓 OFFICIAL 2026 ARCHIVE</div>
+                <h1 class="hero-h1">Master the <span style="color:var(--accent)">Science</span>. <br>Secure the Points.</h1>
+                <p style="color:#94a3b8; font-size: 1.2rem; margin-bottom: 30px;">Access verified IJMB marking schemes and step-by-step solutions designed to secure your 15 points.</p>
             </div>
+            <div class="auth-card" id="register">
+                <h3 style="margin-bottom:20px; text-align:center;">Create Scholar Account</h3>
+                <input type="text" id="uName" placeholder="Full Name">
+                <input type="email" placeholder="Email Address">
+                <input type="password" placeholder="Password">
+                <button class="btn-cta" onclick="join()">JOIN THE 2026 COHORT</button>
+            </div>
+        </section>
+        <div class="subject-grid">
+            <div class="s-card"><i class="fa-solid fa-atom" style="color:var(--accent); font-size:2rem; margin-bottom:15px;"></i><h3>Physics</h3><p style="font-size:0.8rem; color:#64748b;">Mechanics & Optics</p></div>
+            <div class="s-card"><i class="fa-solid fa-flask" style="color:var(--accent); font-size:2rem; margin-bottom:15px;"></i><h3>Chemistry</h3><p style="font-size:0.8rem; color:#64748b;">Organic & Inorganic</p></div>
+            <div class="s-card"><i class="fa-solid fa-dna" style="color:var(--accent); font-size:2rem; margin-bottom:15px;"></i><h3>Biology</h3><p style="font-size:0.8rem; color:#64748b;">Anatomy & Genetics</p></div>
         </div>
     </div>
-
     <script>
-        function handleLogin() {
-            const name = document.getElementById('userName').value;
-            if (name.length > 2) {
-                // Save name to browser memory
-                localStorage.setItem('ijmb_user', name);
-                // Redirect to the Dashboard
-                window.location.href = 'ijmbpq.html';
-            } else {
-                alert("Please enter your full name to proceed.");
-            }
+        function join() {
+            const name = document.getElementById('uName').value;
+            if(name) { localStorage.setItem('ijmb_user', name); window.location.href = 'ijmbpq.html'; }
+            else { alert("Please enter your name!"); }
         }
     </script>
 </body>
