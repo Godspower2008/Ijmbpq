@@ -3,50 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB PRO | Join 2026 Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>IJMB PRO | 2026 Official Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #020617; --accent: #6366f1; --cta: #f59e0b; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-        
-        .auth-card { background: #0f172a; padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .logo { font-size: 2rem; font-weight: 800; margin-bottom: 30px; }
-        
-        input { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--accent); }
-        
-        .btn-cta { width: 100%; padding: 18px; background: var(--cta); color: #000; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; }
-        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3); }
-        
-        p { color: #94a3b8; font-size: 0.9rem; margin-top: 20px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .auth-card { background: #0f172a; padding: 40px; border-radius: 32px; border: 1px solid rgba(99, 102, 241, 0.3); width: 100%; max-width: 450px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        .logo { font-size: 2rem; font-weight: 800; margin-bottom: 20px; color: white; text-decoration: none; display: block; }
+        input { width: 100%; padding: 18px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: white; outline: none; font-size: 1rem; }
+        .btn-cta { width: 100%; padding: 20px; background: var(--cta); color: #000; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.4); }
     </style>
 </head>
 <body>
     <div class="auth-card">
-        <div class="logo">IJMB<span style="color:var(--accent)">PRO</span></div>
-        <h2 style="margin-bottom:10px;">Create Scholar Account</h2>
-        <p style="margin-bottom:30px;">Access verified 2026 marking schemes.</p>
-        
-        <input type="text" id="uName" placeholder="Full Name" required>
-        <input type="email" placeholder="Email Address">
-        <input type="password" placeholder="Create Password">
-        
-        <button class="btn-cta" onclick="createAccount()">JOIN THE ARCHIVE</button>
-        <p>Already have an account? <a href="login.html" style="color:var(--accent); text-decoration:none;">Login here</a></p>
+        <a href="#" class="logo">IJMB<span style="color:var(--accent)">PRO</span></a>
+        <h2 style="margin-bottom:10px;">Scholar Access</h2>
+        <p style="color:#94a3b8; margin-bottom:30px;">Enter your name to access the 2026 Archive.</p>
+        <input type="text" id="uName" placeholder="Full Name (First and Last)">
+        <button class="btn-cta" onclick="register()">START PRACTICE</button>
     </div>
-
     <script>
-        function createAccount() {
+        function register() {
             const name = document.getElementById('uName').value;
-            if(name.length > 2) {
-                // Save name to browser memory
+            if(name.trim().length > 2) {
                 localStorage.setItem('scholarName', name);
                 window.location.href = 'ijmbpq.html';
-            } else {
-                alert("Please enter your full name.");
-            }
+            } else { alert("Please enter your full name."); }
         }
     </script>
 </body>
