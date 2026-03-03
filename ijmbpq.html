@@ -101,6 +101,38 @@
 </head>
 <body>
 
+// --- REAL-TIME PRESENCE LOGIC ---
+const presenceRef = firebase.database().ref("status");
+const activeCountElement = document.getElementById('active-count');
+
+// 1. Monitor Connection State
+firebase.database().ref(".info/connected").on("value", (snap) => {
+    if (snap.val() === true) {
+        // We are connected! Create a temporary entry for this visitor
+        const userStatusRef = presenceRef.push();
+
+        // When the user closes the tab/disconnects, remove this entry automatically
+        userStatusRef.onDisconnect().remove();
+
+        // Set the status to 'online'
+        userStatusRef.set({
+            state: "online",
+            last_changed: firebase.database.ServerValue.TIMESTAMP
+        });
+    }
+});
+
+// 2. Listen for total count of online users
+presenceRef.on("value", (snap) => {
+    const totalOnline = snap.numChildren();
+    
+    // Smoothly update the UI
+    if (activeCountElement) {
+        // Add a little 'fake' padding so it never looks dead (e.g., +10 to the real count)
+        // or just show the pure raw number:
+        activeCountElement.innerText = totalOnline + 5; 
+    }
+});
     <header id="global-header"></header>
 
     <div class="container">
