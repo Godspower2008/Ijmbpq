@@ -76,3 +76,17 @@ async function loadTopScholars() {
         console.error("Error loading top scholars:", err);
     }
 }
+// --- Subject Progress with Animation ---
+document.querySelectorAll('.subject-card').forEach(card => {
+    const subject = card.querySelector('h3').textContent;
+    const progress = (data.progress && data.progress[subject]) || 0;
+    const fill = card.querySelector('.progress-fill');
+    card.querySelector('small').textContent = progress + "% Completed";
+
+    // Animate the width
+    fill.style.width = "0%"; // start at 0
+    setTimeout(() => {
+        fill.style.transition = "width 1.2s ease";
+        fill.style.width = progress + "%";
+    }, 100); // slight delay so animation triggers
+});
