@@ -4,16 +4,6 @@ const firebaseConfig = {
     authDomain: "ijmb-portal.firebaseapp.com",
     projectId: "ijmb-portal"
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// Auth Check
-auth.onAuthStateChanged(user => {
-    if (!user) window.location.href = "landing.html";
-    else loadDashboard(user.uid);
-});
-
 // Load Dashboard Data
 async function loadDashboard(userId) {
     try {
@@ -53,23 +43,4 @@ async function loadDashboard(userId) {
     } catch(err) {
         console.error("Error loading dashboard:", err);
     }
-}
-
-// Hamburger
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.querySelector('.nav-links');
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('open');
-});
-
-// Logout
-function logout(){
-    auth.signOut();
-    window.location.href="landing.html";
-}
-
-// Go to Subjects
-function goToSubjects(){
-    window.location.href = "/Ijmbpq/subjects.html";
 }
