@@ -15,7 +15,6 @@
     --accent: #6366f1; 
     --text: #f8fafc; 
     --text-dim: #94a3b8; 
-    --success: #10b981;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans', sans-serif; }
@@ -31,33 +30,64 @@ header {
 .logo { font-weight:800; font-size:1.2rem; color:var(--text); text-decoration:none; }
 .logo span { color: var(--accent); }
 
-.nav-links { display:flex; gap:20px; }
+.nav-links { display:flex; gap:20px; transition:0.3s; }
 .nav-links a { color:var(--text-dim); text-decoration:none; font-weight:600; transition:0.3s; }
 .nav-links a:hover { color:var(--accent); }
 
-.hamburger { display:none; flex-direction: column; justify-content: space-around; width:25px; height:22px; cursor:pointer; }
-.hamburger div { height:3px; background:var(--text); border-radius:2px; transition:0.3s; }
+.hamburger { display:none; flex-direction: column; justify-content: space-around; width:28px; height:22px; cursor:pointer; z-index:1100; }
+.hamburger div { height:3px; background:var(--text); border-radius:2px; transition:0.4s; }
 
-.nav-links.active { display:flex; position:absolute; top:60px; right:5%; background: var(--bg); padding:20px; border-radius:10px; flex-direction: column; }
+.hamburger.open div:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.open div:nth-child(2) { opacity:0; transform: translateX(-20px); }
+.hamburger.open div:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+.nav-links.active { display:flex; position:absolute; top:60px; right:5%; background: var(--bg); padding:20px; border-radius:10px; flex-direction: column; box-shadow:0 8px 20px rgba(0,0,0,0.4); }
 
 main { max-width:1200px; margin:40px auto; padding:0 5%; }
 
 h1 { margin-bottom:25px; }
 
-.exam-section { background: var(--card); padding:30px; border-radius:20px; margin-bottom:30px; }
+.exam-section { background: var(--card); padding:30px; border-radius:20px; margin-bottom:30px; box-shadow:0 5px 20px rgba(0,0,0,0.2); }
 .exam-section h2 { margin-bottom:15px; color: var(--accent); }
-.subject-combos button, .custom-options button { background: var(--accent); color:white; border:none; padding:12px 20px; margin:5px 5px 0 0; border-radius:10px; cursor:pointer; transition:0.3s; }
-.subject-combos button:hover, .custom-options button:hover { transform:translateY(-2px); }
+.subject-combos, .custom-subjects { display:flex; flex-wrap: wrap; gap:12px; margin-top:15px; }
+.subject-card { flex:1 1 140px; padding:15px; text-align:center; border-radius:15px; background: var(--glass); cursor:pointer; transition:0.3s; border:2px solid transparent; user-select:none;}
+.subject-card.selected { border-color: var(--accent); background:#1e293b;}
+.subject-card:hover { transform:translateY(-2px); background:#1e293b;}
+
+.slider-group { margin:20px 0; }
+.slider-group label { display:block; margin-bottom:6px; font-weight:600; }
+input[type="range"] { width:100%; -webkit-appearance:none; background:#1e293b; height:8px; border-radius:5px; outline:none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; background:var(--accent); border-radius:50%; cursor:pointer; transition:0.3s; }
+
+button.start-btn { background: var(--accent); color:white; border:none; padding:12px 20px; margin-top:15px; border-radius:10px; cursor:pointer; font-weight:700; transition:0.3s; }
+button.start-btn:hover { transform:translateY(-2px); }
 
 .back-btn { margin-bottom:20px; display:inline-block; background:var(--glass); color:var(--accent); padding:10px 20px; border-radius:10px; text-decoration:none; font-weight:700; }
-
-.custom-options { margin-top:20px; }
-.custom-options select { margin-right:15px; padding:10px; border-radius:8px; border:none; background:var(--glass); color:var(--text); }
 
 @media(max-width:768px){
     .nav-links { display:none; }
     .hamburger { display:flex; }
     .exam-section { padding:20px; }
+    .subject-card { flex:1 1 100%; }
+}
+.subject-combos .subject-card {
+    flex:1 1 200px;        /* make them evenly spaced */
+    padding:20px;
+    font-weight:600;
+    font-size:0.95rem;
+    text-align:center;
+    border-radius:15px;
+    background:var(--glass);
+    cursor:pointer;
+    transition:0.3s;
+    border:2px solid transparent;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    user-select:none;
+}
+.subject-combos .subject-card:hover {
+    background:#1e293b;
+    border-color:var(--accent);
+    transform:translateY(-3px);
 }
 </style>
 </head>
@@ -67,9 +97,9 @@ h1 { margin-bottom:25px; }
     <a href="dashboard.html" class="logo">IJMB<span>PRO</span></a>
     <nav class="nav-links">
         <a href="dashboard.html">Home</a>
-        <a href="subjects.html">Study</a>
+        <a href="study.html">Study</a>
         <a href="exam.html">Exam Mode</a>
-        <a href="upgrade.html">Upgrade</a>
+        <a href="pricing.html">Upgrade</a>
         <a href="#" onclick="logout()">Logout</a>
     </nav>
     <div class="hamburger" onclick="toggleHamburger(this)">
@@ -80,101 +110,104 @@ h1 { margin-bottom:25px; }
 </header>
 
 <main>
-    <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+<a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
 
-    <!-- Standard Exam Mode -->
-    <section class="exam-section">
-        <h2>Standard Exam Mode</h2>
-        <p>Select your approved subject combination:</p>
-        <div class="subject-combos">
-            <button onclick="startStandardExam(['Economics','Mathematics','Physics'])">
-                Economics + Mathematics + Physics
-            </button>
-            <button onclick="startStandardExam(['Biology','Chemistry','Economics'])">
-                Biology + Chemistry + Economics
-            </button>
-            <button onclick="startStandardExam(['Physics','Chemistry','Mathematics'])">
-                Physics + Chemistry + Mathematics
-            </button>
-        </div>
-    </section>
+<!-- Standard Exam Mode -->
+<section class="exam-section">
+    <h2>Standard Exam Mode</h2>
+    <p>Select your approved subject combination:</p>
+<div class="subject-combos">
+  <div class="subject-card" onclick="startStandardExam(['Economics','Mathematics','Physics'])">
+    Economics + Mathematics + Physics
+  </div>
+  <div class="subject-card" onclick="startStandardExam(['Biology','Chemistry','Economics'])">
+    Biology + Chemistry + Economics
+  </div>
+  <div class="subject-card" onclick="startStandardExam(['Physics','Chemistry','Mathematics'])">
+    Physics + Chemistry + Mathematics
+  </div>
+</div>
+</section>
 
-    <!-- Custom Exam Mode -->
-    <section class="exam-section">
-        <h2>Custom Exam Mode</h2>
-        <p>Select subjects (max 3) and set exam duration:</p>
-        <div class="custom-options">
-            <select id="subject1">
-                <option value="">--Subject 1--</option>
-                <option>Economics</option>
-                <option>Mathematics</option>
-                <option>Physics</option>
-                <option>Biology</option>
-                <option>Chemistry</option>
-            </select>
-            <select id="subject2">
-                <option value="">--Subject 2--</option>
-                <option>Economics</option>
-                <option>Mathematics</option>
-                <option>Physics</option>
-                <option>Biology</option>
-                <option>Chemistry</option>
-            </select>
-            <select id="subject3">
-                <option value="">--Subject 3--</option>
-                <option>Economics</option>
-                <option>Mathematics</option>
-                <option>Physics</option>
-                <option>Biology</option>
-                <option>Chemistry</option>
-            </select>
-            <button onclick="startCustomExam()">Start Exam (3 hours)</button>
-        </div>
-    </section>
-</main>
+<!-- Custom Exam Mode -->
+<section class="exam-section">
+    <h2>Custom Exam Mode</h2>
+    <p>Select subjects (max 3), exam time, and number of questions:</p>
+
+    <div class="custom-subjects">
+        <div class="subject-card" data-subject="Economics">Economics</div>
+        <div class="subject-card" data-subject="Mathematics">Mathematics</div>
+        <div class="subject-card" data-subject="Physics">Physics</div>
+        <div class="subject-card" data-subject="Biology">Biology</div>
+        <div class="subject-card" data-subject="Chemistry">Chemistry</div>
+    </div>
+
+    <div class="slider-group">
+        <label for="examTimeSlider">Exam Time: <span id="timeLabel">3</span> hours</label>
+        <input type="range" id="examTimeSlider" min="1" max="3" value="3">
+    </div>
+
+    <div class="slider-group">
+        <label for="numQuestionsSlider">Number of Questions: <span id="questionsLabel">30</span></label>
+        <input type="range" id="numQuestionsSlider" min="10" max="50" step="5" value="30">
+    </div>
+
+    <button class="start-btn" onclick="startCustomExam()">Start Custom Exam</button>
+</section>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script>
+// Firebase
 const firebaseConfig = { 
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
     authDomain: "ijmb-portal.firebaseapp.com"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
+auth.onAuthStateChanged(user => { if(!user) window.location.href="landing.html"; });
+function logout(){ auth.signOut(); window.location.href="landing.html"; }
 
-auth.onAuthStateChanged(user => {
-    if(!user) window.location.href="landing.html";
-});
-
-function logout(){
-    auth.signOut();
-    window.location.href="landing.html";
-}
-
-// Hamburger animation
-function toggleHamburger(h) {
+// Hamburger
+function toggleHamburger(h){
     h.classList.toggle('open');
     document.querySelector('.nav-links').classList.toggle('active');
 }
-document.querySelector('.hamburger div:nth-child(1)').style.transition = '0.3s';
 
-// Exam functions
+// Standard Exam
 function startStandardExam(subjects){
     localStorage.setItem('examSubjects', JSON.stringify(subjects));
-    localStorage.setItem('examTime', 180); // 3 hours in minutes
-    window.location.href = 'exam-questions.html';
+    localStorage.setItem('examTime', 180);
+    localStorage.setItem('numQuestions', 30);
+    window.location.href='exam-questions.html';
 }
 
+// Custom Exam
+const subjectCards = document.querySelectorAll('.custom-subjects .subject-card');
+subjectCards.forEach(card=>{
+    card.addEventListener('click', ()=>{
+        card.classList.toggle('selected');
+        const selected = document.querySelectorAll('.custom-subjects .subject-card.selected');
+        if(selected.length>3) card.classList.remove('selected'); // max 3
+    });
+});
+
+const timeSlider = document.getElementById('examTimeSlider');
+const timeLabel = document.getElementById('timeLabel');
+timeSlider.addEventListener('input', ()=>timeLabel.textContent = timeSlider.value);
+
+const questionsSlider = document.getElementById('numQuestionsSlider');
+const questionsLabel = document.getElementById('questionsLabel');
+questionsSlider.addEventListener('input', ()=>questionsLabel.textContent = questionsSlider.value);
+
 function startCustomExam(){
-    const s1 = document.getElementById('subject1').value;
-    const s2 = document.getElementById('subject2').value;
-    const s3 = document.getElementById('subject3').value;
-    const subjects = [s1,s2,s3].filter(s=>s);
-    if(subjects.length===0) { alert("Select at least one subject"); return; }
-    if(subjects.length>3) { alert("Maximum 3 subjects"); return; }
+    const subjects = Array.from(document.querySelectorAll('.subject-card.selected')).map(c=>c.dataset.subject);
+    if(subjects.length===0){ alert("Select at least 1 subject"); return; }
+    const time = parseInt(timeSlider.value)*60;
+    const questions = parseInt(questionsSlider.value);
     localStorage.setItem('examSubjects', JSON.stringify(subjects));
-    localStorage.setItem('examTime', 180); // 3 hours
+    localStorage.setItem('examTime', time);
+    localStorage.setItem('numQuestions', questions);
     window.location.href='exam-questions.html';
 }
 </script>
