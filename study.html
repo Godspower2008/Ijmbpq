@@ -5,65 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Study | IJMB PRO</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/study.css">
-  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+
 <header>
-  <a href="dashboard.html" class="logo">IJMB<span>PRO</span></a>
-  <nav class="nav-links">
-      <a href="profile.html">Profile</a>
-      <a href="study.html">Study</a>
-      <a href="exam.html">Exam Mode</a>
-      <a href="pricing.html">Upgrade</a>
-      <a href="#" onclick="logout()">Logout</a>
-  </nav>
-  <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
+    <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+    <nav class="nav-links">
+        <a href="ijmbpq.html">Dashboard</a>
+        <a href="study.html">Study</a>
+        <a href="exam.html">Exam Mode</a>
+        <a href="pricing.html">Upgrade</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <div class="hamburger" onclick="toggleHamburger(this)">
+        <div></div><div></div><div></div>
+    </div>
 </header>
 
-<main class="study-grid">
-<div class="back-btn-container">
-    <button class="back-btn" onclick="window.location.href='dashboard.html'">
-        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
-    </button>
+<main>
+<a href="ijmbpq.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+<h1>Study Channels</h1>
+
+<div class="subject-grid">
+    <a href="economics.html"><div class="subject-card"><h3>Economics</h3><div class="progress-bar"><div class="progress-fill" data-progress="25"></div></div><small>25% Completed</small></div></a>
+    <a href="physics.html"><div class="subject-card"><h3>Physics</h3><div class="progress-bar"><div class="progress-fill" data-progress="40"></div></div><small>40% Completed</small></div></a>
+    <a href="biology.html"><div class="subject-card"><h3>Biology</h3><div class="progress-bar"><div class="progress-fill" data-progress="10"></div></div><small>10% Completed</small></div></a>
+    <a href="chemistry.html"><div class="subject-card"><h3>Chemistry</h3><div class="progress-bar"><div class="progress-fill" data-progress="0"></div></div><small>Not Started</small></div></a>
 </div>
-  <div class="subject-card">
-    <h3>Economics</h3>
-    <div class="progress-bar"><div class="progress-fill" data-progress="0"></div></div>
-    <small>0% Completed</small>
-  </div>
-  <div class="subject-card">
-    <h3>Mathematics</h3>
-    <div class="progress-bar"><div class="progress-fill" data-progress="0"></div></div>
-    <small>0% Completed</small>
-  </div>
-  <div class="subject-card">
-    <h3>Physics</h3>
-    <div class="progress-bar"><div class="progress-fill" data-progress="0"></div></div>
-    <small>0% Completed</small>
-  </div>
-  <!-- add Biology, Chemistry similarly -->
 </main>
 
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 <script src="common.js"></script>
-<script>
-const db = firebase.firestore();
-auth.onAuthStateChanged(user=>{
-    if(!user) return;
-    db.collection('users').doc(user.uid).get().then(doc=>{
-        if(!doc.exists) return;
-        const data = doc.data();
-        document.querySelectorAll(".subject-card").forEach(card=>{
-            const name = card.querySelector("h3").textContent;
-            const progress = data.progress[name] || 0;
-            card.querySelector(".progress-fill").style.width = progress + "%";
-            card.querySelector("small").textContent = progress + "% Completed";
-        });
-    }).catch(console.error);
-});
-</script>
+<script src="study.js"></script>
 </body>
 </html>
