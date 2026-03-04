@@ -3,92 +3,141 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exam Mode | IJMB PRO</title>
+<title>Study | IJMB PRO</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root { 
     --bg: #020617; 
-    --card: #0f172a; 
-    --glass: rgba(30, 41, 59, 0.8); 
+    --card: #0f172a;
+    --glass: rgba(30, 41, 59, 0.7); 
     --border: rgba(99, 102, 241, 0.2); 
     --accent: #6366f1; 
     --text: #f8fafc; 
     --text-dim: #94a3b8; 
 }
 
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans', sans-serif; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
-body { background: var(--bg); color: var(--text); }
-
-header {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:15px 5%; background: var(--glass); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border); position: sticky; top:0; z-index:1000;
+body {
+    font-family:'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
 }
 
-.logo { font-weight:800; font-size:1.2rem; color:var(--text); text-decoration:none; }
+/* HEADER */
+header {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:15px 5%;
+    background: rgba(15,23,42,0.8);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--border);
+    position: sticky; top:0; z-index:1000;
+}
+
+.logo { font-weight:800; font-size:1.2rem; text-decoration:none; color:var(--text); }
 .logo span { color: var(--accent); }
 
-.nav-links { display:flex; gap:20px; transition:0.3s; }
-.nav-links a { color:var(--text-dim); text-decoration:none; font-weight:600; transition:0.3s; }
-.nav-links a:hover { color:var(--accent); }
+.nav-links {
+    display:flex;
+    gap: 25px;
+}
 
-.hamburger { display:none; flex-direction: column; justify-content: space-around; width:28px; height:22px; cursor:pointer; z-index:1100; }
-.hamburger div { height:3px; background:var(--text); border-radius:2px; transition:0.4s; }
+.nav-links a {
+    text-decoration:none;
+    color: var(--text-dim);
+    font-weight:600;
+    transition:0.3s;
+}
 
-.hamburger.open div:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
-.hamburger.open div:nth-child(2) { opacity:0; transform: translateX(-20px); }
-.hamburger.open div:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+.nav-links a:hover { color: var(--accent); }
 
-.nav-links.active { display:flex; position:absolute; top:60px; right:5%; background: var(--bg); padding:20px; border-radius:10px; flex-direction: column; box-shadow:0 8px 20px rgba(0,0,0,0.4); }
+/* HAMBURGER */
+.hamburger {
+    display:none; flex-direction:column; justify-content:space-around;
+    width:30px; height:24px; cursor:pointer; z-index:1100;
+}
+.hamburger div { width:100%; height:3px; background:var(--text); border-radius:2px; transition:0.4s; }
+.hamburger.open div:nth-child(1){ transform: rotate(45deg) translate(5px,5px);}
+.hamburger.open div:nth-child(2){ opacity:0;}
+.hamburger.open div:nth-child(3){ transform: rotate(-45deg) translate(5px,-5px);}
 
-main { max-width:1200px; margin:40px auto; padding:0 5%; }
+/* MOBILE NAV */
+@media(max-width:768px){
+    .nav-links {
+        display:none;
+        flex-direction:column;
+        gap:15px;
+        position:absolute;
+        top:60px;
+        right:5%;
+        background:rgba(30,41,59,0.95);
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 10px 20px rgba(0,0,0,0.4);
+        transition: all 0.4s ease;
+    }
+    .nav-links.active { display:flex; }
+    .nav-links a {
+        display:block;
+        padding:12px 20px;
+        background: var(--card);
+        border-radius:12px;
+        text-align:center;
+        color:var(--text);
+    }
+    .nav-links a:hover {
+        background: var(--accent);
+        color:#fff;
+        transform:translateY(-2px);
+    }
+    .hamburger { display:flex; }
+}
+
+/* MAIN CONTENT */
+main {
+    max-width:1200px;
+    margin:40px auto;
+    padding:0 5%;
+}
 
 h1 { margin-bottom:25px; }
 
-.exam-section { background: var(--card); padding:30px; border-radius:20px; margin-bottom:30px; box-shadow:0 5px 20px rgba(0,0,0,0.2); }
-.exam-section h2 { margin-bottom:15px; color: var(--accent); }
-.subject-combos, .custom-subjects { display:flex; flex-wrap: wrap; gap:12px; margin-top:15px; }
-.subject-card { flex:1 1 140px; padding:15px; text-align:center; border-radius:15px; background: var(--glass); cursor:pointer; transition:0.3s; border:2px solid transparent; user-select:none;}
-.subject-card.selected { border-color: var(--accent); background:#1e293b;}
-.subject-card:hover { transform:translateY(-2px); background:#1e293b;}
-
-.slider-group { margin:20px 0; }
-.slider-group label { display:block; margin-bottom:6px; font-weight:600; }
-input[type="range"] { width:100%; -webkit-appearance:none; background:#1e293b; height:8px; border-radius:5px; outline:none; }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; background:var(--accent); border-radius:50%; cursor:pointer; transition:0.3s; }
-
-button.start-btn { background: var(--accent); color:white; border:none; padding:12px 20px; margin-top:15px; border-radius:10px; cursor:pointer; font-weight:700; transition:0.3s; }
-button.start-btn:hover { transform:translateY(-2px); }
-
-.back-btn { margin-bottom:20px; display:inline-block; background:var(--glass); color:var(--accent); padding:10px 20px; border-radius:10px; text-decoration:none; font-weight:700; }
-
-@media(max-width:768px){
-    .nav-links { display:none; }
-    .hamburger { display:flex; }
-    .exam-section { padding:20px; }
-    .subject-card { flex:1 1 100%; }
+.subject-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:25px;
 }
-.subject-combos .subject-card {
-    flex:1 1 200px;        /* make them evenly spaced */
-    padding:20px;
-    font-weight:600;
-    font-size:0.95rem;
-    text-align:center;
-    border-radius:15px;
-    background:var(--glass);
+
+.subject-card {
+    background: var(--card);
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:25px;
     cursor:pointer;
     transition:0.3s;
-    border:2px solid transparent;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-    user-select:none;
 }
-.subject-combos .subject-card:hover {
+
+.subject-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px -15px rgba(99,102,241,0.3);
+}
+
+.progress-bar {
+    height:8px;
     background:#1e293b;
-    border-color:var(--accent);
-    transform:translateY(-3px);
+    border-radius:10px;
+    overflow:hidden;
+    margin:15px 0;
 }
+
+.progress-fill {
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition: width 1.2s ease;
+}
+.back-btn { margin-bottom:20px; display:inline-block; background:var(--glass); color:var(--accent); padding:10px 20px; border-radius:10px; text-decoration:none; font-weight:700; }
 </style>
 </head>
 <body>
@@ -96,121 +145,100 @@ button.start-btn:hover { transform:translateY(-2px); }
 <header>
     <a href="dashboard.html" class="logo">IJMB<span>PRO</span></a>
     <nav class="nav-links">
-        <a href="dashboard.html">Home</a>
+        <a href="profile.html">Profile</a>
         <a href="study.html">Study</a>
         <a href="exam.html">Exam Mode</a>
         <a href="pricing.html">Upgrade</a>
         <a href="#" onclick="logout()">Logout</a>
     </nav>
-    <div class="hamburger" onclick="toggleHamburger(this)">
-        <div></div>
-        <div></div>
-        <div></div>
+    <div class="hamburger" id="hamburger">
+        <div></div><div></div><div></div>
     </div>
 </header>
 
 <main>
-<a href="#" class="back-btn" onclick="goBack()">
+  <a href="#" class="back-btn" onclick="goBack()">
     <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
 </a>
-<!-- Standard Exam Mode -->
-<section class="exam-section">
-    <h2>Standard Exam Mode</h2>
-    <p>Select your approved subject combination:</p>
-<div class="subject-combos">
-  <div class="subject-card" onclick="startStandardExam(['Economics','Mathematics','Physics'])">
-    Economics + Mathematics + Physics
-  </div>
-  <div class="subject-card" onclick="startStandardExam(['Biology','Chemistry','Economics'])">
-    Biology + Chemistry + Economics
-  </div>
-  <div class="subject-card" onclick="startStandardExam(['Physics','Chemistry','Mathematics'])">
-    Physics + Chemistry + Mathematics
-  </div>
+<h1>Study Channels</h1>
+
+<div class="subject-grid">
+    <a href="economics.html" style="text-decoration:none; color:inherit;">
+        <div class="subject-card">
+            <h3>Economics</h3>
+            <div class="progress-bar"><div class="progress-fill" data-progress="25"></div></div>
+            <small>25% Completed</small>
+        </div>
+    </a>
+
+    <a href="physics.html" style="text-decoration:none; color:inherit;">
+        <div class="subject-card">
+            <h3>Physics</h3>
+            <div class="progress-bar"><div class="progress-fill" data-progress="40"></div></div>
+            <small>40% Completed</small>
+        </div>
+    </a>
+
+    <a href="biology.html" style="text-decoration:none; color:inherit;">
+        <div class="subject-card">
+            <h3>Biology</h3>
+            <div class="progress-bar"><div class="progress-fill" data-progress="10"></div></div>
+            <small>10% Completed</small>
+        </div>
+    </a>
+
+    <a href="chemistry.html" style="text-decoration:none; color:inherit;">
+        <div class="subject-card">
+            <h3>Chemistry</h3>
+            <div class="progress-bar"><div class="progress-fill" data-progress="0"></div></div>
+            <small>Not Started</small>
+        </div>
+    </a>
 </div>
-</section>
-
-<!-- Custom Exam Mode -->
-<section class="exam-section">
-    <h2>Custom Exam Mode</h2>
-    <p>Select subjects (max 3), exam time, and number of questions:</p>
-
-    <div class="custom-subjects">
-        <div class="subject-card" data-subject="Economics">Economics</div>
-        <div class="subject-card" data-subject="Mathematics">Mathematics</div>
-        <div class="subject-card" data-subject="Physics">Physics</div>
-        <div class="subject-card" data-subject="Biology">Biology</div>
-        <div class="subject-card" data-subject="Chemistry">Chemistry</div>
-    </div>
-
-    <div class="slider-group">
-        <label for="examTimeSlider">Exam Time: <span id="timeLabel">3</span> hours</label>
-        <input type="range" id="examTimeSlider" min="1" max="3" value="3">
-    </div>
-
-    <div class="slider-group">
-        <label for="numQuestionsSlider">Number of Questions: <span id="questionsLabel">30</span></label>
-        <input type="range" id="numQuestionsSlider" min="10" max="50" step="5" value="30">
-    </div>
-
-    <button class="start-btn" onclick="startCustomExam()">Start Custom Exam</button>
-</section>
+</main>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script>
-// Firebase
 const firebaseConfig = { 
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
     authDomain: "ijmb-portal.firebaseapp.com"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-auth.onAuthStateChanged(user => { if(!user) window.location.href="landing.html"; });
-function logout(){ auth.signOut(); window.location.href="landing.html"; }
 
-// Hamburger
-function toggleHamburger(h){
-    h.classList.toggle('open');
-    document.querySelector('.nav-links').classList.toggle('active');
+auth.onAuthStateChanged(user=>{
+    if(!user) window.location.href="landing.html";
+});
+
+function logout(){
+    auth.signOut();
+    window.location.href="landing.html";
 }
 
-// Standard Exam
-function startStandardExam(subjects){
-    localStorage.setItem('examSubjects', JSON.stringify(subjects));
-    localStorage.setItem('examTime', 180);
-    localStorage.setItem('numQuestions', 30);
-    window.location.href='exam-questions.html';
-}
+// Hamburger toggle
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.querySelector('.nav-links');
 
-// Custom Exam
-const subjectCards = document.querySelectorAll('.custom-subjects .subject-card');
-subjectCards.forEach(card=>{
-    card.addEventListener('click', ()=>{
-        card.classList.toggle('selected');
-        const selected = document.querySelectorAll('.custom-subjects .subject-card.selected');
-        if(selected.length>3) card.classList.remove('selected'); // max 3
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('open');
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('.nav-links a').forEach(link=>{
+    link.addEventListener('click', ()=>{
+        navLinks.classList.remove('active');
+        hamburger.classList.remove('open');
     });
 });
 
-const timeSlider = document.getElementById('examTimeSlider');
-const timeLabel = document.getElementById('timeLabel');
-timeSlider.addEventListener('input', ()=>timeLabel.textContent = timeSlider.value);
-
-const questionsSlider = document.getElementById('numQuestionsSlider');
-const questionsLabel = document.getElementById('questionsLabel');
-questionsSlider.addEventListener('input', ()=>questionsLabel.textContent = questionsSlider.value);
-
-function startCustomExam(){
-    const subjects = Array.from(document.querySelectorAll('.subject-card.selected')).map(c=>c.dataset.subject);
-    if(subjects.length===0){ alert("Select at least 1 subject"); return; }
-    const time = parseInt(timeSlider.value)*60;
-    const questions = parseInt(questionsSlider.value);
-    localStorage.setItem('examSubjects', JSON.stringify(subjects));
-    localStorage.setItem('examTime', time);
-    localStorage.setItem('numQuestions', questions);
-    window.location.href='exam-questions.html';
-}
+// Animate progress bars
+window.addEventListener('load', () => {
+    document.querySelectorAll(".progress-fill").forEach(bar=>{
+        bar.style.width = bar.dataset.progress + "%";
+    });
+});
 function goBack() {
     if (history.length > 1) {
         history.back();
@@ -219,5 +247,6 @@ function goBack() {
     }
 }
 </script>
+
 </body>
 </html>
