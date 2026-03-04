@@ -210,9 +210,9 @@ authButton.addEventListener('click',()=>{
   const msg=document.getElementById('authMessage');
   if(!email||!password){ msg.innerText='Please enter both email and password.'; return; }
   if(isSignIn){
-    auth.signInWithEmailAndPassword(email,password).then(()=>{closeModal(); window.location.href='dashboard.html';}).catch(err=>msg.innerText=err.message);
+    auth.signInWithEmailAndPassword(email,password).then(()=>{closeModal(); window.location.href='/Ijmbpq/ijmbpq.html';}).catch(err=>msg.innerText=err.message);
   } else {
-    auth.createUserWithEmailAndPassword(email,password).then(()=>{closeModal(); window.location.href='dashboard.html';}).catch(err=>msg.innerText=err.message);
+    auth.createUserWithEmailAndPassword(email,password).then(()=>{closeModal(); window.location.href='Ijmbpq/ijmbpq.html';}).catch(err=>msg.innerText=err.message);
   }
 });
 
