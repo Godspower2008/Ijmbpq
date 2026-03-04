@@ -3,227 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study Subjects | IJMBPRO</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Exam Mode | IJMB PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <style>
 :root { 
     --bg: #020617; 
-    --card: #0f172a;
-    --glass: rgba(15, 23, 42, 0.8); 
+    --card: #0f172a; 
+    --glass: rgba(30, 41, 59, 0.8); 
     --border: rgba(99, 102, 241, 0.2); 
     --accent: #6366f1; 
     --text: #f8fafc; 
-    --text-dim: #94a3b8;
+    --text-dim: #94a3b8; 
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-body { background: var(--bg); color: var(--text); line-height:1.5; }
-a { text-decoration:none; color:inherit; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans', sans-serif; }
+
+body { background: var(--bg); color: var(--text); }
 
 header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 5%; background: rgba(15,23,42,0.85);
-    backdrop-filter: blur(10px); border-bottom:1px solid var(--border);
-    position: sticky; top:0; z-index:1000;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:15px 5%; background: var(--glass); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border); position: sticky; top:0; z-index:1000;
 }
-.logo { font-weight: 800; font-size:1.4rem; color: var(--text); }
+
+.logo { font-weight:800; font-size:1.2rem; color:var(--text); text-decoration:none; }
 .logo span { color: var(--accent); }
 
 .nav-links { display:flex; gap:20px; transition:0.3s; }
-.nav-links a { color: var(--text-dim); font-weight:600; font-size:0.95rem; transition:0.3s; }
-.nav-links a:hover { color: var(--accent); }
+.nav-links a { color:var(--text-dim); text-decoration:none; font-weight:600; transition:0.3s; }
+.nav-links a:hover { color:var(--accent); }
 
-.hamburger { display:none; flex-direction: column; justify-content: space-around; width: 25px; height: 22px; cursor: pointer; z-index:2000; }
-.hamburger div { height:3px; background: var(--text); border-radius:2px; transition: all 0.3s ease; }
-.hamburger.active div:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
-.hamburger.active div:nth-child(2) { opacity:0; }
-.hamburger.active div:nth-child(3) { transform: rotate(-45deg) translate(6px,-6px); }
-.nav-links.active { display:flex; position:absolute; top:60px; right:5%; background: var(--bg); padding:20px; border-radius:10px; flex-direction:column; gap:15px; box-shadow:0 10px 20px rgba(0,0,0,0.3); }
+.hamburger { display:none; flex-direction: column; justify-content: space-around; width:28px; height:22px; cursor:pointer; z-index:1100; }
+.hamburger div { height:3px; background:var(--text); border-radius:2px; transition:0.4s; }
 
-.hero {
-    padding: 80px 5px 40px;
-    text-align:center;
-}
-.hero h1 { font-size:clamp(2rem,5vw,3rem); font-weight:800; margin-bottom:15px; }
-.hero p { font-size:1rem; color: var(--text-dim); margin-bottom:25px; }
+.hamburger.open div:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.open div:nth-child(2) { opacity:0; transform: translateX(-20px); }
+.hamburger.open div:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
 
-.search-bar {
-    max-width:500px; margin:0 auto 40px; display:flex; gap:10px;
-}
-.search-bar input, .search-bar select {
-    flex:1; padding:10px 15px; border-radius:12px; border:none; background:var(--card); color:var(--text);
-}
-.search-bar button {
-    background: var(--accent); color:white; border:none; padding:10px 20px; border-radius:12px; cursor:pointer; font-weight:700;
-}
+.nav-links.active { display:flex; position:absolute; top:60px; right:5%; background: var(--bg); padding:20px; border-radius:10px; flex-direction: column; box-shadow:0 8px 20px rgba(0,0,0,0.4); }
 
-/* Subject Grid */
-.subject-grid {
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-    gap:25px;
-    max-width:1200px; margin:0 auto 80px; padding:0 5%;
-}
-.subject-card {
-    background: var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:20px;
-    transition:0.3s;
-    position:relative;
-    overflow:hidden;
-}
-.subject-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-6px);
-    box-shadow:0 15px 40px rgba(99,102,241,0.2);
-}
-.subject-card i {
-    font-size:2rem; color: var(--accent); margin-bottom:15px; display:block;
-}
-.subject-card h3 { margin-bottom:10px; font-weight:700; }
-.subject-card small { color: var(--text-dim); }
+main { max-width:1200px; margin:40px auto; padding:0 5%; }
 
-.progress-bar { height:8px; background:#1e293b; border-radius:10px; overflow:hidden; margin:10px 0; }
-.progress-fill { height:100%; background:var(--accent); width:0%; transition:width 1s ease; }
+h1 { margin-bottom:25px; }
 
-/* Responsive */
+.exam-section { background: var(--card); padding:30px; border-radius:20px; margin-bottom:30px; box-shadow:0 5px 20px rgba(0,0,0,0.2); }
+.exam-section h2 { margin-bottom:15px; color: var(--accent); }
+.subject-combos, .custom-subjects { display:flex; flex-wrap: wrap; gap:12px; margin-top:15px; }
+.subject-card { flex:1 1 140px; padding:15px; text-align:center; border-radius:15px; background: var(--glass); cursor:pointer; transition:0.3s; border:2px solid transparent; user-select:none;}
+.subject-card.selected { border-color: var(--accent); background:#1e293b;}
+.subject-card:hover { transform:translateY(-2px); background:#1e293b;}
+
+.slider-group { margin:20px 0; }
+.slider-group label { display:block; margin-bottom:6px; font-weight:600; }
+input[type="range"] { width:100%; -webkit-appearance:none; background:#1e293b; height:8px; border-radius:5px; outline:none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; background:var(--accent); border-radius:50%; cursor:pointer; transition:0.3s; }
+
+button.start-btn { background: var(--accent); color:white; border:none; padding:12px 20px; margin-top:15px; border-radius:10px; cursor:pointer; font-weight:700; transition:0.3s; }
+button.start-btn:hover { transform:translateY(-2px); }
+
+.back-btn { margin-bottom:20px; display:inline-block; background:var(--glass); color:var(--accent); padding:10px 20px; border-radius:10px; text-decoration:none; font-weight:700; }
+
 @media(max-width:768px){
-    .hamburger { display:flex; }
     .nav-links { display:none; }
+    .hamburger { display:flex; }
+    .exam-section { padding:20px; }
+    .subject-card { flex:1 1 100%; }
 }
-/* Extra responsiveness for smaller devices */
-
-/* Large tablets and below */
-@media(max-width:1024px){
-    .dashboard-grid { grid-template-columns: 1fr; gap:25px; }
-    .sidebar-card { position: relative; top: auto; margin-top: 30px; }
-    .metrics-row { grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap:15px; }
-    .hero h1 { font-size:2.2rem; line-height:1.3; }
-    .hero p { font-size:0.95rem; max-width:90%; margin:0 auto; }
+.subject-combos .subject-card {
+    flex:1 1 200px;        /* make them evenly spaced */
+    padding:20px;
+    font-weight:600;
+    font-size:0.95rem;
+    text-align:center;
+    border-radius:15px;
+    background:var(--glass);
+    cursor:pointer;
+    transition:0.3s;
+    border:2px solid transparent;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    user-select:none;
 }
-
-/* Tablets and large phones */
-@media(max-width:768px){
-    .hamburger { display:flex; cursor:pointer; z-index:1100; }
-    .nav-links { display:none; flex-direction: column; gap:15px; position:absolute; top:60px; right:5%; background:var(--bg); padding:20px; border-radius:15px; box-shadow:0 10px 20px rgba(0,0,0,0.3); transition:0.4s; }
-    .nav-links.active { display:flex; }
-    .subject-grid { grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:15px; }
-    .dashboard-card { padding:15px; font-size:0.95rem; }
-    .metrics-row { gap:10px; }
-}
-
-/* Phones */
-@media(max-width:480px){
-    header { padding:10px 3%; }
-    .hero { flex-direction: column; padding-top:80px; gap:20px; text-align:center; }
-    .hero h1 { font-size:1.8rem; }
-    .hero p { font-size:0.85rem; }
-    .search-bar { flex-direction: column; gap:10px; }
-    .search-bar input, .search-bar select, .search-bar button { width:100%; }
-    .subject-card { padding:12px; border-radius:12px; }
-    .progress-bar { height:6px; }
-    .progress-fill { height:100%; transition:width 1s ease; }
-    .continue-card button { width:100%; padding:10px; font-size:0.9rem; }
-    .metric-card { padding:15px; font-size:0.85rem; }
-}
-
-/* Extra tiny screens (<360px) */
-@media(max-width:360px){
-    .hero h1 { font-size:1.6rem; }
-    .hero p { font-size:0.8rem; }
-    .metrics-row { grid-template-columns: 1fr; gap:8px; }
-    .sidebar-card { padding:15px; }
-    .dashboard-card { font-size:0.9rem; padding:12px; }
+.subject-combos .subject-card:hover {
+    background:#1e293b;
+    border-color:var(--accent);
+    transform:translateY(-3px);
 }
 </style>
 </head>
 <body>
 
 <header>
-    <a href="/Ijmbpq/index.html" class="logo">IJMB<span>PRO</span></a>
-<nav class="nav-links">
-  <a href="ijmbpq.html">Home</a>
-  <a href="pricing.html">Upgrade</a>
-  <a href="exam.html">Exam Mode</a>
-  <a href="#" onclick="logout()">Logout</a>
-</nav>
+    <a href="dashboard.html" class="logo">IJMB<span>PRO</span></a>
+    <nav class="nav-links">
+        <a href="dashboard.html">Home</a>
+        <a href="study.html">Study</a>
+        <a href="exam.html">Exam Mode</a>
+        <a href="pricing.html">Upgrade</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
     <div class="hamburger" onclick="toggleHamburger(this)">
-        <div></div><div></div><div></div>
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
 </header>
 
 <main>
-<section class="hero">
-    <h1>Study Past Questions</h1>
-    <p>Browse IJMB subjects, select the year, and track your progress.</p>
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search Subject...">
-        <select id="yearFilter">
-            <option value="">All Years</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-        </select>
-        <button onclick="applyFilter()">Filter</button>
-    </div>
+<a href="#" class="back-btn" onclick="goBack()">
+    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+</a>
+<!-- Standard Exam Mode -->
+<section class="exam-section">
+    <h2>Standard Exam Mode</h2>
+    <p>Select your approved subject combination:</p>
+<div class="subject-combos">
+  <div class="subject-card" onclick="startStandardExam(['Economics','Mathematics','Physics'])">
+    Economics + Mathematics + Physics
+  </div>
+  <div class="subject-card" onclick="startStandardExam(['Biology','Chemistry','Economics'])">
+    Biology + Chemistry + Economics
+  </div>
+  <div class="subject-card" onclick="startStandardExam(['Physics','Chemistry','Mathematics'])">
+    Physics + Chemistry + Mathematics
+  </div>
+</div>
 </section>
 
-<section class="subject-grid" id="subjectGrid">
-    <div class="subject-card" data-subject="Physics" data-year="2023">
-        <i class="fa-solid fa-atom"></i>
-        <h3>Physics</h3>
-        <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
-        <small>25% Completed</small>
+<!-- Custom Exam Mode -->
+<section class="exam-section">
+    <h2>Custom Exam Mode</h2>
+    <p>Select subjects (max 3), exam time, and number of questions:</p>
+
+    <div class="custom-subjects">
+        <div class="subject-card" data-subject="Economics">Economics</div>
+        <div class="subject-card" data-subject="Mathematics">Mathematics</div>
+        <div class="subject-card" data-subject="Physics">Physics</div>
+        <div class="subject-card" data-subject="Biology">Biology</div>
+        <div class="subject-card" data-subject="Chemistry">Chemistry</div>
     </div>
 
-    <div class="subject-card" data-subject="Chemistry" data-year="2023">
-        <i class="fa-solid fa-flask"></i>
-        <h3>Chemistry</h3>
-        <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
-        <small>40% Completed</small>
+    <div class="slider-group">
+        <label for="examTimeSlider">Exam Time: <span id="timeLabel">3</span> hours</label>
+        <input type="range" id="examTimeSlider" min="1" max="3" value="3">
     </div>
 
-    <div class="subject-card" data-subject="Mathematics" data-year="2022">
-        <i class="fa-solid fa-square-root-variable"></i>
-        <h3>Mathematics</h3>
-        <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
-        <small>10% Completed</small>
+    <div class="slider-group">
+        <label for="numQuestionsSlider">Number of Questions: <span id="questionsLabel">30</span></label>
+        <input type="range" id="numQuestionsSlider" min="10" max="50" step="5" value="30">
     </div>
 
-    <div class="subject-card" data-subject="Biology" data-year="2021">
-        <i class="fa-solid fa-dna"></i>
-        <h3>Biology</h3>
-        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
-        <small>0% Completed</small>
-    </div>
+    <button class="start-btn" onclick="startCustomExam()">Start Custom Exam</button>
 </section>
-</main>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script>
-// Hamburger animation
-function toggleHamburger(el){
-    el.classList.toggle('active');
+// Firebase
+const firebaseConfig = { 
+    apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
+    authDomain: "ijmb-portal.firebaseapp.com"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+auth.onAuthStateChanged(user => { if(!user) window.location.href="landing.html"; });
+function logout(){ auth.signOut(); window.location.href="landing.html"; }
+
+// Hamburger
+function toggleHamburger(h){
+    h.classList.toggle('open');
     document.querySelector('.nav-links').classList.toggle('active');
 }
 
-// Filter/Search Function
-function applyFilter(){
-    const search = document.getElementById('searchInput').value.toLowerCase();
-    const year = document.getElementById('yearFilter').value;
-    document.querySelectorAll('.subject-card').forEach(card=>{
-        const subject = card.dataset.subject.toLowerCase();
-        const cardYear = card.dataset.year;
-        if((subject.includes(search)) && (year === "" || cardYear === year)){
-            card.style.display="block";
-        } else {
-            card.style.display="none";
-        }
+// Standard Exam
+function startStandardExam(subjects){
+    localStorage.setItem('examSubjects', JSON.stringify(subjects));
+    localStorage.setItem('examTime', 180);
+    localStorage.setItem('numQuestions', 30);
+    window.location.href='exam-questions.html';
+}
+
+// Custom Exam
+const subjectCards = document.querySelectorAll('.custom-subjects .subject-card');
+subjectCards.forEach(card=>{
+    card.addEventListener('click', ()=>{
+        card.classList.toggle('selected');
+        const selected = document.querySelectorAll('.custom-subjects .subject-card.selected');
+        if(selected.length>3) card.classList.remove('selected'); // max 3
     });
+});
+
+const timeSlider = document.getElementById('examTimeSlider');
+const timeLabel = document.getElementById('timeLabel');
+timeSlider.addEventListener('input', ()=>timeLabel.textContent = timeSlider.value);
+
+const questionsSlider = document.getElementById('numQuestionsSlider');
+const questionsLabel = document.getElementById('questionsLabel');
+questionsSlider.addEventListener('input', ()=>questionsLabel.textContent = questionsSlider.value);
+
+function startCustomExam(){
+    const subjects = Array.from(document.querySelectorAll('.subject-card.selected')).map(c=>c.dataset.subject);
+    if(subjects.length===0){ alert("Select at least 1 subject"); return; }
+    const time = parseInt(timeSlider.value)*60;
+    const questions = parseInt(questionsSlider.value);
+    localStorage.setItem('examSubjects', JSON.stringify(subjects));
+    localStorage.setItem('examTime', time);
+    localStorage.setItem('numQuestions', questions);
+    window.location.href='exam-questions.html';
 }
 function goBack() {
-    // Go back to previous page or fallback to dashboard
     if (history.length > 1) {
         history.back();
     } else {
@@ -231,6 +219,5 @@ function goBack() {
     }
 }
 </script>
-
 </body>
 </html>
