@@ -1,44 +1,48 @@
-/* ======================================
-   DASHBOARD LAYOUT
-====================================== */
+.dashboard-card{
+  background: var(--card);
+  padding: 20px;
+  border-radius: 18px;
+  margin: 30px 5%;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
+.dashboard-card:hover{
+  transform: translateY(-5px);
+}
+
+/* GRID */
 .dashboard-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 30px;
-  margin-top: 30px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 5%;
 }
 
-/* ======================================
-   PAGE TITLE
-====================================== */
-
+/* TITLE */
 #userGreet {
   font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
-/* ======================================
-   CONTINUE CARD (Overrides base card)
-====================================== */
-
+/* CONTINUE */
 .continue-card {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  padding: 25px;
   border-radius: 20px;
-  padding: 30px;
-  color: white;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  margin-bottom: 30px;
 }
 
 .continue-card h3 {
   margin-bottom: 8px;
-  font-size: 18px;
 }
 
 .continue-card p {
   font-size: 14px;
-  opacity: 0.9;
   margin-bottom: 15px;
+  opacity: 0.9;
 }
 
 .continue-card button {
@@ -46,31 +50,22 @@
   color: #4f46e5;
   padding: 10px 18px;
   border-radius: 8px;
-  font-weight: 600;
-  transition: 0.3s ease;
+  font-weight: 700;
 }
 
-.continue-card button:hover {
-  opacity: 0.9;
-}
-
-/* ======================================
-   METRICS GRID
-====================================== */
-
+/* METRICS */
 .metrics-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 20px;
-  margin-top: 30px;
+  margin-bottom: 40px;
 }
 
 .metric-card {
+  background: var(--card);
   padding: 20px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-  transition: 0.3s ease;
+  transition: 0.3s;
 }
 
 .metric-card:hover {
@@ -78,273 +73,78 @@
 }
 
 .metric-card i {
-  font-size: 20px;
-  margin-bottom: 8px;
-  color: #6366f1;
+  color: var(--accent);
+  margin-bottom: 10px;
 }
 
 .label {
   font-size: 12px;
-  opacity: 0.7;
+  color: var(--muted);
 }
 
 .value {
   font-size: 22px;
   font-weight: 700;
-  margin-top: 5px;
 }
 
-/* ======================================
-   SUBJECT CHANNELS
-====================================== */
-
+/* SUBJECTS */
 .subject-grid {
-  display: grid;.logo {
-    font-weight: 800;
-    font-size: 1.2rem;
-    text-decoration: none;
-    color: var(--text);
-}
-
-.logo span { color: var(--accent); }
-
-/* ================= NAV ================= */
-
-.nav-links {
-    display: flex;
-    gap: 25px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-dim);
-    font-weight: 600;
-    transition: 0.3s;
-}
-
-.nav-links a:hover {
-    color: var(--accent);
-}
-
-/* ================= HAMBURGER ================= */
-
-.hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 30px;
-    height: 24px;
-    cursor: pointer;
-    z-index: 1100;
-}
-
-.hamburger div {
-    width: 100%;
-    height: 3px;
-    background: var(--text);
-    border-radius: 2px;
-    transition: all 0.4s ease;
-}
-
-.hamburger.open div:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.open div:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.open div:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* ================= LAYOUT ================= */
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr minmax(280px, 1fr);
-    gap: 30px;
-    max-width: 1300px;
-    margin: 40px auto;
-    padding: 0 5%;
-}
-
-.dashboard-card{
-    background:#1e293b;
-    padding:20px;
-    border-radius:15px;
-    cursor:pointer;
-    transition:0.3s;
-    margin:20px 5%;
-}
-
-.dashboard-card:hover{
-    transform:translateY(-5px);
-    background:#334155;
-}
-
-/* ================= METRICS ================= */
-
-.metrics-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
-}
-
-.metric-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 25px;
-    border-radius: 20px;
-    transition: 0.3s;
-}
-
-.metric-card:hover {
-    transform: translateY(-6px);
-    border-color: var(--accent);
-}
-
-.metric-card i {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-    color: var(--accent);
-}
-
-.label {
-    color: var(--text-dim);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-.value {
-    font-size: 1.7rem;
-    font-weight: 800;
-}
-
-/* ================= CONTINUE CARD ================= */
-
-.continue-card {
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
-    padding: 25px;
-    border-radius: 24px;
-    margin-bottom: 40px;
-}
-
-.continue-card h3 { font-weight: 800; margin-bottom: 10px; }
-
-.continue-card p {
-    font-size: 0.85rem;
-    opacity: 0.9;
-    margin-bottom: 15px;
-}
-
-.continue-card button {
-    background: white;
-    color: #4f46e5;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-/* ================= SUBJECTS ================= */
-
-.subject-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
 }
 
 .subject-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 25px;
-    transition: 0.3s;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  transition: 0.3s;
 }
 
 .subject-card:hover {
-    border-color: var(--accent);
-    box-shadow: 0 20px 40px -15px rgba(99,102,241,0.3);
+  transform: translateY(-5px);
 }
 
 .progress-bar {
-    height: 8px;
-    background: #1e293b;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 15px 0;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  margin: 10px 0;
 }
 
 .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    width: 0%;
-    transition: width 1.2s ease;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: 1s ease;
 }
 
-/* ================= SIDEBAR ================= */
-
+/* SIDEBAR */
 .sidebar-card {
-    background: var(--glass);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 25px;
-    position: sticky;
-    top: 100px;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  position: sticky;
+  top: 100px;
 }
 
 .rank-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    font-size: 0.85rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .rank-item:last-child { border-bottom: none; }
 
-/* ================= RESPONSIVE ================= */
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
 
-@media (max-width: 1024px) {
-    .dashboard-grid { grid-template-columns: 1fr; }
-    .sidebar-card { position: relative; top: auto; margin-top: 30px; }
-}
-
-@media(max-width:768px){
-
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        gap: 15px;
-        position: absolute;
-        top: 60px;
-        right: 5%;
-        background: rgba(30, 41, 59, 0.95);
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-        z-index: 1050;
-    }
-
-    .nav-links.active { display: flex; }
-
-    .nav-links a {
-        display: block;
-        padding: 12px 20px;
-        background: var(--card);
-        border-radius: 12px;
-        text-align: center;
-        color: var(--text);
-    }
-
-    .nav-links a:hover {
-        background: var(--accent);
-        color: #fff;
-    }
-
-    .hamburger { display: flex; }
+  .sidebar-card {
+    position: relative;
+    top: auto;
+  }
 }
