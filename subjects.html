@@ -7,42 +7,66 @@
 
 <style>
 body{
-    margin: 0;
+    margin:0;
     font-family:Arial, sans-serif;
     background:#0f172a;
     color:white;
 }
 
-header{
-    padding:20px 5%;
+/* NAVBAR */
+.navbar{
+    position:sticky;
+    top:0;
     background:#111827;
+    padding:15px 5%;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    z-index:1000;
 }
 
-header h1{
-    margin:0;
-    font-size:20px;
+.navbar a{
+    color:white;
+    margin-left:20px;
+    text-decoration:none;
 }
 
+.navbar a:hover{
+    color:#60a5fa;
+}
+
+/* BREADCRUMB */
+.breadcrumb{
+    padding:10px 5%;
+    font-size:14px;
+    color:#94a3b8;
+}
+
+/* CONTAINER */
 .container{
-    padding:40px 5%;
+    padding:30px 5%;
 }
 
-.faculty-title{
-    margin-top:50px;
-    font-size:22px;
-    font-weight:bold;
-    border-bottom:2px solid #334155;
-    padding-bottom:10px;
+/* CONTROL BAR */
+.control-bar{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
 }
 
+.control-bar input,
+.control-bar select{
+    padding:10px;
+    border-radius:8px;
+    border:none;
+}
+
+/* SUBJECT GRID */
 .subject-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
     gap:25px;
-    margin-top:30px;
 }
 
 .subject-card{
@@ -58,10 +82,6 @@ header h1{
     background:#334155;
 }
 
-.subject-card h3{
-    margin-top:0;
-}
-
 .badge{
     display:inline-block;
     background:#2563eb;
@@ -71,162 +91,178 @@ header h1{
     margin-top:10px;
 }
 
-#subjectContent{
-    margin-top:60px;
+/* SUBJECT DETAIL */
+#subjectDetail{
+    margin-top:50px;
     display:none;
 }
 
-.filter-bar{
-    margin:20px 0;
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
-select{
-    padding:10px;
-    border-radius:8px;
-    border:none;
-}
-
-.question-list{
+.quiz-box{
     margin-top:20px;
+    background:#1e293b;
+    padding:20px;
+    border-radius:10px;
 }
 
-.question-item{
-    background:#1e293b;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:10px;
+.quiz-box button{
+    margin-top:10px;
+    margin-right:10px;
+    padding:8px 12px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.download-btn{
+    margin-top:20px;
+    padding:10px 15px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+}
+
+.progress{
+    margin-top:10px;
+    font-size:14px;
+    color:#60a5fa;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>IJMB Subject Portal</h1>
-    <a href="landing.html" style="color:#60a5fa;text-decoration:none;">Home</a>
+<header class="navbar">
+    <div>IJMB Portal</div>
+    <nav>
+        <a href="/Ijmbpq/landing.html">Home</a>
+        <a href="#">CN</a>
+        <a href="#">SN</a>
+        <a href="#">Contact</a>
+    </nav>
 </header>
+
+<div class="breadcrumb">
+    Home / Subjects
+</div>
 
 <div class="container">
 
-    <!-- FACULTY: SCIENCE -->
-    <div class="faculty-title">Faculty of Natural Sciences</div>
-    <div class="subject-grid">
-        <div class="subject-card" onclick="openSubject('Biology')">
-            <h3>Biology</h3>
-            <p>Cell systems, genetics, ecology & physiology.</p>
-            <div class="badge">245 Questions</div>
-        </div>
-
-        <div class="subject-card" onclick="openSubject('Chemistry')">
-            <h3>Chemistry</h3>
-            <p>Organic, inorganic & physical chemistry.</p>
-            <div class="badge">210 Questions</div>
-        </div>
-
-        <div class="subject-card" onclick="openSubject('Physics')">
-            <h3>Physics</h3>
-            <p>Mechanics, electricity, waves & motion.</p>
-            <div class="badge">198 Questions</div>
-        </div>
-
-        <div class="subject-card" onclick="openSubject('Mathematics')">
-            <h3>Mathematics</h3>
-            <p>Algebra, calculus & coordinate geometry.</p>
-            <div class="badge">260 Questions</div>
-        </div>
+    <div class="control-bar">
+        <input type="text" id="searchInput" placeholder="Search subject...">
+        <select id="sortOption">
+            <option value="default">Sort By</option>
+            <option value="questions">Most Questions</option>
+            <option value="year">Newest Year</option>
+        </select>
+        <select id="difficultyFilter">
+            <option value="all">All Difficulty</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
     </div>
 
-    <!-- SUBJECT DETAILS SECTION -->
-    <div id="subjectContent">
-        <h2 id="subjectTitle"></h2>
+    <div class="subject-grid" id="subjectGrid"></div>
 
-        <div class="filter-bar">
-            <select id="yearFilter">
-                <option value="all">All Years</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-            </select>
-
-            <select id="topicFilter">
-                <option value="all">All Topics</option>
-            </select>
+    <div id="subjectDetail">
+        <h2 id="detailTitle"></h2>
+        <p id="detailInfo"></p>
+        <div class="progress">
+            Progress: <span id="progressCount">0</span> Questions Solved
         </div>
 
-        <div class="question-list" id="questionList"></div>
+        <div class="quiz-box">
+            <h3>Quick Practice</h3>
+            <p id="quizQuestion"></p>
+            <button onclick="answerQuiz(true)">Option A</button>
+            <button onclick="answerQuiz(false)">Option B</button>
+        </div>
+
+        <a href="#" download>
+            <button class="download-btn">Download Past Questions PDF</button>
+        </a>
     </div>
 
 </div>
 
 <script>
 
-const database = {
-    Biology: [
-        {year:"2023", topic:"Cell Biology", title:"Explain mitosis process."},
-        {year:"2022", topic:"Genetics", title:"Define DNA replication."},
-        {year:"2021", topic:"Ecology", title:"Food chain explanation."}
-    ],
-    Chemistry: [
-        {year:"2023", topic:"Organic", title:"Explain alkane reactions."},
-        {year:"2022", topic:"Physical", title:"Define enthalpy."}
-    ],
-    Physics: [
-        {year:"2023", topic:"Mechanics", title:"State Newton's laws."},
-        {year:"2022", topic:"Electricity", title:"Define Ohm's law."}
-    ],
-    Mathematics: [
-        {year:"2023", topic:"Calculus", title:"Differentiate x^2."},
-        {year:"2022", topic:"Algebra", title:"Solve quadratic equation."}
-    ]
-};
+const subjects = [
+  {name:"🧬 Biology", questions:245, year:2023, difficulty:"Medium", quiz:"What is the powerhouse of the cell?"},
+  {name:"⚗ Chemistry", questions:210, year:2023, difficulty:"Hard", quiz:"What is the pH of neutral water?"},
+  {name:"⚡ Physics", questions:198, year:2022, difficulty:"Medium", quiz:"State Newton’s First Law."},
+  {name:"📐 Mathematics", questions:260, year:2023, difficulty:"Hard", quiz:"Differentiate x²."}
+];
 
-let currentSubject = null;
+const grid = document.getElementById("subjectGrid");
+const searchInput = document.getElementById("searchInput");
+const sortOption = document.getElementById("sortOption");
+const difficultyFilter = document.getElementById("difficultyFilter");
 
-function openSubject(subject){
-    currentSubject = subject;
-    document.getElementById("subjectTitle").innerText = subject;
-    document.getElementById("subjectContent").style.display = "block";
-    populateTopics();
-    displayQuestions();
-}
-
-function populateTopics(){
-    const topicSelect = document.getElementById("topicFilter");
-    topicSelect.innerHTML = '<option value="all">All Topics</option>';
-    const topics = [...new Set(database[currentSubject].map(q => q.topic))];
-    topics.forEach(topic=>{
-        const option = document.createElement("option");
-        option.value = topic;
-        option.innerText = topic;
-        topicSelect.appendChild(option);
+function renderSubjects(list){
+    grid.innerHTML = "";
+    list.forEach(sub=>{
+        grid.innerHTML += `
+        <div class="subject-card" onclick="openSubject('${sub.name}')">
+            <h3>${sub.name}</h3>
+            <p>${sub.questions} Questions</p>
+            <span class="badge">${sub.difficulty}</span>
+        </div>`;
     });
 }
 
-function displayQuestions(){
-    const year = document.getElementById("yearFilter").value;
-    const topic = document.getElementById("topicFilter").value;
+function filterAndSort(){
+    let filtered = [...subjects];
 
-    const list = document.getElementById("questionList");
-    list.innerHTML = "";
+    const search = searchInput.value.toLowerCase();
+    filtered = filtered.filter(s=>s.name.toLowerCase().includes(search));
 
-    const filtered = database[currentSubject].filter(q=>{
-        return (year==="all" || q.year===year) &&
-               (topic==="all" || q.topic===topic);
-    });
+    if(difficultyFilter.value !== "all"){
+        filtered = filtered.filter(s=>s.difficulty === difficultyFilter.value);
+    }
 
-    filtered.forEach(q=>{
-        const div = document.createElement("div");
-        div.className = "question-item";
-        div.innerHTML = `<strong>${q.year}</strong> | ${q.topic} <br> ${q.title}`;
-        list.appendChild(div);
-    });
+    if(sortOption.value === "questions"){
+        filtered.sort((a,b)=>b.questions - a.questions);
+    }
+
+    if(sortOption.value === "year"){
+        filtered.sort((a,b)=>b.year - a.year);
+    }
+
+    renderSubjects(filtered);
 }
 
-document.getElementById("yearFilter").addEventListener("change", displayQuestions);
-document.getElementById("topicFilter").addEventListener("change", displayQuestions);
+function openSubject(name){
+    const subject = subjects.find(s=>s.name===name);
+    document.getElementById("subjectDetail").style.display="block";
+    document.getElementById("detailTitle").innerText = subject.name;
+    document.getElementById("detailInfo").innerText = 
+        `${subject.questions} Questions | Latest Year: ${subject.year}`;
+    document.getElementById("quizQuestion").innerText = subject.quiz;
+
+    const saved = localStorage.getItem(name) || 0;
+    document.getElementById("progressCount").innerText = saved;
+}
+
+function answerQuiz(correct){
+    if(correct){
+        alert("Correct!");
+        let current = parseInt(localStorage.getItem(document.getElementById("detailTitle").innerText) || 0);
+        current++;
+        localStorage.setItem(document.getElementById("detailTitle").innerText, current);
+        document.getElementById("progressCount").innerText = current;
+    }else{
+        alert("Try Again");
+    }
+}
+
+searchInput.addEventListener("input", filterAndSort);
+sortOption.addEventListener("change", filterAndSort);
+difficultyFilter.addEventListener("change", filterAndSort);
+
+renderSubjects(subjects);
 
 </script>
 
