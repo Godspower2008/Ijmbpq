@@ -5,9 +5,12 @@ const firebaseConfig = {
 };
 
 
-// Animate progress bars
+// study.js
+
 window.addEventListener('load', () => {
-    document.querySelectorAll(".progress-fill").forEach(bar=>{
-        bar.style.width = bar.dataset.progress + "%";
+    // Animate progress bars
+    document.querySelectorAll(".progress-fill").forEach(bar => {
+        const progress = bar.dataset.progress || 0;
+        bar.style.width = progress + "%";
     });
 });
