@@ -1,0 +1,228 @@
+/* ===============================
+   GLOBAL RESET & BASE
+================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #f1f5f9;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+
+/* ===============================
+   NAVBAR
+================================= */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  font-size: 14px;
+  opacity: 0.8;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+}
+
+
+/* ===============================
+   MAIN CONTAINER
+================================= */
+
+.container {
+  padding: 24px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+
+/* ===============================
+   CARDS
+================================= */
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+  margin-bottom: 24px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+
+/* ===============================
+   HERO / CONTINUE SECTION
+================================= */
+
+.hero-card {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 20px;
+  padding: 30px;
+  color: white;
+}
+
+.hero-card h2 {
+  margin-bottom: 10px;
+}
+
+.hero-card button {
+  margin-top: 15px;
+  background: white;
+  color: #4f46e5;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.hero-card button:hover {
+  opacity: 0.9;
+}
+
+
+/* ===============================
+   METRICS SECTION
+================================= */
+
+.metrics {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.metric-box {
+  flex: 1;
+  min-width: 150px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.metric-label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+
+/* ===============================
+   SUBJECT CHANNELS
+================================= */
+
+.subject-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.subject-item {
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+}
+
+.progress-bar {
+  height: 6px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.2);
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #6366f1;
+  width: 0%;
+}
+
+
+/* ===============================
+   TOP SCHOLARS
+================================= */
+
+.top-scholars {
+  margin-top: 40px;
+}
+
+.scholar-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+
+/* ===============================
+   LOADING TEXT
+================================= */
+
+#loadingText {
+  margin: 20px 0;
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 768px) {
+
+  .metrics {
+    flex-direction: column;
+  }
+
+  .subject-list {
+    grid-template-columns: 1fr;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
