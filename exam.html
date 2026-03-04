@@ -18,15 +18,9 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans', sans-serif; }
-
 body { background: var(--bg); color: var(--text); }
 
-header {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:15px 5%; background: var(--glass); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border); position: sticky; top:0; z-index:1000;
-}
-
+header { display:flex; justify-content:space-between; align-items:center; padding:15px 5%; background: var(--glass); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); position: sticky; top:0; z-index:1000; }
 .logo { font-weight:800; font-size:1.2rem; color:var(--text); text-decoration:none; }
 .logo span { color: var(--accent); }
 
@@ -70,25 +64,8 @@ button.start-btn:hover { transform:translateY(-2px); }
     .exam-section { padding:20px; }
     .subject-card { flex:1 1 100%; }
 }
-.subject-combos .subject-card {
-    flex:1 1 200px;        /* make them evenly spaced */
-    padding:20px;
-    font-weight:600;
-    font-size:0.95rem;
-    text-align:center;
-    border-radius:15px;
-    background:var(--glass);
-    cursor:pointer;
-    transition:0.3s;
-    border:2px solid transparent;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-    user-select:none;
-}
-.subject-combos .subject-card:hover {
-    background:#1e293b;
-    border-color:var(--accent);
-    transform:translateY(-3px);
-}
+.subject-combos .subject-card { flex:1 1 200px; padding:20px; font-weight:600; font-size:0.95rem; text-align:center; border-radius:15px; background:var(--glass); cursor:pointer; transition:0.3s; border:2px solid transparent; box-shadow:0 5px 15px rgba(0,0,0,0.2); user-select:none; }
+.subject-combos .subject-card:hover { background:#1e293b; border-color:var(--accent); transform:translateY(-3px); }
 </style>
 </head>
 <body>
@@ -102,7 +79,7 @@ button.start-btn:hover { transform:translateY(-2px); }
         <a href="pricing.html">Upgrade</a>
         <a href="#" onclick="logout()">Logout</a>
     </nav>
-    <div class="hamburger" onclick="toggleHamburger(this)">
+    <div class="hamburger" id="hamburger">
         <div></div>
         <div></div>
         <div></div>
@@ -118,17 +95,11 @@ button.start-btn:hover { transform:translateY(-2px); }
 <section class="exam-section">
     <h2>Standard Exam Mode</h2>
     <p>Select your approved subject combination:</p>
-<div class="subject-combos">
-  <div class="subject-card" onclick="startStandardExam(['Economics','Mathematics','Physics'])">
-    Economics + Mathematics + Physics
-  </div>
-  <div class="subject-card" onclick="startStandardExam(['Biology','Chemistry','Economics'])">
-    Biology + Chemistry + Economics
-  </div>
-  <div class="subject-card" onclick="startStandardExam(['Physics','Chemistry','Mathematics'])">
-    Physics + Chemistry + Mathematics
-  </div>
-</div>
+    <div class="subject-combos">
+        <div class="subject-card" onclick="startStandardExam(['Economics','Mathematics','Physics'])">Economics + Mathematics + Physics</div>
+        <div class="subject-card" onclick="startStandardExam(['Biology','Chemistry','Economics'])">Biology + Chemistry + Economics</div>
+        <div class="subject-card" onclick="startStandardExam(['Physics','Chemistry','Mathematics'])">Physics + Chemistry + Mathematics</div>
+    </div>
 </section>
 
 <!-- Custom Exam Mode -->
@@ -161,7 +132,8 @@ button.start-btn:hover { transform:translateY(-2px); }
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-<script src="common.js"></script> <!-- shared code -->
-<script src="exam.js"></script> <!-- or study.js / exam.js -->
+<!-- JS -->
+<script src="common.js"></script>
+<script src="exam.js"></script>
 </body>
 </html>
