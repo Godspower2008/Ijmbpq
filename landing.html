@@ -228,8 +228,8 @@ document.getElementById("googleSignIn").addEventListener("click", () => {
 
 // Auto redirect
 auth.onAuthStateChanged(user=>{
-  if(user&&!window.location.href.includes('dashboard.html')){
-    window.location.href='dashboard.html';
+  if(user&&!window.location.href.includes('/Ijmbpq/ijmbpq.html')){
+    window.location.href = window.location.origin + "/Ijmbpq/ijmbpq.html";
   }
 });
 </script>
