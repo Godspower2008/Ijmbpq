@@ -3,194 +3,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study Past Questions | IJMB PRO</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Study Subjects | IJMBPRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root { 
     --bg: #020617; 
     --card: #0f172a;
-    --glass: rgba(30, 41, 59, 0.7); 
+    --glass: rgba(15, 23, 42, 0.8); 
     --border: rgba(99, 102, 241, 0.2); 
     --accent: #6366f1; 
     --text: #f8fafc; 
-    --text-dim: #94a3b8; 
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    background-image: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 50%);
+    --text-dim: #94a3b8;
 }
 
-/* BACK BUTTON */
-.back-btn {
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    background:#1e293b;
-    padding:10px 20px;
-    border-radius:12px;
-    margin-bottom:20px;
-    cursor:pointer;
-    font-weight:600;
-    text-decoration:none;
-    color:var(--text);
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+body { background: var(--bg); color: var(--text); line-height:1.5; }
+a { text-decoration:none; color:inherit; }
+
+header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 5%; background: rgba(15,23,42,0.85);
+    backdrop-filter: blur(10px); border-bottom:1px solid var(--border);
+    position: sticky; top:0; z-index:1000;
+}
+.logo { font-weight: 800; font-size:1.4rem; color: var(--text); }
+.logo span { color: var(--accent); }
+
+.nav-links { display:flex; gap:20px; transition:0.3s; }
+.nav-links a { color: var(--text-dim); font-weight:600; font-size:0.95rem; transition:0.3s; }
+.nav-links a:hover { color: var(--accent); }
+
+.hamburger { display:none; flex-direction: column; justify-content: space-around; width: 25px; height: 22px; cursor: pointer; z-index:2000; }
+.hamburger div { height:3px; background: var(--text); border-radius:2px; transition: all 0.3s ease; }
+.hamburger.active div:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.active div:nth-child(2) { opacity:0; }
+.hamburger.active div:nth-child(3) { transform: rotate(-45deg) translate(6px,-6px); }
+.nav-links.active { display:flex; position:absolute; top:60px; right:5%; background: var(--bg); padding:20px; border-radius:10px; flex-direction:column; gap:15px; box-shadow:0 10px 20px rgba(0,0,0,0.3); }
+
+.hero {
+    padding: 80px 5px 40px;
+    text-align:center;
+}
+.hero h1 { font-size:clamp(2rem,5vw,3rem); font-weight:800; margin-bottom:15px; }
+.hero p { font-size:1rem; color: var(--text-dim); margin-bottom:25px; }
+
+.search-bar {
+    max-width:500px; margin:0 auto 40px; display:flex; gap:10px;
+}
+.search-bar input, .search-bar select {
+    flex:1; padding:10px 15px; border-radius:12px; border:none; background:var(--card); color:var(--text);
+}
+.search-bar button {
+    background: var(--accent); color:white; border:none; padding:10px 20px; border-radius:12px; cursor:pointer; font-weight:700;
+}
+
+/* Subject Grid */
+.subject-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap:25px;
+    max-width:1200px; margin:0 auto 80px; padding:0 5%;
+}
+.subject-card {
+    background: var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
     transition:0.3s;
+    position:relative;
+    overflow:hidden;
 }
-.back-btn:hover { background:#334155; transform:translateY(-2px); }
-
-/* HEADER */
-header { display:flex; justify-content:space-between; align-items:center; padding:15px 5%; background:rgba(15,23,42,0.8); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:1000; }
-.logo { font-weight:800; font-size:1.2rem; text-decoration:none; color:var(--text); }
-.logo span { color:var(--accent); }
-.nav-links { display:flex; gap:20px; }
-.nav-links a { color:var(--text-dim); text-decoration:none; font-size:0.9rem; font-weight:600; transition:0.3s; }
-
-/* GRID */
-.page-grid { display:grid; grid-template-columns: 1fr minmax(280px,1fr); gap:30px; max-width:1300px; margin:40px auto; padding:0 5%; }
-.subject-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:20px; }
-.subject-card { background:var(--card); border:1px solid var(--border); border-radius:24px; padding:25px; transition:0.3s; cursor:pointer; text-align:center; }
-.subject-card:hover { border-color:var(--accent); box-shadow:0 15px 30px rgba(99,102,241,0.2); }
-
-/* SIDEBAR */
-.sidebar-card { background: var(--glass); border:1px solid var(--border); border-radius:24px; padding:25px; position:sticky; top:100px; width:100%; overflow:hidden; }
-.rank-item { display:flex; justify-content:space-between; padding:12px 0; font-size:0.85rem; border-bottom:1px solid rgba(255,255,255,0.05); }
-.rank-item:last-child { border-bottom:none; }
-
-/* SEARCH */
-#search { padding:10px 15px; border-radius:10px; border:none; width:100%; margin-bottom:25px; font-size:0.95rem; }
-
-/* RESPONSIVE */
-@media(max-width:1024px){
-    .page-grid { grid-template-columns:1fr; }
-    .sidebar-card { position:relative; top:auto; margin-top:30px; }
+.subject-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-6px);
+    box-shadow:0 15px 40px rgba(99,102,241,0.2);
 }
-/* Hamburger Menu */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 30px;
-  height: 24px;
-  cursor: pointer;
-  z-index: 1100;
+.subject-card i {
+    font-size:2rem; color: var(--accent); margin-bottom:15px; display:block;
 }
+.subject-card h3 { margin-bottom:10px; font-weight:700; }
+.subject-card small { color: var(--text-dim); }
 
-.hamburger div {
-  width: 100%;
-  height: 3px;
-  background: #f8fafc; /* text color */
-  border-radius: 2px;
-  transition: all 0.4s ease;
-}
+.progress-bar { height:8px; background:#1e293b; border-radius:10px; overflow:hidden; margin:10px 0; }
+.progress-fill { height:100%; background:var(--accent); width:0%; transition:width 1s ease; }
 
-.hamburger.open div:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.open div:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.open div:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* Responsive nav for mobile */
+/* Responsive */
 @media(max-width:768px){
-  .nav-links { 
-    display:none; 
-    flex-direction:column; 
-    gap:15px;
-    position:absolute; 
-    top:60px; 
-    right:5%; 
-    background:rgba(2,6,23,0.95); 
-    padding:20px; 
-    border-radius:10px; 
-    box-shadow:0 10px 20px rgba(0,0,0,0.3); 
-    transition: all 0.4s ease;
-  }
-  .nav-links.active { display:flex; }
-  .hamburger { display:flex; }
+    .hamburger { display:flex; }
+    .nav-links { display:none; }
+}
+/* Extra responsiveness for smaller devices */
+
+/* Large tablets and below */
+@media(max-width:1024px){
+    .dashboard-grid { grid-template-columns: 1fr; gap:25px; }
+    .sidebar-card { position: relative; top: auto; margin-top: 30px; }
+    .metrics-row { grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap:15px; }
+    .hero h1 { font-size:2.2rem; line-height:1.3; }
+    .hero p { font-size:0.95rem; max-width:90%; margin:0 auto; }
 }
 
-/* Optional: hover style for nav links */
-.nav-links a:hover {
-  color: #6366f1;
+/* Tablets and large phones */
+@media(max-width:768px){
+    .hamburger { display:flex; cursor:pointer; z-index:1100; }
+    .nav-links { display:none; flex-direction: column; gap:15px; position:absolute; top:60px; right:5%; background:var(--bg); padding:20px; border-radius:15px; box-shadow:0 10px 20px rgba(0,0,0,0.3); transition:0.4s; }
+    .nav-links.active { display:flex; }
+    .subject-grid { grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:15px; }
+    .dashboard-card { padding:15px; font-size:0.95rem; }
+    .metrics-row { gap:10px; }
+}
+
+/* Phones */
+@media(max-width:480px){
+    header { padding:10px 3%; }
+    .hero { flex-direction: column; padding-top:80px; gap:20px; text-align:center; }
+    .hero h1 { font-size:1.8rem; }
+    .hero p { font-size:0.85rem; }
+    .search-bar { flex-direction: column; gap:10px; }
+    .search-bar input, .search-bar select, .search-bar button { width:100%; }
+    .subject-card { padding:12px; border-radius:12px; }
+    .progress-bar { height:6px; }
+    .progress-fill { height:100%; transition:width 1s ease; }
+    .continue-card button { width:100%; padding:10px; font-size:0.9rem; }
+    .metric-card { padding:15px; font-size:0.85rem; }
+}
+
+/* Extra tiny screens (<360px) */
+@media(max-width:360px){
+    .hero h1 { font-size:1.6rem; }
+    .hero p { font-size:0.8rem; }
+    .metrics-row { grid-template-columns: 1fr; gap:8px; }
+    .sidebar-card { padding:15px; }
+    .dashboard-card { font-size:0.9rem; padding:12px; }
 }
 </style>
 </head>
 <body>
 
 <header>
-    <a href="dashboard.html" class="logo">IJMB<span>PRO</span></a>
-    <nav class="nav-links">
-        <a href="/Ijmbpq/ijmbpq.html">Home</a>
-        <a href="/Ijmbpq/exam.html">Exam Mode</a>
-        <a href="/Ijmbpq/pricing.html">Upgrade</a>
-        <a href="#" onclick="logout()">Logout</a>
-    </nav>
-    <div class="hamburger" id="hamburger">
-      <div></div>
-      <div></div>
-      <div></div>
+    <a href="/Ijmbpq/index.html" class="logo">IJMB<span>PRO</span></a>
+<nav class="nav-links">
+  <a href="ijmbpq.html">Home</a>
+  <a href="pricing.html">Upgrade</a>
+  <a href="exam.html">Exam Mode</a>
+  <a href="#" onclick="logout()">Logout</a>
+</nav>
+    <div class="hamburger" onclick="toggleHamburger(this)">
+        <div></div><div></div><div></div>
     </div>
 </header>
-<div class="page-grid">
-<main>
-<!-- Back Button -->
-<a class="back-btn" href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i> Back</a>
-<h1 style="margin-bottom:25px;">Study Past Questions</h1>
 
-<input type="text" id="search" placeholder="Search subjects...">
+<section class="hero">
+    <h1>Study Past Questions</h1>
+    <p>Browse IJMB subjects, select the year, and track your progress.</p>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search Subject...">
+        <select id="yearFilter">
+            <option value="">All Years</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+        </select>
+        <button onclick="applyFilter()">Filter</button>
+    </div>
+</section>
 
-<div class="subject-grid" id="subjectGrid">
-    <div class="subject-card" onclick="alert('Open Economics Past Questions')">Economics</div>
-    <div class="subject-card" onclick="alert('Open Physics Past Questions')">Physics</div>
-    <div class="subject-card" onclick="alert('Open Biology Past Questions')">Biology</div>
-    <div class="subject-card" onclick="alert('Open Chemistry Past Questions')">Chemistry</div>
-</div>
-</main>
+<section class="subject-grid" id="subjectGrid">
+    <div class="subject-card" data-subject="Physics" data-year="2023">
+        <i class="fa-solid fa-atom"></i>
+        <h3>Physics</h3>
+        <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+        <small>25% Completed</small>
+    </div>
 
-<aside>
-<div class="sidebar-card">
-<h3 style="margin-bottom:15px;">Top Scholars</h3>
-<div class="rank-item"><span>🥇 Musa Ibrahim</span><b>2450 pts</b></div>
-<div class="rank-item"><span>🥈 Olawale Johnson</span><b>2120 pts</b></div>
-<div class="rank-item"><span>🥉 Chidi Azu</span><b>1980 pts</b></div>
-</div>
-</aside>
-</div>
+    <div class="subject-card" data-subject="Chemistry" data-year="2023">
+        <i class="fa-solid fa-flask"></i>
+        <h3>Chemistry</h3>
+        <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+        <small>40% Completed</small>
+    </div>
+
+    <div class="subject-card" data-subject="Mathematics" data-year="2022">
+        <i class="fa-solid fa-square-root-variable"></i>
+        <h3>Mathematics</h3>
+        <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
+        <small>10% Completed</small>
+    </div>
+
+    <div class="subject-card" data-subject="Biology" data-year="2021">
+        <i class="fa-solid fa-dna"></i>
+        <h3>Biology</h3>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+        <small>0% Completed</small>
+    </div>
+</section>
 
 <script>
-function logout(){ alert('Logging out...'); }
-const searchInput = document.getElementById('search');
-searchInput.addEventListener('input', ()=>{
-    const filter = searchInput.value.toLowerCase();
+// Hamburger animation
+function toggleHamburger(el){
+    el.classList.toggle('active');
+    document.querySelector('.nav-links').classList.toggle('active');
+}
+
+// Filter/Search Function
+function applyFilter(){
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const year = document.getElementById('yearFilter').value;
     document.querySelectorAll('.subject-card').forEach(card=>{
-        card.style.display = card.textContent.toLowerCase().includes(filter)?'block':'none';
+        const subject = card.dataset.subject.toLowerCase();
+        const cardYear = card.dataset.year;
+        if((subject.includes(search)) && (year === "" || cardYear === year)){
+            card.style.display="block";
+        } else {
+            card.style.display="none";
+        }
     });
-});
-// Hamburger toggle
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.querySelector('.nav-links');
-
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('open');
-});
-
-// Logout function
-function logout(){
-    if(firebase && firebase.auth){
-        firebase.auth().signOut();
-    }
-    window.location.href="landing.html";
 }
 </script>
 
