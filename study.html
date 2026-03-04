@@ -155,6 +155,7 @@ header {
     </div>
 </header>
 
+<main>
 <section class="hero">
     <h1>Study Past Questions</h1>
     <p>Browse IJMB subjects, select the year, and track your progress.</p>
@@ -199,7 +200,7 @@ header {
         <small>0% Completed</small>
     </div>
 </section>
-
+</main>
 <script>
 // Hamburger animation
 function toggleHamburger(el){
@@ -220,6 +221,14 @@ function applyFilter(){
             card.style.display="none";
         }
     });
+}
+function goBack() {
+    // Go back to previous page or fallback to dashboard
+    if (history.length > 1) {
+        history.back();
+    } else {
+        window.location.href = 'dashboard.html';
+    }
 }
 </script>
 
