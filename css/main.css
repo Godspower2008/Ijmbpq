@@ -1,132 +1,46 @@
-:root {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --accent: #6366f1;
-  --text: #f1f5f9;
-  --muted: #94a3b8;
-  --border: rgba(255,255,255,0.08);
+:root { 
+    --bg: #020617; 
+    --card: #0f172a; 
+    --glass: rgba(30, 41, 59, 0.8); 
+    --border: rgba(99, 102, 241, 0.2); 
+    --accent: #6366f1; 
+    --text: #f8fafc; 
+    --text-dim: #94a3b8; 
 }
 
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans', sans-serif; }
 
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  color: var(--text);
-  min-height: 100vh;
-}
+body { background: var(--bg); color: var(--text); }
 
-a { text-decoration: none; color: inherit; }
-button { border: none; cursor: pointer; font-family: inherit; }
-
-/* HEADER */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 5%;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:15px 5%; background: var(--glass); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border); position: sticky; top:0; z-index:1000;
 }
 
-.logo {
-  font-weight: 800;
-  font-size: 1.2rem;
-}
+.logo { font-weight:800; font-size:1.2rem; color:var(--text); text-decoration:none; }
+.logo span { color: var(--accent); }
 
-.logo span {
-  color: var(--accent);
-}
+.nav-links { display:flex; gap:20px; transition:0.3s; }
+.nav-links a { color:var(--text-dim); text-decoration:none; font-weight:600; transition:0.3s; }
+.nav-links a:hover { color:var(--accent); }
 
-/* NAV */
-.nav-links {
-  display: flex;
-  gap: 25px;
-}
+.hamburger { display:none; flex-direction: column; justify-content: space-around; width:28px; height:22px; cursor:pointer; z-index:1100; }
+.hamburger div { height:3px; background:var(--text); border-radius:2px; transition:0.4s; }
 
-.nav-links a {
-  font-weight: 600;
-  color: var(--muted);
-  transition: 0.3s;
-}
+.hamburger.open div:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.open div:nth-child(2) { opacity:0; transform: translateX(-20px); }
+.hamburger.open div:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
 
-.nav-links a:hover {
-  color: var(--accent);
-}
+.nav-links.active { display:flex; position:absolute; top:60px; right:5%; background: var(--bg); padding:20px; border-radius:10px; flex-direction: column; box-shadow:0 8px 20px rgba(0,0,0,0.4); }
 
-/* HAMBURGER */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  width: 26px;
-  height: 20px;
-  justify-content: space-between;
-  cursor: pointer;
-}
+main { max-width:1200px; margin:40px auto; padding:0 5%; }
 
-.hamburger div {
-  height: 3px;
-  background: white;
-  border-radius: 3px;
-  transition: 0.3s ease;
-}
+h1 { margin-bottom:25px; }
 
-.hamburger.open div:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
+.back-btn { margin-bottom:20px; display:inline-block; background:var(--glass); color:var(--accent); padding:10px 20px; border-radius:10px; text-decoration:none; font-weight:700; }
 
-.hamburger.open div:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.open div:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* Back Button Styles */
-.back-btn-container {
-    margin: 20px 5%;
-}
-
-.back-btn {
-    background: var(--card);
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.back-btn:hover {
-    background: var(--accent);
-    color: #fff;
-    transform: translateY(-2px);
-}
-
-/* MOBILE */
 @media(max-width:768px){
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 65px;
-    right: 5%;
-    flex-direction: column;
-    background: var(--card);
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-  }
-
-  .nav-links.active { display: flex; }
-  .hamburger { display: flex; }
+    .nav-links { display:none; }
+    .hamburger { display:flex; }
 }
