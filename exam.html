@@ -110,7 +110,7 @@ button.start-btn:hover { transform:translateY(-2px); }
 </header>
 
 <main>
-<a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+<a href="#" class="back-btn" on click="Hoback()"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
 
 <!-- Standard Exam Mode -->
 <section class="exam-section">
@@ -209,6 +209,15 @@ function startCustomExam(){
     localStorage.setItem('examTime', time);
     localStorage.setItem('numQuestions', questions);
     window.location.href='exam-questions.html';
+}
+
+function goBack() {
+    // Go back to previous page or fallback to dashboard
+    if (history.length > 1) {
+        history.back();
+    } else {
+        window.location.href = 'dashboard.html';
+    }
 }
 </script>
 </body>
