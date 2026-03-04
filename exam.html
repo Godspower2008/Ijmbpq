@@ -55,6 +55,23 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 .radio-group input[type=radio] { accent-color: var(--accent); }
 .radio-group label:hover { background:#334155; }
 
+/* BACK BUTTON */
+.back-btn {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#1e293b;
+    padding:10px 20px;
+    border-radius:12px;
+    margin-bottom:20px;
+    cursor:pointer;
+    font-weight:600;
+    text-decoration:none;
+    color:var(--text);
+    transition:0.3s;
+}
+.back-btn:hover { background:#334155; transform:translateY(-2px); }
+
 /* SIDEBAR */
 .sidebar-card { background: var(--glass); border:1px solid var(--border); border-radius:24px; padding:25px; position:sticky; top:100px; width:100%; overflow:hidden; }
 .rank-item { display:flex; justify-content:space-between; padding:12px 0; font-size:0.85rem; border-bottom:1px solid rgba(255,255,255,0.05); }
@@ -82,6 +99,7 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
         <a href="/Ijmbpq/study.html">Study Past Questions</a>
         <a href="/Ijmbpq/exam.html">Exam Mode</a>
         <a href="upgrade.html">Upgrade</a>
+        <a href="dashboard.html">Home</a>
         <a href="#" onclick="logout()">Logout</a>
     </nav>
     <div class="hamburger" onclick="toggleNav()">
@@ -93,6 +111,10 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 
 <div class="page-grid">
 <main>
+
+<!-- Back Button -->
+<a class="back-btn" href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i> Back</a>
+
 <h1 style="margin-bottom:25px;">Exam Mode</h1>
 
 <!-- Standard Exam Mode -->
