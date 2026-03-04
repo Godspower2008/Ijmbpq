@@ -38,9 +38,22 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 
 /* GRID */
 .page-grid { display:grid; grid-template-columns: 1fr minmax(280px,1fr); gap:30px; max-width:1300px; margin:40px auto; padding:0 5%; }
-.exam-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:20px; }
-.exam-card { background:var(--card); border:1px solid var(--border); border-radius:24px; padding:25px; transition:0.3s; cursor:pointer; text-align:center; }
-.exam-card:hover { border-color:var(--accent); box-shadow:0 15px 30px rgba(99,102,241,0.2); }
+
+/* FORM */
+.exam-form { background: var(--card); border:1px solid var(--border); border-radius:24px; padding:25px; margin-bottom:30px; }
+.exam-form h2 { margin-bottom:20px; }
+.exam-form label { display:block; margin:10px 0 5px; font-size:0.9rem; color:var(--text-dim); }
+.exam-form .checkbox-group { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px; }
+.exam-form .checkbox-group label { display:flex; align-items:center; gap:8px; font-weight:500; }
+.exam-form select, .exam-form input { width:100%; padding:10px; border-radius:10px; border:none; margin-bottom:15px; background:#1e293b; color:var(--text); }
+.exam-form button { background: var(--accent); color:white; border:none; padding:12px 20px; border-radius:12px; cursor:pointer; font-weight:700; width:100%; transition:0.3s; }
+.exam-form button:hover { transform:translateY(-2px); box-shadow:0 10px 20px rgba(99,102,241,0.3); }
+
+/* RADIO GROUP */
+.radio-group { display:grid; gap:10px; margin-bottom:15px; }
+.radio-group label { display:flex; align-items:center; gap:10px; background:#1e293b; padding:10px; border-radius:10px; cursor:pointer; transition:0.3s; }
+.radio-group input[type=radio] { accent-color: var(--accent); }
+.radio-group label:hover { background:#334155; }
 
 /* SIDEBAR */
 .sidebar-card { background: var(--glass); border:1px solid var(--border); border-radius:24px; padding:25px; position:sticky; top:100px; width:100%; overflow:hidden; }
@@ -82,24 +95,66 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 <main>
 <h1 style="margin-bottom:25px;">Exam Mode</h1>
 
-<div class="exam-grid">
-    <div class="exam-card" onclick="alert('Start Economics Exam')">
-        <h3>Economics Exam</h3>
-        <p>10 Questions • 15 mins</p>
+<!-- Standard Exam Mode -->
+<div class="exam-form">
+    <h2>Standard Exam Mode</h2>
+    <label>Select Subject Combination</label>
+    <div class="radio-group">
+        <label><input type="radio" name="standardCombo" value="Economics,Physics,Mathematics"> Economics + Physics + Mathematics</label>
+        <label><input type="radio" name="standardCombo" value="Biology,Chemistry,Mathematics"> Biology + Chemistry + Mathematics</label>
+        <label><input type="radio" name="standardCombo" value="Economics,Biology,Chemistry"> Economics + Biology + Chemistry</label>
     </div>
-    <div class="exam-card" onclick="alert('Start Physics Exam')">
-        <h3>Physics Exam</h3>
-        <p>15 Questions • 20 mins</p>
-    </div>
-    <div class="exam-card" onclick="alert('Start Biology Exam')">
-        <h3>Biology Exam</h3>
-        <p>12 Questions • 18 mins</p>
-    </div>
-    <div class="exam-card" onclick="alert('Start Chemistry Exam')">
-        <h3>Chemistry Exam</h3>
-        <p>15 Questions • 20 mins</p>
-    </div>
+    <label>Number of Questions</label>
+    <select id="stdNumQuestions">
+        <option value="10" selected>10 Questions</option>
+        <option value="15">15 Questions</option>
+        <option value="20">20 Questions</option>
+        <option value="25">25 Questions</option>
+    </select>
+    <label>Exam Time</label>
+    <select id="stdExamTime">
+        <option value="60">1 Hour</option>
+        <option value="90">1.5 Hours</option>
+        <option value="120">2 Hours</option>
+        <option value="150">2.5 Hours</option>
+        <option value="180" selected>3 Hours</option>
+    </select>
+    <button onclick="startStandardExam()">Start Standard Exam</button>
 </div>
+
+<!-- Custom Exam Mode -->
+<div class="exam-form">
+    <h2>Custom Exam Mode</h2>
+    <label>Select Subject Combination (Max 3)</label>
+    <div class="checkbox-group">
+        <label><input type="checkbox" value="Economics"> Economics</label>
+        <label><input type="checkbox" value="Physics"> Physics</label>
+        <label><input type="checkbox" value="Biology"> Biology</label>
+        <label><input type="checkbox" value="Chemistry"> Chemistry</label>
+        <label><input type="checkbox" value="Mathematics"> Mathematics</label>
+    </div>
+    <label>Number of Questions</label>
+    <select id="numQuestions">
+        <option value="5">5 Questions</option>
+        <option value="10" selected>10 Questions</option>
+        <option value="15">15 Questions</option>
+        <option value="20">20 Questions</option>
+        <option value="25">25 Questions</option>
+    </select>
+    <label>Exam Time</label>
+    <select id="examTime">
+        <option value="15">15 Minutes</option>
+        <option value="30">30 Minutes</option>
+        <option value="45">45 Minutes</option>
+        <option value="60">1 Hour</option>
+        <option value="90">1.5 Hours</option>
+        <option value="120">2 Hours</option>
+        <option value="150">2.5 Hours</option>
+        <option value="180" selected>3 Hours</option>
+    </select>
+    <button onclick="startCustomExam()">Start Custom Exam</button>
+</div>
+
 </main>
 
 <aside>
@@ -115,6 +170,29 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 <script>
 function toggleNav(){ document.querySelector('.nav-links').classList.toggle('active'); }
 function logout(){ alert('Logging out...'); }
+
+function startCustomExam(){
+    const selected = Array.from(document.querySelectorAll('.checkbox-group input[type=checkbox]:checked'));
+    if(selected.length === 0){ alert("Please select at least one subject."); return; }
+    if(selected.length > 3){ alert("You can select up to 3 subjects only."); return; }
+
+    const subjects = selected.map(cb => cb.value);
+    const numQuestions = document.getElementById('numQuestions').value;
+    const examTime = document.getElementById('examTime').value;
+
+    alert(`Custom Exam:\nSubjects: ${subjects.join(', ')}\nQuestions: ${numQuestions}\nTime: ${examTime} minutes`);
+}
+
+function startStandardExam(){
+    const selected = document.querySelector('input[name="standardCombo"]:checked');
+    if(!selected){ alert("Please select a subject combination."); return; }
+
+    const subjects = selected.value.split(',');
+    const numQuestions = document.getElementById('stdNumQuestions').value;
+    const examTime = document.getElementById('stdExamTime').value;
+
+    alert(`Standard Exam:\nSubjects: ${subjects.join(', ')}\nQuestions: ${numQuestions}\nTime: ${examTime} minutes`);
+}
 </script>
 
 </body>
