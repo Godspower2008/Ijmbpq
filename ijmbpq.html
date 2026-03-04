@@ -8,8 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
-:root { 
+<!-- Keep your existing CSS exactly as it is -->
+<style>:root { 
     --bg: #020617; 
     --card: #0f172a;
     --glass: rgba(30, 41, 59, 0.7); 
@@ -321,7 +321,7 @@ header { position: relative; }
         <a href="profile.html">Profile</a>
         <a href="/Ijmbpq/study.html">Study Past Questions</a>
         <a href="/Ijmbpq/exam.html">Exam Mode</a>
-         <a href="/Ijmbpq/pricing.html">Upgrade</a>
+        <a href="/Ijmbpq/pricing.html">Upgrade</a>
         <a href="#" onclick="logout()">Logout</a>
     </nav>
     <div class="hamburger" id="hamburger">
@@ -337,46 +337,48 @@ header { position: relative; }
 </div>
 
 <div class="dashboard-grid">
+
 <main>
 
-<h1 id="userGreet" style="margin-bottom: 25px;">Welcome back, Scholar!</h1>
+<h1 id="userGreet" style="margin-bottom: 25px;">Loading...</h1>
 
-<div class="continue-card">
+<div class="continue-card" id="continueCard">
     <h3>Continue Last Session</h3>
-    <p>You were solving Economics Paper II – Elasticity theory.</p>
-    <button onclick="window.location.href='economics.html'">
-    Resume Practice
-</button>
+    <p id="continueText"></p>
+    <button id="continueBtn">Resume Practice</button>
 </div>
 
 <div class="metrics-row">
     <div class="metric-card">
         <i class="fa-solid fa-fire"></i>
         <div class="label">Study Streak</div>
-        <div class="value">5 Days</div>
+        <div class="value" id="streakValue">0 Days</div>
     </div>
+
     <div class="metric-card">
         <i class="fa-solid fa-bullseye"></i>
         <div class="label">Avg Accuracy</div>
-        <div class="value">88%</div>
+        <div class="value" id="accuracyValue">0%</div>
     </div>
+
     <div class="metric-card">
         <i class="fa-solid fa-trophy"></i>
         <div class="label">Global Rank</div>
-        <div class="value">#14</div>
+        <div class="value" id="rankValue">#–</div>
     </div>
 </div>
 
 <h2 style="margin-bottom:20px;">Subject Channels</h2>
 
 <div class="subject-grid">
+
 <a href="economics.html" style="text-decoration:none; color:inherit;">
 <div class="subject-card">
     <h3>Economics</h3>
     <div class="progress-bar">
-        <div class="progress-fill" data-progress="25"></div>
+        <div class="progress-fill"></div>
     </div>
-    <small>25% Completed</small>
+    <small>0% Completed</small>
 </div>
 </a>
 
@@ -384,9 +386,9 @@ header { position: relative; }
 <div class="subject-card">
     <h3>Physics</h3>
     <div class="progress-bar">
-        <div class="progress-fill" data-progress="25"></div>
+        <div class="progress-fill"></div>
     </div>
-    <small>25% Completed</small>
+    <small>0% Completed</small>
 </div>
 </a>
 
@@ -394,13 +396,14 @@ header { position: relative; }
 <div class="subject-card">
     <h3>Biology</h3>
     <div class="progress-bar">
-        <div class="progress-fill" data-progress="10"></div>
+        <div class="progress-fill"></div>
     </div>
-    <small>10% Completed</small>
+    <small>0% Completed</small>
 </div>
 </a>
 
 </div>
+
 </main>
 
 <aside>
@@ -416,11 +419,14 @@ header { position: relative; }
 
 </div>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-<!-- Dashboard page -->
-<script src="ijmbpq.js"></script>
+<!-- Core Logic -->
 <script src="common.js"></script>
+<script src="dashboard.js"></script>
+
 </body>
 </html>
