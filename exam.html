@@ -159,68 +159,9 @@ button.start-btn:hover { transform:translateY(-2px); }
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-<script>
-// Firebase
-const firebaseConfig = { 
-    apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
-    authDomain: "ijmb-portal.firebaseapp.com"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-auth.onAuthStateChanged(user => { if(!user) window.location.href="landing.html"; });
-function logout(){ auth.signOut(); window.location.href="landing.html"; }
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-// Hamburger
-function toggleHamburger(h){
-    h.classList.toggle('open');
-    document.querySelector('.nav-links').classList.toggle('active');
-}
-
-// Standard Exam
-function startStandardExam(subjects){
-    localStorage.setItem('examSubjects', JSON.stringify(subjects));
-    localStorage.setItem('examTime', 180);
-    localStorage.setItem('numQuestions', 30);
-    window.location.href='exam-questions.html';
-}
-
-// Custom Exam
-const subjectCards = document.querySelectorAll('.custom-subjects .subject-card');
-subjectCards.forEach(card=>{
-    card.addEventListener('click', ()=>{
-        card.classList.toggle('selected');
-        const selected = document.querySelectorAll('.custom-subjects .subject-card.selected');
-        if(selected.length>3) card.classList.remove('selected'); // max 3
-    });
-});
-
-const timeSlider = document.getElementById('examTimeSlider');
-const timeLabel = document.getElementById('timeLabel');
-timeSlider.addEventListener('input', ()=>timeLabel.textContent = timeSlider.value);
-
-const questionsSlider = document.getElementById('numQuestionsSlider');
-const questionsLabel = document.getElementById('questionsLabel');
-questionsSlider.addEventListener('input', ()=>questionsLabel.textContent = questionsSlider.value);
-
-function startCustomExam(){
-    const subjects = Array.from(document.querySelectorAll('.subject-card.selected')).map(c=>c.dataset.subject);
-    if(subjects.length===0){ alert("Select at least 1 subject"); return; }
-    const time = parseInt(timeSlider.value)*60;
-    const questions = parseInt(questionsSlider.value);
-    localStorage.setItem('examSubjects', JSON.stringify(subjects));
-    localStorage.setItem('examTime', time);
-    localStorage.setItem('numQuestions', questions);
-    window.location.href='exam-questions.html';
-}
-
-function goBack() {
-    // Go back to previous page or fallback to dashboard
-    if (history.length > 1) {
-        history.back();
-    } else {
-        window.location.href = 'dashboard.html';
-    }
-}
-</script>
+<script src="common.js"></script> <!-- shared code -->
+<script src="exam.js"></script> <!-- or study.js / exam.js -->
 </body>
 </html>
