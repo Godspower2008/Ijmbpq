@@ -3,27 +3,6 @@ const firebaseConfig = {
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
     authDomain: "ijmb-portal.firebaseapp.com"
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-// Auth Check
-auth.onAuthStateChanged(user => {
-    if (!user) window.location.href = "landing.html";
-});
-
-// Logout
-function logout(){ 
-    auth.signOut(); 
-    window.location.href="landing.html"; 
-}
-
-// Hamburger
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.querySelector('.nav-links');
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('open');
-});
 
 // Standard Exam
 function startStandardExam(subjects){
@@ -60,10 +39,4 @@ function startCustomExam(){
     localStorage.setItem('examTime', time);
     localStorage.setItem('numQuestions', questions);
     window.location.href='exam-questions.html';
-}
-
-// Back button
-function goBack() {
-    if (history.length > 1) history.back();
-    else window.location.href = 'dashboard.html';
 }
