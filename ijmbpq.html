@@ -23,6 +23,24 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Hamburger menu links styling for mobile */
+.nav-links a {
+    display: block;            /* full width */
+    padding: 12px 20px;        /* nice touch area */
+    border-radius: 12px;       /* rounded like your cards */
+    background: var(--card);   /* match dashboard cards */
+    margin-bottom: 10px;       /* spacing between links */
+    text-align: center;        /* center text */
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.nav-links a:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+}
+
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     background: var(--bg);
