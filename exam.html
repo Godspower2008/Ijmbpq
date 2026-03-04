@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Mode | IJMB PRO</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root { 
+    --bg: #020617; 
+    --card: #0f172a;
+    --glass: rgba(30, 41, 59, 0.7); 
+    --border: rgba(99, 102, 241, 0.2); 
+    --accent: #6366f1; 
+    --text: #f8fafc; 
+    --text-dim: #94a3b8; 
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    background-image: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 50%);
+}
+
+/* HEADER */
+header { display:flex; justify-content:space-between; align-items:center; padding:15px 5%; background:rgba(15,23,42,0.8); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:1000; }
+.logo { font-weight:800; font-size:1.2rem; text-decoration:none; color:var(--text); }
+.logo span { color:var(--accent); }
+.nav-links { display:flex; gap:20px; }
+.nav-links a { color:var(--text-dim); text-decoration:none; font-size:0.9rem; font-weight:600; transition:0.3s; }
+.nav-links a:hover { color:var(--accent); }
+.hamburger { display:none; cursor:pointer; flex-direction: column; justify-content: space-around; width: 25px; height: 22px; }
+.hamburger div { height:3px; background:var(--text); border-radius:2px; }
+
+/* GRID */
+.page-grid { display:grid; grid-template-columns: 1fr minmax(280px,1fr); gap:30px; max-width:1300px; margin:40px auto; padding:0 5%; }
+.exam-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:20px; }
+.exam-card { background:var(--card); border:1px solid var(--border); border-radius:24px; padding:25px; transition:0.3s; cursor:pointer; text-align:center; }
+.exam-card:hover { border-color:var(--accent); box-shadow:0 15px 30px rgba(99,102,241,0.2); }
+
+/* SIDEBAR */
+.sidebar-card { background: var(--glass); border:1px solid var(--border); border-radius:24px; padding:25px; position:sticky; top:100px; width:100%; overflow:hidden; }
+.rank-item { display:flex; justify-content:space-between; padding:12px 0; font-size:0.85rem; border-bottom:1px solid rgba(255,255,255,0.05); }
+.rank-item:last-child { border-bottom:none; }
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+    .page-grid { grid-template-columns:1fr; }
+    .sidebar-card { position:relative; top:auto; margin-top:30px; }
+}
+@media(max-width:768px){
+    .nav-links { display:none; flex-direction:column; gap:15px; }
+    .nav-links.active { display:flex; position:absolute; top:60px; right:5%; background:var(--bg); padding:20px; border-radius:10px; box-shadow:0 10px 20px rgba(0,0,0,0.3); }
+    .hamburger { display:flex; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <a href="#" class="logo">IJMB<span>PRO</span></a>
+    <nav class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="/Ijmbpq/subjects.html">Subjects</a>
+        <a href="/Ijmbpq/study.html">Study Past Questions</a>
+        <a href="/Ijmbpq/exam.html">Exam Mode</a>
+        <a href="upgrade.html">Upgrade</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <div class="hamburger" onclick="toggleNav()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+</header>
+
+<div class="page-grid">
+<main>
+<h1 style="margin-bottom:25px;">Exam Mode</h1>
+
+<div class="exam-grid">
+    <div class="exam-card" onclick="alert('Start Economics Exam')">
+        <h3>Economics Exam</h3>
+        <p>10 Questions • 15 mins</p>
+    </div>
+    <div class="exam-card" onclick="alert('Start Physics Exam')">
+        <h3>Physics Exam</h3>
+        <p>15 Questions • 20 mins</p>
+    </div>
+    <div class="exam-card" onclick="alert('Start Biology Exam')">
+        <h3>Biology Exam</h3>
+        <p>12 Questions • 18 mins</p>
+    </div>
+    <div class="exam-card" onclick="alert('Start Chemistry Exam')">
+        <h3>Chemistry Exam</h3>
+        <p>15 Questions • 20 mins</p>
+    </div>
+</div>
+</main>
+
+<aside>
+<div class="sidebar-card">
+<h3 style="margin-bottom:15px;">Top Scholars</h3>
+<div class="rank-item"><span>🥇 Musa Ibrahim</span><b>2450 pts</b></div>
+<div class="rank-item"><span>🥈 Olawale Johnson</span><b>2120 pts</b></div>
+<div class="rank-item"><span>🥉 Chidi Azu</span><b>1980 pts</b></div>
+</div>
+</aside>
+</div>
+
+<script>
+function toggleNav(){ document.querySelector('.nav-links').classList.toggle('active'); }
+function logout(){ alert('Logging out...'); }
+</script>
+
+</body>
+</html>
