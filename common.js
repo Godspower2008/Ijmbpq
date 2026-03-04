@@ -1,5 +1,3 @@
-// common.js
-
 // --- Firebase Init ---
 const firebaseConfig = { 
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
@@ -51,4 +49,9 @@ function goBack(defaultPage = 'dashboard.html') {
     } else {
         window.location.href = defaultPage;
     }
+}
+
+// --- Go to Subjects Helper ---
+function goToSubjects() {
+    window.location.href = "/Ijmbpq/subjects.html";
 }
