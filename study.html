@@ -26,6 +26,23 @@ body {
     background-image: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 50%);
 }
 
+/* BACK BUTTON */
+.back-btn {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#1e293b;
+    padding:10px 20px;
+    border-radius:12px;
+    margin-bottom:20px;
+    cursor:pointer;
+    font-weight:600;
+    text-decoration:none;
+    color:var(--text);
+    transition:0.3s;
+}
+.back-btn:hover { background:#334155; transform:translateY(-2px); }
+
 /* HEADER */
 header { display:flex; justify-content:space-between; align-items:center; padding:15px 5%; background:rgba(15,23,42,0.8); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:1000; }
 .logo { font-weight:800; font-size:1.2rem; text-decoration:none; color:var(--text); }
@@ -124,9 +141,10 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
       <div></div>
     </div>
 </header>
-
 <div class="page-grid">
 <main>
+<!-- Back Button -->
+<a class="back-btn" href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i> Back</a>
 <h1 style="margin-bottom:25px;">Study Past Questions</h1>
 
 <input type="text" id="search" placeholder="Search subjects...">
