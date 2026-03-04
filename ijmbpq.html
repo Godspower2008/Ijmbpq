@@ -55,7 +55,7 @@ header {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr minmax(280px, 1fr); /* sidebar now flexible */
+  grid-template-columns: 1fr minmax(280px, 1fr); 
   gap: 30px;
   max-width: 1300px;
   margin: 40px auto;
@@ -175,9 +175,9 @@ header {
     padding: 25px;
     position: sticky;
     top: 100px;
-    box-sizing: border-box; /* ensures padding is included in width */
-    width: 100%;            /* always fit parent column */
-    overflow: hidden;       /* prevent child overflow */
+    box-sizing: border-box; 
+    width: 100%;            
+    overflow: hidden;       
 }
 
 .rank-item {
@@ -207,7 +207,6 @@ header { position: relative; }
     background:#334155;
 }
 /* RESPONSIVE */
-/* Hide full nav on small screens */
 @media (max-width: 768px) {
   .nav-links { display: none; flex-direction: column; gap: 15px; }
   .hamburger { display: flex; flex-direction: column; justify-content: space-around; width: 25px; height: 22px; cursor: pointer; }
@@ -226,17 +225,18 @@ header { position: relative; }
 <header>
     <a href="#" class="logo">IJMB<span>PRO</span></a>
     <nav class="nav-links">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="subjects.html">Subjects</a>
-    <a href="upgrade.html">Upgrade</a>
-    <a href="/Ijmbpq/subjects.html">Subjects</a>
-    <a href="#" onclick="logout()">Logout</a>
-</nav>
-<div class="hamburger" onclick="toggleNav()">
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="/Ijmbpq/subjects.html">Subjects</a>
+        <a href="/Ijmbpq/study.html">Study Past Questions</a>
+        <a href="/Ijmbpq/exam.html">Exam Mode</a>
+        <a href="upgrade.html">Upgrade</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <div class="hamburger" onclick="toggleNav()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
 </header>
 
 <div class="dashboard-card" onclick="goToSubjects()">
@@ -279,7 +279,7 @@ header { position: relative; }
 
 <div class="subject-grid">
 <a href="economics.html" style="text-decoration:none; color:inherit;">
-<<div class="subject-card">
+<div class="subject-card">
     <h3>Economics</h3>
     <div class="progress-bar">
         <div class="progress-fill" data-progress="25"></div>
@@ -352,9 +352,7 @@ window.addEventListener("load", () => {
 function toggleNav() {
   document.querySelector('.nav-links').classList.toggle('active');
 }
-</script>
 
-<script>
 function goToSubjects(){
     window.location.href = "/Ijmbpq/subjects.html";
 }
