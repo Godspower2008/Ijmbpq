@@ -1,67 +1,69 @@
-q<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exam | IJMB PRO</title>
+<title>Exam Mode | IJMB PRO</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/exam.css">
 </head>
 <body>
+
 <header>
-  <a href="dashboard.html" class="logo">IJMB<span>PRO</span></a>
-  <nav class="nav-links">
-      <a href="profile.html">Profile</a>
-      <a href="study.html">Study</a>
-      <a href="exam.html">Exam Mode</a>
-      <a href="pricing.html">Upgrade</a>
-      <a href="#" onclick="logout()">Logout</a>
-  </nav>
-  <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
+    <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+    <nav class="nav-links">
+        <a href="ijmbpq.html">Dashboard</a>
+        <a href="study.html">Study</a>
+        <a href="exam.html">Exam Mode</a>
+        <a href="pricing.html">Upgrade</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <div class="hamburger" onclick="toggleHamburger(this)">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
 </header>
 
 <main>
-<div class="back-btn-container">
-    <button class="back-btn" onclick="window.location.href='dashboard.html'">
-        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
-    </button>
-</div>
+<a href="ijmbpq.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+
 <section class="exam-section">
-  <h2>Standard Exam Mode</h2>
-  <div class="subject-combos">
-    <div class="subject-card" onclick="startStandardExam(['Economics','Mathematics','Physics'])">
-      Economics + Mathematics + Physics
+    <h2>Standard Exam Mode</h2>
+    <p>Select your approved subject combination:</p>
+    <div class="subject-combos">
+        <div class="subject-card" onclick="startStandardExam(['Economics','Mathematics','Physics'])">Economics + Mathematics + Physics</div>
+        <div class="subject-card" onclick="startStandardExam(['Biology','Chemistry','Economics'])">Biology + Chemistry + Economics</div>
+        <div class="subject-card" onclick="startStandardExam(['Physics','Chemistry','Mathematics'])">Physics + Chemistry + Mathematics</div>
     </div>
-    <!-- Other combos -->
-  </div>
 </section>
 
 <section class="exam-section">
-  <h2>Custom Exam Mode</h2>
-  <div class="custom-subjects">
-    <div class="subject-card" data-subject="Economics">Economics</div>
-    <div class="subject-card" data-subject="Mathematics">Mathematics</div>
-    <div class="subject-card" data-subject="Physics">Physics</div>
-    <!-- More subjects -->
-  </div>
+    <h2>Custom Exam Mode</h2>
+    <p>Select subjects (max 3), exam time, and number of questions:</p>
+    <div class="custom-subjects">
+        <div class="subject-card" data-subject="Economics">Economics</div>
+        <div class="subject-card" data-subject="Mathematics">Mathematics</div>
+        <div class="subject-card" data-subject="Physics">Physics</div>
+        <div class="subject-card" data-subject="Biology">Biology</div>
+        <div class="subject-card" data-subject="Chemistry">Chemistry</div>
+    </div>
 
-  <div class="slider-group">
-    <label for="examTimeSlider">Exam Time: <span id="timeLabel">3</span> hours</label>
-    <input type="range" id="examTimeSlider" min="1" max="3" value="3">
-  </div>
+    <div class="slider-group">
+        <label for="examTimeSlider">Exam Time: <span id="timeLabel">3</span> hours</label>
+        <input type="range" id="examTimeSlider" min="1" max="3" value="3">
+    </div>
 
-  <div class="slider-group">
-    <label for="numQuestionsSlider">Number of Questions: <span id="questionsLabel">30</span></label>
-    <input type="range" id="numQuestionsSlider" min="10" max="50" step="5" value="30">
-  </div>
+    <div class="slider-group">
+        <label for="numQuestionsSlider">Number of Questions: <span id="questionsLabel">30</span></label>
+        <input type="range" id="numQuestionsSlider" min="10" max="50" step="5" value="30">
+    </div>
 
-  <button class="start-btn" onclick="startCustomExam()">Start Custom Exam</button>
+    <button class="start-btn" onclick="startCustomExam()">Start Custom Exam</button>
 </section>
-</main>
 
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="common.js"></script>
 <script src="exam.js"></script>
 </body>
