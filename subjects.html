@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJMB Subjects | Pro Archive</title>
+
+<style>
+body{
+    margin: 0;
+    font-family:Arial, sans-serif;
+    background:#0f172a;
+    color:white;
+}
+
+header{
+    padding:20px 5%;
+    background:#111827;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header h1{
+    margin:0;
+    font-size:20px;
+}
+
+.container{
+    padding:40px 5%;
+}
+
+.faculty-title{
+    margin-top:50px;
+    font-size:22px;
+    font-weight:bold;
+    border-bottom:2px solid #334155;
+    padding-bottom:10px;
+}
+
+.subject-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    gap:25px;
+    margin-top:30px;
+}
+
+.subject-card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:15px;
+    transition:0.3s;
+    cursor:pointer;
+}
+
+.subject-card:hover{
+    transform:translateY(-5px);
+    background:#334155;
+}
+
+.subject-card h3{
+    margin-top:0;
+}
+
+.badge{
+    display:inline-block;
+    background:#2563eb;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    margin-top:10px;
+}
+
+#subjectContent{
+    margin-top:60px;
+    display:none;
+}
+
+.filter-bar{
+    margin:20px 0;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+select{
+    padding:10px;
+    border-radius:8px;
+    border:none;
+}
+
+.question-list{
+    margin-top:20px;
+}
+
+.question-item{
+    background:#1e293b;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>IJMB Subject Portal</h1>
+    <a href="landing.html" style="color:#60a5fa;text-decoration:none;">Home</a>
+</header>
+
+<div class="container">
+
+    <!-- FACULTY: SCIENCE -->
+    <div class="faculty-title">Faculty of Natural Sciences</div>
+    <div class="subject-grid">
+        <div class="subject-card" onclick="openSubject('Biology')">
+            <h3>Biology</h3>
+            <p>Cell systems, genetics, ecology & physiology.</p>
+            <div class="badge">245 Questions</div>
+        </div>
+
+        <div class="subject-card" onclick="openSubject('Chemistry')">
+            <h3>Chemistry</h3>
+            <p>Organic, inorganic & physical chemistry.</p>
+            <div class="badge">210 Questions</div>
+        </div>
+
+        <div class="subject-card" onclick="openSubject('Physics')">
+            <h3>Physics</h3>
+            <p>Mechanics, electricity, waves & motion.</p>
+            <div class="badge">198 Questions</div>
+        </div>
+
+        <div class="subject-card" onclick="openSubject('Mathematics')">
+            <h3>Mathematics</h3>
+            <p>Algebra, calculus & coordinate geometry.</p>
+            <div class="badge">260 Questions</div>
+        </div>
+    </div>
+
+    <!-- SUBJECT DETAILS SECTION -->
+    <div id="subjectContent">
+        <h2 id="subjectTitle"></h2>
+
+        <div class="filter-bar">
+            <select id="yearFilter">
+                <option value="all">All Years</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+            </select>
+
+            <select id="topicFilter">
+                <option value="all">All Topics</option>
+            </select>
+        </div>
+
+        <div class="question-list" id="questionList"></div>
+    </div>
+
+</div>
+
+<script>
+
+const database = {
+    Biology: [
+        {year:"2023", topic:"Cell Biology", title:"Explain mitosis process."},
+        {year:"2022", topic:"Genetics", title:"Define DNA replication."},
+        {year:"2021", topic:"Ecology", title:"Food chain explanation."}
+    ],
+    Chemistry: [
+        {year:"2023", topic:"Organic", title:"Explain alkane reactions."},
+        {year:"2022", topic:"Physical", title:"Define enthalpy."}
+    ],
+    Physics: [
+        {year:"2023", topic:"Mechanics", title:"State Newton's laws."},
+        {year:"2022", topic:"Electricity", title:"Define Ohm's law."}
+    ],
+    Mathematics: [
+        {year:"2023", topic:"Calculus", title:"Differentiate x^2."},
+        {year:"2022", topic:"Algebra", title:"Solve quadratic equation."}
+    ]
+};
+
+let currentSubject = null;
+
+function openSubject(subject){
+    currentSubject = subject;
+    document.getElementById("subjectTitle").innerText = subject;
+    document.getElementById("subjectContent").style.display = "block";
+    populateTopics();
+    displayQuestions();
+}
+
+function populateTopics(){
+    const topicSelect = document.getElementById("topicFilter");
+    topicSelect.innerHTML = '<option value="all">All Topics</option>';
+    const topics = [...new Set(database[currentSubject].map(q => q.topic))];
+    topics.forEach(topic=>{
+        const option = document.createElement("option");
+        option.value = topic;
+        option.innerText = topic;
+        topicSelect.appendChild(option);
+    });
+}
+
+function displayQuestions(){
+    const year = document.getElementById("yearFilter").value;
+    const topic = document.getElementById("topicFilter").value;
+
+    const list = document.getElementById("questionList");
+    list.innerHTML = "";
+
+    const filtered = database[currentSubject].filter(q=>{
+        return (year==="all" || q.year===year) &&
+               (topic==="all" || q.topic===topic);
+    });
+
+    filtered.forEach(q=>{
+        const div = document.createElement("div");
+        div.className = "question-item";
+        div.innerHTML = `<strong>${q.year}</strong> | ${q.topic} <br> ${q.title}`;
+        list.appendChild(div);
+    });
+}
+
+document.getElementById("yearFilter").addEventListener("change", displayQuestions);
+document.getElementById("topicFilter").addEventListener("change", displayQuestions);
+
+</script>
+
+</body>
+</html>
