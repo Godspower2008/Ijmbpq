@@ -4,23 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scholar Dashboard | IJMB PRO</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<link rel="stylesheet" href="css/main.css">
-<link rel="stylesheet" href="css/ijmbpq.css">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="dashboard.css">
 </head>
-
 <body>
 
 <header>
-    <a href="dashboard.html" class="logo">IJMB<span>PRO</span></a>
+    <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
     <nav class="nav-links">
         <a href="profile.html">Profile</a>
-        <a href="/Ijmbpq/study.html">Study Past Questions</a>
-        <a href="/Ijmbpq/exam.html">Exam Mode</a>
-        <a href="/Ijmbpq/pricing.html">Upgrade</a>
+        <a href="study.html">Study</a>
+        <a href="exam.html">Exam Mode</a>
+        <a href="pricing.html">Upgrade</a>
         <a href="#" onclick="logout()">Logout</a>
     </nav>
     <div class="hamburger" id="hamburger">
@@ -36,7 +33,6 @@
 </div>
 
 <div class="dashboard-grid">
-
 <main>
 <h1 id="userGreet">Loading...</h1>
 
@@ -67,64 +63,44 @@
 </div>
 
 <h2>Subject Channels</h2>
-
 <div class="subject-grid">
+    <a href="economics.html">
+        <div class="subject-card">
+            <h3>Economics</h3>
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+            <small>0% Completed</small>
+        </div>
+    </a>
 
-<a href="economics.html">
-<div class="subject-card">
-    <h3>Economics</h3>
-    <div class="progress-bar">
-        <div class="progress-fill"></div>
-    </div>
-    <small>0% Completed</small>
+    <a href="physics.html">
+        <div class="subject-card">
+            <h3>Physics</h3>
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+            <small>0% Completed</small>
+        </div>
+    </a>
+
+    <a href="biology.html">
+        <div class="subject-card">
+            <h3>Biology</h3>
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+            <small>0% Completed</small>
+        </div>
+    </a>
 </div>
-</a>
-
-<a href="Physics.html">
-<div class="subject-card">
-    <h3>Physics</h3>
-    <div class="progress-bar">
-        <div class="progress-fill"></div>
-    </div>
-    <small>0% Completed</small>
-</div>
-</a>
-
-<a href="Biology.html">
-<div class="subject-card">
-    <h3>Biology</h3>
-    <div class="progress-bar">
-        <div class="progress-fill"></div>
-    </div>
-    <small>0% Completed</small>
-</div>
-</a>
-
-</div>
-
 </main>
 
 <aside>
 <div class="sidebar-card">
 <h3>Top Scholars</h3>
-
 <div class="rank-item"><span>🥇 Musa Ibrahim</span><b>2450 pts</b></div>
 <div class="rank-item"><span>🥈 Olawale Johnson</span><b>2120 pts</b></div>
 <div class="rank-item"><span>🥉 Chidi Azu</span><b>1980 pts</b></div>
-
 </div>
 </aside>
-
 </div>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
-<!-- Core Logic -->
 <script src="common.js"></script>
-<script src="ijmbpq.js"></script>
-
+<script src="dashboard.js"></script>
 </body>
 </html>
