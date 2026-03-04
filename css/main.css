@@ -91,6 +91,28 @@ header {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
+/* Back Button Styles */
+.back-btn-container {
+    margin: 20px 5%;
+}
+
+.back-btn {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
 /* MOBILE */
 @media(max-width:768px){
   .nav-links {
