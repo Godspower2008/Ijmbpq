@@ -180,7 +180,7 @@ const auth = firebase.auth();
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         // User is signed in
-        window.location.href = "ijmbpq.html"; // or your homepage file
+        window.location.href = window.location.origin + "/Ijmbpq/ijmbpq.html"; // or your homepage file
     }
 });
 
@@ -210,9 +210,9 @@ authButton.addEventListener('click',()=>{
   const msg=document.getElementById('authMessage');
   if(!email||!password){ msg.innerText='Please enter both email and password.'; return; }
   if(isSignIn){
-    auth.signInWithEmailAndPassword(email,password).then(()=>{closeModal(); window.location.href='/Ijmbpq/ijmbpq.html';}).catch(err=>msg.innerText=err.message);
+    auth.signInWithEmailAndPassword(email,password).then(()=>{closeModal(); window.location.href = window.location.origin + "/Ijmbpq/ijmbpq.html";}).catch(err=>msg.innerText=err.message);
   } else {
-    auth.createUserWithEmailAndPassword(email,password).then(()=>{closeModal(); window.location.href='Ijmbpq/ijmbpq.html';}).catch(err=>msg.innerText=err.message);
+    auth.createUserWithEmailAndPassword(email,password).then(()=>{closeModal(); window.location.href = window.location.origin + "/Ijmbpq/ijmbpq.html";}).catch(err=>msg.innerText=err.message);
   }
 });
 
