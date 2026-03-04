@@ -419,80 +419,8 @@ header { position: relative; }
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
-<script>
-// Firebase
-const firebaseConfig = { 
-    apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
-    authDomain: "ijmb-portal.firebaseapp.com",
-    projectId: "ijmb-portal"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// Auth state
-auth.onAuthStateChanged(user => {
-    if(!user){
-        window.location.href = "landing.html";
-        return;
-    }
-    const userId = user.uid;
-    loadDashboard(userId);
-});
-
-// Load Dashboard Data
-async function loadDashboard(userId){
-    try{
-        const doc = await db.collection('users').doc(userId).get();
-        if(!doc.exists) return;
-        const data = doc.data();
-
-        // User greeting
-        document.getElementById('userGreet').textContent = `Welcome back, ${data.displayName}!`;
-
-        // Continue last session
-        const continueCard = document.querySelector('.continue-card p');
-        if(data.lastSession){
-            continueCard.textContent = `You were solving ${data.lastSession.subject} – ${data.lastSession.paper}.`;
-        }
-
-        // Metrics
-        const metricCards = document.querySelectorAll('.metric-card .value');
-        metricCards[0].textContent = data.streak + " Days";       // Streak
-        metricCards[1].textContent = data.avgAccuracy + "%";       // Avg Accuracy
-        metricCards[2].textContent = "#" + data.rank;             // Rank
-
-        // Subject Progress
-        document.querySelectorAll('.subject-card').forEach(card => {
-            const subject = card.querySelector('h3').textContent;
-            const progress = data.progress[subject] || 0;
-            card.querySelector('.progress-fill').style.width = progress + "%";
-            card.querySelector('small').textContent = progress + "% Completed";
-        });
-    } catch(err){
-        console.error("Error loading dashboard:", err);
-    }
-}
-
-// Hamburger toggle
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.querySelector('.nav-links');
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('open');
-});
-
-// Logout
-function logout(){
-    auth.signOut();
-    window.location.href="landing.html";
-}
-
-// Go to Subjects
-function goToSubjects(){
-    window.location.href = "/Ijmbpq/subjects.html";
-}
-</script>
-
+<!-- Dashboard page -->
+<script src="ijmbpq.js"></script>
+<script src="common.js"></script>
 </body>
 </html>
