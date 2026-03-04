@@ -124,6 +124,13 @@ nav { display:flex; justify-content:space-between; align-items:center; padding:1
     </div>
 </section>
 
+<!-- REAL-TIME SEARCH -->
+<section class="search-section" style="padding:30px 5%; text-align:center;">
+    <h2 style="margin-bottom:15px;">Find Past Questions</h2>
+    <input type="text" id="searchInput" placeholder="Type topic or subject..." style="width:80%; padding:12px; border-radius:10px; border:none; margin-bottom:20px;">
+    <div id="searchResults" style="margin-top:20px; display:grid; gap:15px; justify-items:center;"></div>
+</section>
+
 <section class="testimonials">
     <span style="color:var(--accent); font-weight:800; text-transform:uppercase;">Real Success Stories</span>
     <h2>Hear From Our Scholars</h2>
@@ -170,6 +177,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        // User is signed in
+        window.location.href = "ijmbpq.html"; // or your homepage file
+    }
+});
+
 function closeModal(){
   document.getElementById('authModal').style.display='none';
   document.getElementById('authMessage').innerText='';
@@ -203,10 +217,13 @@ authButton.addEventListener('click',()=>{
 });
 
 // Google auth
-const googleSignInBtn=document.getElementById('googleSignIn');
-const provider=new firebase.auth.GoogleAuthProvider();
-googleSignInBtn.addEventListener('click',()=>{
-  auth.signInWithPopup(provider).then(()=>{closeModal(); window.location.href='dashboard.html';}).catch(err=>document.getElementById('authMessage').innerText=err.message);
+const provider = new firebase.auth.GoogleAuthProvider();
+
+document.getElementById("googleSignIn").addEventListener("click", () => {
+    firebase.auth().signInWithPopup(provider)
+        .catch((error) => {
+            document.getElementById("authMessage").innerText = error.message;
+        });
 });
 
 // Auto redirect
@@ -214,6 +231,52 @@ auth.onAuthStateChanged(user=>{
   if(user&&!window.location.href.includes('dashboard.html')){
     window.location.href='dashboard.html';
   }
+});
+</script>
+<script>
+// SAMPLE QUESTIONS DATABASE
+const questions = [
+    {title:"Biology: Cell Division", subject:"Biology"},
+    {title:"Chemistry: Acid-Base Titration", subject:"Chemistry"},
+    {title:"Physics: Projectile Motion", subject:"Physics"},
+    {title:"Mathematics: Integration Techniques", subject:"Mathematics"},
+    {title:"Biology: Photosynthesis Diagram", subject:"Biology"},
+    {title:"Chemistry: Periodic Table Trends", subject:"Chemistry"},
+    {title:"Physics: Ohm's Law", subject:"Physics"},
+    {title:"Mathematics: Quadratic Equations", subject:"Mathematics"}
+];
+
+// DISPLAY FUNCTION
+const resultsDiv = document.getElementById('searchResults');
+const searchInput = document.getElementById('searchInput');
+
+function displayResults(filtered){
+    resultsDiv.innerHTML = '';
+    if(filtered.length===0){
+        resultsDiv.innerHTML = '<p style="color:var(--text-dim)">No matching questions found.</p>';
+        return;
+    }
+    filtered.forEach(q=>{
+        const div=document.createElement('div');
+        div.style.background='var(--glass)';
+        div.style.padding='15px 20px';
+        div.style.borderRadius='12px';
+        div.style.width='80%';
+        div.style.textAlign='left';
+        div.style.border='1px solid var(--border)';
+        div.innerHTML=`<strong>${q.subject}:</strong> ${q.title}`;
+        resultsDiv.appendChild(div);
+    });
+}
+
+// INITIAL DISPLAY
+displayResults(questions);
+
+// FILTER EVENT
+searchInput.addEventListener('input',()=>{
+    const val=searchInput.value.toLowerCase();
+    const filtered = questions.filter(q=>q.title.toLowerCase().includes(val) || q.subject.toLowerCase().includes(val));
+    displayResults(filtered);
 });
 </script>
 </body>
