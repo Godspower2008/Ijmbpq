@@ -189,9 +189,23 @@ header {
 }
 
 .rank-item:last-child { border-bottom: none; }
-.hamburger { display: none; }
-header { position: relative; }
 
+.hamburger { display: none; }
+
+header { position: relative; }
+.dashboard-card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:15px;
+    cursor:pointer;
+    transition:0.3s;
+    margin:15px 0;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-5px);
+    background:#334155;
+}
 /* RESPONSIVE */
 /* Hide full nav on small screens */
 @media (max-width: 768px) {
@@ -215,6 +229,7 @@ header { position: relative; }
     <a href="dashboard.html">Dashboard</a>
     <a href="subjects.html">Subjects</a>
     <a href="upgrade.html">Upgrade</a>
+    <a href="/Ijmbpq/subjects.html">Subjects</a>
     <a href="#" onclick="logout()">Logout</a>
 </nav>
 <div class="hamburger" onclick="toggleNav()">
@@ -223,6 +238,11 @@ header { position: relative; }
   <div></div>
 </div>
 </header>
+
+<div class="dashboard-card" onclick="goToSubjects()">
+    <h3>Subjects</h3>
+    <p>Browse all IJMB subjects, topics and past questions.</p>
+</div>
 
 <div class="dashboard-grid">
 <main>
@@ -331,6 +351,12 @@ window.addEventListener("load", () => {
 });
 function toggleNav() {
   document.querySelector('.nav-links').classList.toggle('active');
+}
+</script>
+
+<script>
+function goToSubjects(){
+    window.location.href = "/Ijmbpq/subjects.html";
 }
 </script>
 
