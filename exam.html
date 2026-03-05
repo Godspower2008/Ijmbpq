@@ -10,11 +10,12 @@
 :root{
   --bg:#020617;
   --card:#0f172a;
-  --glass:rgba(30,41,59,0.8);
+  --glass:rgba(30,41,59,0.85);
   --border:rgba(99,102,241,0.2);
   --accent:#6366f1;
   --text:#f8fafc;
   --text-dim:#94a3b8;
+  --btn-hover:#4f46e5;
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif;}
 body{background:var(--bg);color:var(--text);}
@@ -27,14 +28,19 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
 .hamburger{display:none;flex-direction:column;width:28px;cursor:pointer;}
 .hamburger div{height:3px;background:var(--text);margin:4px 0;transition:0.3s;}
 main{max-width:800px;margin:40px auto;padding:0 5%;}
-button.back-btn, button#loadQuestions, button#prevBtn, button#nextBtn, button.startExamBtn{margin-bottom:20px;padding:10px 18px;border:none;border-radius:8px;background:var(--accent);color:white;cursor:pointer;font-weight:600;}
-.question-card{background:var(--card);padding:20px;border-radius:15px;margin-bottom:20px;}
+button, select, input[type=number]{cursor:pointer;font-weight:600;}
+button.back-btn, button#loadQuestions, button#prevBtn, button#nextBtn, .timer-btn{
+  margin:8px 5px 20px 0;padding:10px 18px;border:none;border-radius:8px;background:var(--accent);color:white;transition:0.3s;
+}
+button.back-btn:hover, button#loadQuestions:hover, button#prevBtn:hover, button#nextBtn:hover, .timer-btn:hover{background:var(--btn-hover);}
+.question-card{background:var(--card);padding:20px;border-radius:15px;margin-bottom:20px;box-shadow:0 5px 15px rgba(0,0,0,0.3);}
 .question-card h3{font-size:1rem;margin-bottom:10px;}
 .question-card p{margin-bottom:10px;color:var(--text);}
 .question-card .solution{color:var(--accent);font-style:italic;}
-select, input[type=number]{padding:10px;border-radius:8px;border:1px solid var(--border);margin-right:10px;background:#0f172a;color:white;}
-.timeQuickButtons button{margin:5px 5px 0 0;}
-#timer{font-size:1.2rem;font-weight:700;margin-bottom:15px;color:var(--accent);}
+select{padding:10px;border-radius:8px;border:1px solid var(--border);margin-right:10px;background:#0f172a;color:white;}
+input[type=range]{width:100%; margin-bottom:10px;}
+.timer-btn{font-size:0.9rem;}
+.timer-container{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
 @media(max-width:768px){
   .nav-links{display:none;}
   .hamburger{display:flex;}
@@ -61,7 +67,6 @@ select, input[type=number]{padding:10px;border-radius:8px;border:1px solid var(-
 
 <main>
   <button class="back-btn" onclick="goBack()">← Back</button>
-
   <h1>Select Exam Parameters</h1>
 
   <div style="margin-bottom:20px;">
@@ -84,26 +89,23 @@ select, input[type=number]{padding:10px;border-radius:8px;border:1px solid var(-
       <option value="C">Section C</option>
       <option value="D">Section D</option>
     </select>
+    <button id="loadQuestions">Load Questions</button>
   </div>
 
-  <!-- Time Selection -->
-  <div style="margin-bottom:20px;">
-    <label for="examTime">Select Exam Time (minutes)</label>
-    <input type="number" id="examTime" min="1" value="30" style="width:100px;">
-    <div class="timeQuickButtons" style="margin-top:10px;">
-      <button type="button" data-min="30">30 mins</button>
-      <button type="button" data-min="60">1 hr</button>
-      <button type="button" data-min="90">1 hr 30 mins</button>
-      <button type="button" data-min="120">2 hrs</button>
-      <button type="button" data-min="150">2 hr 30 mins</button>
-      <button type="button" data-min="180">3 hrs</button>
+  <div class="timer-container">
+    <label for="timeRange">Set Timer (minutes):</label>
+    <input type="range" id="timeRange" min="1" max="180" value="30">
+    <span id="timeValue">30 min</span>
+    <div style="margin-top:5px;">
+      <button class="timer-btn" onclick="setTimer(30)">30 min</button>
+      <button class="timer-btn" onclick="setTimer(60)">1 hr</button>
+      <button class="timer-btn" onclick="setTimer(90)">1 hr 30 min</button>
+      <button class="timer-btn" onclick="setTimer(120)">2 hr</button>
+      <button class="timer-btn" onclick="setTimer(150)">2 hr 30 min</button>
+      <button class="timer-btn" onclick="setTimer(180)">3 hr</button>
     </div>
   </div>
 
-  <button id="loadQuestions">Load Questions</button>
-  <button class="startExamBtn" id="startExamBtn">Start Exam</button>
-
-  <div id="timer"></div>
   <div id="questions-container"></div>
   <div style="display:flex;gap:10px;margin-top:10px;">
     <button id="prevBtn">← Previous</button>
@@ -113,7 +115,6 @@ select, input[type=number]{padding:10px;border-radius:8px;border:1px solid var(-
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="common.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <script>
@@ -146,18 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
     opt.textContent = y;
     yearSelect.appendChild(opt);
   }
-
-  // Quick-set time buttons
-  document.querySelectorAll('.timeQuickButtons button').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      document.getElementById('examTime').value = parseInt(btn.dataset.min);
-    });
-  });
-
-  const examTimeInput = document.getElementById('examTime');
-  examTimeInput.addEventListener('input', ()=>{
-    if(examTimeInput.value < 1) examTimeInput.value = 1;
-  });
 });
 
 // --- Back button ---
@@ -166,11 +155,21 @@ function goBack(){
   else{window.location.href='dashboard.html';}
 }
 
+// --- Timer quick buttons ---
+const timeRange = document.getElementById('timeRange');
+const timeValue = document.getElementById('timeValue');
+timeRange.addEventListener('input', ()=>{
+  timeValue.textContent = timeRange.value + ' min';
+});
+function setTimer(mins){
+  timeRange.value = mins;
+  timeValue.textContent = mins + (mins >= 60 ? ` min` : ' min');
+}
+
+// --- Questions ---
 let questions = [];
 let currentIndex = 0;
-let timerInterval;
 
-// --- Load Questions ---
 document.getElementById('loadQuestions').addEventListener('click', async ()=>{
   const subject = document.getElementById('subject').value;
   const year = document.getElementById('year').value;
@@ -195,7 +194,7 @@ document.getElementById('loadQuestions').addEventListener('click', async ()=>{
       questions.push(doc.data());
     });
 
-    container.innerHTML = '<p>Questions loaded. Click "Start Exam" to begin.</p>';
+    renderQuestion();
   } catch(err){
     container.innerHTML = `<p>Error loading questions: ${err}</p>`;
   }
@@ -203,7 +202,11 @@ document.getElementById('loadQuestions').addEventListener('click', async ()=>{
 
 function renderQuestion(){
   const container = document.getElementById('questions-container');
-  if(questions.length === 0) return;
+  if(questions.length === 0){
+    container.innerHTML = '';
+    return;
+  }
+
   const q = questions[currentIndex];
   container.innerHTML = `<div class="question-card">
     <h3>Question ${currentIndex+1} of ${questions.length}</h3>
@@ -225,38 +228,6 @@ document.getElementById('nextBtn').addEventListener('click', ()=>{
     currentIndex++;
     renderQuestion();
   }
-});
-
-// --- Start Exam & Timer ---
-document.getElementById('startExamBtn').addEventListener('click', ()=>{
-  if(questions.length < 1){ alert("Load at least 1 question first!"); return; }
-
-  const minutes = parseInt(document.getElementById('examTime').value);
-  let remainingSeconds = minutes * 60;
-
-  clearInterval(timerInterval);
-
-  function updateTimerDisplay(){
-    const mins = Math.floor(remainingSeconds/60);
-    const secs = remainingSeconds % 60;
-    document.getElementById('timer').textContent = `Time Remaining: ${mins}:${secs < 10 ? '0'+secs : secs}`;
-  }
-
-  updateTimerDisplay();
-
-  timerInterval = setInterval(()=>{
-    remainingSeconds--;
-    if(remainingSeconds <= 0){
-      clearInterval(timerInterval);
-      alert("Time's up! Exam ended.");
-      document.getElementById('questions-container').innerHTML = '';
-      document.getElementById('timer').textContent = '';
-    } else {
-      updateTimerDisplay();
-    }
-  }, 1000);
-
-  renderQuestion();
 });
 </script>
 
