@@ -192,6 +192,34 @@ display:flex;
 
 }
 
+/* Mobile menu slide in */
+.nav-links {
+  position: absolute;
+  top: 60px;
+  right: -250px; /* hidden offscreen */
+  background: var(--bg);
+  padding: 20px;
+  border-radius: 10px;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  transition: right 0.4s ease; /* animation */
+}
+
+.nav-links.active {
+  right: 5%; /* slide into view */
+}
+
+/* Hamburger animation */
+.hamburger.open div:nth-child(1) {
+  transform: rotate(45deg) translate(5px,5px);
+}
+.hamburger.open div:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open div:nth-child(3) {
+  transform: rotate(-45deg) translate(5px,-5px);
+}
 </style>
 </head>
 
