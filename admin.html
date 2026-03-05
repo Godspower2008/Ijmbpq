@@ -12,12 +12,21 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:w
 label { display:block; margin-bottom:8px; font-size:0.8rem; color:#94a3b8; font-weight:800; text-transform:uppercase; }
 input, select, textarea { width:100%; padding:14px; margin-bottom:20px; border-radius:12px; border:1px solid var(--border); background:#020617; color:white; font-family:inherit; }
 textarea { height:150px; resize:none; }
-button { width:100%; padding:16px; background:var(--accent); color:white; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-size:1rem; }
+button { width:100%; padding:16px; background:var(--accent); color:white; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-size:1rem; margin-bottom:10px;}
+#preview { background:#0f172a; padding:15px; border-radius:12px; min-height:100px; color:white; margin-top:10px;}
 </style>
 </head>
 <body>
 
 <div class="admin-box">
+<h2 style="text-align:center; margin-top:0;">Admin Login</h2>
+<label>Email</label>
+<input type="email" id="adminEmail" placeholder="Admin email">
+<label>Password</label>
+<input type="password" id="adminPass" placeholder="Password">
+<button id="loginBtn">Login</button>
+
+<div id="uploadSection" style="display:none;">
 <h2 style="text-align:center; margin-top:0;">Theory Question Uploader</h2>
 
 <label>Subject</label>
@@ -57,20 +66,25 @@ button { width:100%; padding:16px; background:var(--accent); color:white; border
 
 <button onclick="upload()">Push to Database</button>
 <label>Question Preview</label>
-<div id="preview" style="background:#0f172a; padding:15px; border-radius:12px; min-height:100px; color:white;"></div>
+<div id="preview"></div>
+<button onclick="logout()">Logout</button>
+</div>
 </div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 <!-- MathJax -->
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <script>
+// Firebase Config
 firebase.initializeApp({
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
     databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com"
 });
+const auth = firebase.auth();
 const db = firebase.database();
 
 // Populate Year Select
@@ -84,6 +98,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Admin Login
+document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('adminEmail').value;
+    const pass = document.getElementById('adminPass').value;
+
+    if(!email || !pass) { alert("Enter email and password"); return; }
+
+    try {
+        const userCred = await auth.signInWithEmailAndPassword(email, pass);
+        alert("Login successful!");
+        document.getElementById('uploadSection').style.display = "block";
+    } catch(err) {
+        alert("Login failed: " + err.message);
+    }
+});
+
+// Logout
+function logout() {
+    auth.signOut().then(() => location.reload());
+}
+
+// Upload question
 function upload() {
     const s = document.getElementById('sub').value;
     const y = document.getElementById('year').value;
@@ -93,17 +129,17 @@ function upload() {
     const qText = document.getElementById('q').value;
     const solution = document.getElementById('sol').value;
 
-    // Required fields validation
+    // Validate
     if(!s || !y || !p || !sec || !marks || !qText) {
         alert("Please fill all required fields (Marking Scheme optional)");
         return;
     }
 
-    // Push to Firebase
+    // Only allow if admin logged in
+    if(!auth.currentUser) { alert("You must be logged in to push questions."); return; }
+
     db.ref(`questions/${s}/${y}/${p}/${sec}`).push({
-        marks: marks,
-        text: qText,
-        solution: solution || ""
+        marks, text: qText, solution: solution || ""
     }).then(() => {
         alert("Question Uploaded Successfully!");
         document.getElementById('q').value = "";
@@ -111,15 +147,14 @@ function upload() {
         MathJax.typeset(); // render formulas
     }).catch(err => alert("Error: " + err));
 }
+
+// Live preview
 const qInput = document.getElementById('q');
 const preview = document.getElementById('preview');
-
-// Update preview live
 qInput.addEventListener('input', () => {
     preview.innerHTML = qInput.value;
-    MathJax.typesetPromise([preview]); // Render LaTeX/formulas
+    MathJax.typesetPromise([preview]);
 });
 </script>
-
 </body>
 </html>
