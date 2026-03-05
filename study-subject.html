@@ -74,6 +74,12 @@ main{max-width:1200px; margin:40px auto; padding:0 5%;}
 <main>
     <a href="study.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Subjects</a>
     <h1 class="subject-title">Loading...</h1>
+<div class="study-progress" style="margin-bottom:20px;">
+    <div class="progress-bar" style="background:#1e293b; height:12px; border-radius:6px; overflow:hidden;">
+        <div class="progress-fill" style="width:0%; background:var(--accent); height:100%; transition:0.8s;"></div>
+    </div>
+    <small class="progress-text">0% Completed</small>
+</div>
     <div class="questions-list">
         <!-- Questions will be loaded here -->
     </div>
