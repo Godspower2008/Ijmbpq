@@ -39,9 +39,15 @@ select, input[type=number]{padding:10px;border-radius:8px;border:1px solid var(-
   .hamburger{display:flex;}
 }
 .nav-links.active{display:flex;flex-direction:column;gap:15px;background:var(--glass);position:absolute;top:60px;right:5%;padding:15px;border-radius:12px;}
-.hamburger.open div:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
-.hamburger.open div:nth-child(2){opacity:0;}
-.hamburger.open div:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+.hamburger.open div:nth-child(1){
+  transform: rotate(45deg) translateY(8px);
+}
+.hamburger.open div:nth-child(2){
+  opacity: 0;
+}
+.hamburger.open div:nth-child(3){
+  transform: rotate(-45deg) translateY(-8px);
+}
 .back-btn{background:#1f2937;color:#6366f1;}
 .back-btn:hover{background:#111827;}
 </style>
