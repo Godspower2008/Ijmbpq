@@ -1,42 +1,35 @@
-// Wait for auth and page load
+// Wait for DOM + Auth
 auth.onAuthStateChanged(async user => {
     if(!user) return;
-    await loadStudyData(user.uid);
+
+    const subjects = ["Mathematics","Physics","Chemistry","Biology","Economics"];
+    const subjectsList = document.querySelector('.subjects-list');
+
+    // Fetch user progress from Firestore
+    const doc = await db.collection('users').doc(user.uid).get();
+    const data = doc.exists ? doc.data() : {};
+
+    subjects.forEach(sub => {
+        const progress = data.progress && data.progress[sub] ? data.progress[sub] : 0;
+
+        const card = document.createElement('div');
+        card.className = "subject-card";
+        card.innerHTML = `
+            <h3>${sub}</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:0%"></div>
+            </div>
+            <small>${progress}% Completed</small>
+        `;
+        card.onclick = () => {
+            localStorage.setItem('currentSubject', sub);
+            window.location.href = `study-subject.html?subject=${sub}`;
+        };
+        subjectsList.appendChild(card);
+
+        // Animate progress
+        setTimeout(() => {
+            card.querySelector('.progress-fill').style.width = progress + "%";
+        }, 100);
+    });
 });
-
-// Load user's study progress
-async function loadStudyData(userId){
-    try {
-        const doc = await db.collection('users').doc(userId).get();
-        if(!doc.exists) return;
-
-        const data = doc.data();
-
-        // Greeting
-        document.getElementById('userGreet').textContent = `Welcome back, ${data.displayName || "Scholar"}!`;
-
-        // Update progress bars
-        document.querySelectorAll('.subject-card').forEach(card => {
-            const subject = card.dataset.subject;
-            const progress = (data.progress && data.progress[subject]) || 0;
-            const fill = card.querySelector('.progress-fill');
-            const small = card.querySelector('small');
-
-            fill.style.width = "0%";
-            setTimeout(()=>{
-                fill.style.transition = "width 1s ease";
-                fill.style.width = progress + "%";
-            }, 100);
-
-            small.textContent = progress + "% Completed";
-
-            // Clicking card could go to the past questions page for that subject
-            card.onclick = () => {
-                localStorage.setItem('currentSubject', subject);
-                window.location.href = 'past-questions.html';
-            };
-        });
-    } catch(err){
-        console.error("Error loading study data:", err);
-    }
-}
