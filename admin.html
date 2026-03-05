@@ -30,16 +30,31 @@ button { width:100%; padding:16px; background:var(--accent); color:white; border
 
 <label>Year</label>
 <select id="year">
-  <option value="2026">2026</option>
-  <option value="2025">2025</option>
-  <option value="2024">2024</option>
-  <option value="2023">2023</option>
+  <!-- Years 2009 to 2026 -->
+  <script>
+    const yearSelect = document.getElementById('year');
+    for(let y=2026; y>=2009; y--){
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y;
+      yearSelect.appendChild(opt);
+    }
+  </script>
 </select>
 
-<label>Paper Type</label>
+<label>Paper</label>
 <select id="paper">
   <option value="I">Paper I</option>
   <option value="II">Paper II</option>
+  <option value="III">Paper III</option>
+</select>
+
+<label>Section</label>
+<select id="section">
+  <option value="A">Section A</option>
+  <option value="B">Section B</option>
+  <option value="C">Section C</option>
+  <option value="D">Section D</option>
 </select>
 
 <label>Total Marks</label>
@@ -72,6 +87,7 @@ function upload() {
     const s = document.getElementById('sub').value;
     const y = document.getElementById('year').value;
     const p = document.getElementById('paper').value;
+    const sec = document.getElementById('section').value;
     const marks = document.getElementById('m').value;
     const qText = document.getElementById('q').value;
     const solution = document.getElementById('sol').value;
@@ -81,8 +97,8 @@ function upload() {
         return;
     }
 
-    // Structure: questions/subject/year/paper
-    db.ref(`questions/${s}/${y}/${p}`).push({
+    // Structure: questions/subject/year/paper/section
+    db.ref(`questions/${s}/${y}/${p}/${sec}`).push({
         marks: marks,
         text: qText,
         solution: solution
@@ -90,7 +106,7 @@ function upload() {
         alert("Question Uploaded Successfully!");
         document.getElementById('q').value = "";
         document.getElementById('sol').value = "";
-        MathJax.typeset(); // Render formulas if previewing
+        MathJax.typeset(); // Render formulas if needed
     }).catch(err => alert("Error: " + err));
 }
 </script>
