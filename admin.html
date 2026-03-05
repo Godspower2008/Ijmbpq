@@ -6,131 +6,77 @@
 <title>Admin Dashboard | IJMB Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
 <style>
-:root { 
-    --bg: #020617; 
-    --card: #0f172a; 
-    --accent: #6366f1; 
-    --border: rgba(255,255,255,0.1); 
-}
-body { 
-    font-family: 'Plus Jakarta Sans', sans-serif; 
-    background: var(--bg); 
-    color: white; 
-    margin: 0; 
-}
-.admin-box { 
-    max-width: 600px; 
-    margin: 50px auto; 
-    background: var(--card); 
-    padding: 40px; 
-    border-radius: 24px; 
-    border: 1px solid var(--border); 
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3); 
-}
-label { 
-    display: block; 
-    margin-bottom: 8px; 
-    font-size: 0.8rem; 
-    color: #94a3b8; 
-    font-weight: 800; 
-    text-transform: uppercase; 
-}
-input, select, textarea { 
-    width: 100%; 
-    padding: 14px; 
-    margin-bottom: 20px; 
-    border-radius: 12px; 
-    border: 1px solid var(--border); 
-    background: #020617; 
-    color: white; 
-    font-family: inherit; 
-}
-textarea { 
-    height: 150px; 
-    resize: none; 
-}
-button { 
-    width: 100%; 
-    padding: 16px; 
-    background: var(--accent); 
-    color: white; 
-    border: none; 
-    border-radius: 12px; 
-    font-weight: 800; 
-    cursor: pointer; 
-    font-size: 1rem; 
-}
+:root { --bg:#020617; --card:#0f172a; --accent:#6366f1; --border: rgba(255,255,255,0.1); }
+body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:white; margin:0; }
+.admin-box { max-width:600px; margin:50px auto; background:var(--card); padding:40px; border-radius:24px; border:1px solid var(--border); box-shadow:0 20px 50px rgba(0,0,0,0.3); }
+label { display:block; margin-bottom:8px; font-size:0.8rem; color:#94a3b8; font-weight:800; text-transform:uppercase; }
+input, select, textarea { width:100%; padding:14px; margin-bottom:20px; border-radius:12px; border:1px solid var(--border); background:#020617; color:white; font-family:inherit; }
+textarea { height:150px; resize:none; }
+button { width:100%; padding:16px; background:var(--accent); color:white; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-size:1rem; }
 </style>
 </head>
 <body>
 
 <div class="admin-box">
-    <h2 style="margin-top:0; text-align:center;">Theory Question Uploader</h2>
+<h2 style="text-align:center; margin-top:0;">Theory Question Uploader</h2>
 
-    <label>Subject</label>
-    <select id="sub">
-        <option value="Physics">Physics</option>
-        <option value="Chemistry">Chemistry</option>
-        <option value="Biology">Biology</option>
-        <option value="Economics">Economics</option>
-        <option value="Mathematics">Mathematics</option>
-    </select>
+<label>Subject</label>
+<select id="sub">
+  <option value="Physics">Physics</option>
+  <option value="Chemistry">Chemistry</option>
+  <option value="Biology">Biology</option>
+  <option value="Economics">Economics</option>
+</select>
 
-    <label>Total Marks</label>
-    <input type="number" id="m" placeholder="e.g., 15">
+<label>Total Marks</label>
+<input type="number" id="m" placeholder="e.g., 15">
 
-    <label>Question (HTML & LaTeX supported)</label>
-    <textarea id="q" placeholder="Enter the question text..."></textarea>
+<label>Question (HTML & LaTeX supported)</label>
+<textarea id="q" placeholder="Enter the question text..."></textarea>
 
-    <label>Marking Scheme</label>
-    <textarea id="sol" placeholder="Enter the step-by-step solution..."></textarea>
+<label>Marking Scheme</label>
+<textarea id="sol" placeholder="Enter the step-by-step solution..."></textarea>
 
-    <button id="uploadBtn">Push to Database</button>
+<button onclick="upload()">Push to Database</button>
 </div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
+<!-- MathJax for formula preview -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <script>
-// --- Firebase Init ---
-const firebaseConfig = {
+firebase.initializeApp({
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
-    authDomain: "ijmb-portal.firebaseapp.com",
     databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com"
-};
-firebase.initializeApp(firebaseConfig);
+});
 const db = firebase.database();
 
-// --- Upload Function ---
-document.getElementById('uploadBtn').addEventListener('click', () => {
-    const subject = document.getElementById('sub').value;
-    const marks = document.getElementById('m').value.trim();
-    const question = document.getElementById('q').value.trim();
-    const solution = document.getElementById('sol').value.trim();
+function upload() {
+    const s = document.getElementById('sub').value;
+    const marks = document.getElementById('m').value;
+    const qText = document.getElementById('q').value;
+    const solution = document.getElementById('sol').value;
 
-    if(!marks || !question || !solution){
-        alert("Please fill in all fields!");
+    if(!marks || !qText || !solution) {
+        alert("All fields are required!");
         return;
     }
 
-    db.ref('questions/' + subject).push({
-        marks: Number(marks),
-        text: question,
+    db.ref('questions/' + s).push({
+        marks: marks,
+        text: qText,
         solution: solution
-    })
-    .then(() => {
-        alert("Question uploaded successfully!");
-        // clear fields
-        document.getElementById('m').value = '';
-        document.getElementById('q').value = '';
-        document.getElementById('sol').value = '';
-    })
-    .catch(err => {
-        console.error("Upload failed:", err);
-        alert("Error uploading question: " + err.message);
-    });
-});
+    }).then(() => {
+        alert("Question Uploaded Successfully!");
+        // Optional: Preview the question immediately
+        document.getElementById('q').value = "";
+        document.getElementById('sol').value = "";
+        MathJax.typeset(); // re-render formulas if needed
+    }).catch(err => alert("Error: " + err));
+}
 </script>
 
 </body>
