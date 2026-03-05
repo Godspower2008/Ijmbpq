@@ -56,6 +56,8 @@ button { width:100%; padding:16px; background:var(--accent); color:white; border
 <textarea id="sol" placeholder="Enter the step-by-step solution..."></textarea>
 
 <button onclick="upload()">Push to Database</button>
+<label>Question Preview</label>
+<div id="preview" style="background:#0f172a; padding:15px; border-radius:12px; min-height:100px; color:white;"></div>
 </div>
 
 <!-- Firebase -->
@@ -109,6 +111,14 @@ function upload() {
         MathJax.typeset(); // render formulas
     }).catch(err => alert("Error: " + err));
 }
+const qInput = document.getElementById('q');
+const preview = document.getElementById('preview');
+
+// Update preview live
+qInput.addEventListener('input', () => {
+    preview.innerHTML = qInput.value;
+    MathJax.typesetPromise([preview]); // Render LaTeX/formulas
+});
 </script>
 
 </body>
