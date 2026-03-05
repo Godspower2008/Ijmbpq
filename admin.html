@@ -92,10 +92,24 @@ function upload() {
     const qText = document.getElementById('q').value;
     const solution = document.getElementById('sol').value;
 
-    if(!marks || !qText || !solution) {
-        alert("All fields are required!");
+    // All fields except solution are compulsory
+    if(!s || !y || !p || !sec || !marks || !qText) {
+        alert("Please fill all required fields (Marking Scheme optional)");
         return;
     }
+
+    // Structure: questions/subject/year/paper/section
+    db.ref(`questions/${s}/${y}/${p}/${sec}`).push({
+        marks: marks,
+        text: qText,
+        solution: solution || ""  // allow empty solution
+    }).then(() => {
+        alert("Question Uploaded Successfully!");
+        document.getElementById('q').value = "";
+        document.getElementById('sol').value = "";
+        MathJax.typeset(); // render formulas if any
+    }).catch(err => alert("Error: " + err));
+}
 
     // Structure: questions/subject/year/paper/section
     db.ref(`questions/${s}/${y}/${p}/${sec}`).push({
