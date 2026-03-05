@@ -3,158 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard | IJMB Pro</title>
+<title>Admin Login | IJMB Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
 <style>
-:root { --bg:#020617; --card:#0f172a; --accent:#6366f1; --border: rgba(255,255,255,0.1); }
-body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:white; margin:0; }
-.admin-box { max-width:600px; margin:50px auto; background:var(--card); padding:40px; border-radius:24px; border:1px solid var(--border); box-shadow:0 20px 50px rgba(0,0,0,0.3); }
-label { display:block; margin-bottom:8px; font-size:0.8rem; color:#94a3b8; font-weight:800; text-transform:uppercase; }
-input, select, textarea { width:100%; padding:14px; margin-bottom:20px; border-radius:12px; border:1px solid var(--border); background:#020617; color:white; font-family:inherit; }
-textarea { height:150px; resize:none; }
-button { width:100%; padding:16px; background:var(--accent); color:white; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-size:1rem; margin-bottom:10px;}
-#preview { background:#0f172a; padding:15px; border-radius:12px; min-height:100px; color:white; margin-top:10px;}
+body { font-family:'Plus Jakarta Sans',sans-serif; background:#020617; color:white; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
+.login-box { background:#0f172a; padding:40px; border-radius:20px; width:300px; }
+input { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #6366f1; background:#020617; color:white; }
+button { width:100%; padding:12px; margin-top:10px; border:none; border-radius:8px; background:#6366f1; color:white; font-weight:800; cursor:pointer; }
 </style>
 </head>
 <body>
 
-<div class="admin-box">
-<h2 style="text-align:center; margin-top:0;">Admin Login</h2>
-<label>Email</label>
-<input type="email" id="adminEmail" placeholder="Admin email">
-<label>Password</label>
-<input type="password" id="adminPass" placeholder="Password">
-<button id="loginBtn">Login</button>
-
-<div id="uploadSection" style="display:none;">
-<h2 style="text-align:center; margin-top:0;">Theory Question Uploader</h2>
-
-<label>Subject</label>
-<select id="sub">
-  <option value="Physics">Physics</option>
-  <option value="Chemistry">Chemistry</option>
-  <option value="Biology">Biology</option>
-  <option value="Economics">Economics</option>
-</select>
-
-<label>Year</label>
-<select id="year"></select>
-
-<label>Paper</label>
-<select id="paper">
-  <option value="I">Paper I</option>
-  <option value="II">Paper II</option>
-  <option value="III">Paper III</option>
-</select>
-
-<label>Section</label>
-<select id="section">
-  <option value="A">Section A</option>
-  <option value="B">Section B</option>
-  <option value="C">Section C</option>
-  <option value="D">Section D</option>
-</select>
-
-<label>Total Marks</label>
-<input type="number" id="m" placeholder="e.g., 15">
-
-<label>Question (HTML & LaTeX supported)</label>
-<textarea id="q" placeholder="Enter the question text..."></textarea>
-
-<label>Marking Scheme</label>
-<textarea id="sol" placeholder="Enter the step-by-step solution..."></textarea>
-
-<button onclick="upload()">Push to Database</button>
-<label>Question Preview</label>
-<div id="preview"></div>
-<button onclick="logout()">Logout</button>
-</div>
+<div class="login-box">
+<h2>Admin Login</h2>
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">Login</button>
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-<!-- MathJax -->
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <script>
-// Firebase Config
 firebase.initializeApp({
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
-    databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com"
+    authDomain: "ijmb-portal.firebaseapp.com"
 });
 const auth = firebase.auth();
-const db = firebase.database();
 
-// Populate Year Select
-document.addEventListener('DOMContentLoaded', () => {
-    const yearSelect = document.getElementById('year');
-    for(let y=2026; y>=2009; y--){
-        const opt = document.createElement('option');
-        opt.value = y;
-        opt.textContent = y;
-        yearSelect.appendChild(opt);
-    }
-});
+function login(){
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-// Admin Login
-document.getElementById('loginBtn').addEventListener('click', async () => {
-    const email = document.getElementById('adminEmail').value;
-    const pass = document.getElementById('adminPass').value;
-
-    if(!email || !pass) { alert("Enter email and password"); return; }
-
-    try {
-        const userCred = await auth.signInWithEmailAndPassword(email, pass);
-        alert("Login successful!");
-        document.getElementById('uploadSection').style.display = "block";
-    } catch(err) {
-        alert("Login failed: " + err.message);
-    }
-});
-
-// Logout
-function logout() {
-    auth.signOut().then(() => location.reload());
-}
-
-// Upload question
-function upload() {
-    const s = document.getElementById('sub').value;
-    const y = document.getElementById('year').value;
-    const p = document.getElementById('paper').value;
-    const sec = document.getElementById('section').value;
-    const marks = document.getElementById('m').value;
-    const qText = document.getElementById('q').value;
-    const solution = document.getElementById('sol').value;
-
-    // Validate
-    if(!s || !y || !p || !sec || !marks || !qText) {
-        alert("Please fill all required fields (Marking Scheme optional)");
+    if(!email || !password){
+        alert("Please fill in both fields");
         return;
     }
 
-    // Only allow if admin logged in
-    if(!auth.currentUser) { alert("You must be logged in to push questions."); return; }
-
-    db.ref(`questions/${s}/${y}/${p}/${sec}`).push({
-        marks, text: qText, solution: solution || ""
-    }).then(() => {
-        alert("Question Uploaded Successfully!");
-        document.getElementById('q').value = "";
-        document.getElementById('sol').value = "";
-        MathJax.typeset(); // render formulas
-    }).catch(err => alert("Error: " + err));
+    auth.signInWithEmailAndPassword(email, password)
+        .then(userCredential => {
+            const uid = userCredential.user.uid;
+            // Check if user is admin
+            firebase.database().ref('admins/' + uid).get().then(snapshot => {
+                if(snapshot.exists()){
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    alert("Access denied: Not an admin");
+                    auth.signOut();
+                }
+            });
+        })
+        .catch(err => alert("Login failed: " + err.message));
 }
-
-// Live preview
-const qInput = document.getElementById('q');
-const preview = document.getElementById('preview');
-qInput.addEventListener('input', () => {
-    preview.innerHTML = qInput.value;
-    MathJax.typesetPromise([preview]);
-});
 </script>
 </body>
 </html>
