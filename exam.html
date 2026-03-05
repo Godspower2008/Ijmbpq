@@ -32,7 +32,7 @@ button.back-btn, button#loadQuestions, button#prevBtn, button#nextBtn{margin-bot
 .question-card h3{font-size:1rem;margin-bottom:10px;}
 .question-card p{margin-bottom:10px;color:var(--text);}
 .question-card .solution{color:var(--accent);font-style:italic;}
-select{padding:10px;border-radius:8px;border:1px solid var(--border);margin-right:10px;background:#0f172a;color:white;}
+select,input{padding:10px;border-radius:8px;border:1px solid var(--border);margin-right:10px;background:#0f172a;color:white;}
 @media(max-width:768px){
   .nav-links{display:none;}
   .hamburger{display:flex;}
@@ -70,18 +70,24 @@ select{padding:10px;border-radius:8px;border:1px solid var(--border);margin-righ
       <option value="Economics">Economics</option>
       <option value="Mathematics">Mathematics</option>
     </select>
+
     <select id="year"></select>
+
     <select id="paper">
       <option value="I">Paper I</option>
       <option value="II">Paper II</option>
       <option value="III">Paper III</option>
     </select>
+
     <select id="section">
       <option value="A">Section A</option>
       <option value="B">Section B</option>
       <option value="C">Section C</option>
       <option value="D">Section D</option>
     </select>
+
+    <input type="number" id="numQuestions" min="1" value="1" placeholder="Number of Questions">
+
     <button id="loadQuestions">Load Questions</button>
   </div>
 
@@ -94,10 +100,10 @@ select{padding:10px;border-radius:8px;border:1px solid var(--border);margin-righ
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="common.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <script>
+// Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
   databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com"
@@ -112,8 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.classList.toggle('active');
     hamburger.classList.toggle('open');
   });
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
+  document.querySelectorAll('.nav-links a').forEach(link=>{
+    link.addEventListener('click', ()=>{
       navLinks.classList.remove('active');
       hamburger.classList.remove('open');
     });
@@ -144,40 +150,46 @@ document.getElementById('loadQuestions').addEventListener('click', async ()=>{
   const year = document.getElementById('year').value;
   const paper = document.getElementById('paper').value;
   const section = document.getElementById('section').value;
+  let numQuestions = parseInt(document.getElementById('numQuestions').value);
+  if(isNaN(numQuestions)||numQuestions<1){numQuestions=1; document.getElementById('numQuestions').value=1;}
 
   const container = document.getElementById('questions-container');
   container.innerHTML = 'Loading questions...';
-  currentIndex = 0;
-  questions = [];
+  currentIndex=0;
+  questions=[];
 
-  try {
+  try{
     const snapshot = await db.collection('questions')
       .doc(subject).collection(year).doc(paper).collection(section).get();
 
     if(snapshot.empty){
-      container.innerHTML = '<p>No questions found for this selection.</p>';
+      container.innerHTML='<p>No questions found for this selection.</p>';
       return;
     }
 
-    snapshot.forEach(doc=>{
-      questions.push(doc.data());
-    });
+    snapshot.forEach(doc=>{questions.push(doc.data());});
 
+    if(questions.length<numQuestions){
+      alert(`Only ${questions.length} question(s) available. Adjusting number.`);
+      numQuestions = questions.length;
+    }
+
+    questions = questions.slice(0,numQuestions);
     renderQuestion();
-  } catch(err){
-    container.innerHTML = `<p>Error loading questions: ${err}</p>`;
+
+    document.getElementById('prevBtn').disabled = questions.length===1;
+    document.getElementById('nextBtn').disabled = questions.length===1;
+
+  }catch(err){
+    container.innerHTML=`<p>Error loading questions: ${err}</p>`;
   }
 });
 
 function renderQuestion(){
   const container = document.getElementById('questions-container');
-  if(questions.length === 0){
-    container.innerHTML = '';
-    return;
-  }
-
+  if(questions.length===0){container.innerHTML=''; return;}
   const q = questions[currentIndex];
-  container.innerHTML = `<div class="question-card">
+  container.innerHTML=`<div class="question-card">
     <h3>Question ${currentIndex+1} of ${questions.length}</h3>
     <p>${q.text}</p>
     ${q.solution? `<p class="solution">Solution: ${q.solution}</p>` : ''}
@@ -187,17 +199,10 @@ function renderQuestion(){
 
 // --- Pagination ---
 document.getElementById('prevBtn').addEventListener('click', ()=>{
-  if(currentIndex>0){
-    currentIndex--;
-    renderQuestion();
-  }
+  if(currentIndex>0){currentIndex--; renderQuestion();}
 });
-
 document.getElementById('nextBtn').addEventListener('click', ()=>{
-  if(currentIndex<questions.length-1){
-    currentIndex++;
-    renderQuestion();
-  }
+  if(currentIndex<questions.length-1){currentIndex++; renderQuestion();}
 });
 </script>
 
