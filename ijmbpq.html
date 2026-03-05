@@ -234,6 +234,73 @@ display:flex;
     gap: 15px;                    /* space between links */
     z-index: 1001;                /* above other content */
 }
+/* MOBILE NAVIGATION */
+@media(max-width:768px){
+
+    /* Hide nav links by default */
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px; /* below header */
+        right: 5%;
+        background: var(--bg);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        gap: 15px;
+        z-index: 1001;
+    }
+
+    /* Show when active */
+    .nav-links.active {
+        display: flex;
+        animation: fadeIn 0.3s ease forwards;
+    }
+
+    .nav-links a {
+        font-size: 1rem;
+        padding: 8px 12px;
+    }
+
+    /* Hamburger styling */
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 28px;
+        height: 22px;
+        cursor: pointer;
+        z-index: 1100;
+    }
+
+    .hamburger div {
+        height: 3px;
+        background: var(--text);
+        border-radius: 2px;
+        transition: 0.4s;
+    }
+
+    /* Hamburger animation to X */
+    .hamburger.open div:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.open div:nth-child(2) {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    .hamburger.open div:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Optional fade-in animation for nav */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+}
 </style>
 </head>
 
