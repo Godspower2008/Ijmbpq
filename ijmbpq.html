@@ -220,6 +220,20 @@ display:flex;
 .hamburger.open div:nth-child(3) {
   transform: rotate(-45deg) translate(5px,-5px);
 }
+/* MOBILE MENU ACTIVE */
+.nav-links.active {
+    display: flex;                /* make it visible */
+    flex-direction: column;       /* stack links vertically */
+    position: absolute;           /* float over content */
+    top: 60px;                    /* just below the header */
+    right: 5%;                    /* align to right edge */
+    background: var(--bg);        /* background for menu */
+    padding: 20px;                /* some padding */
+    border-radius: 10px;          /* rounded corners */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    gap: 15px;                    /* space between links */
+    z-index: 1001;                /* above other content */
+}
 </style>
 </head>
 
