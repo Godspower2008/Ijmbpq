@@ -5,17 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exam | IJMB PRO</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
   --bg:#020617;
   --card:#0f172a;
-  --glass:rgba(30,41,59,0.85);
+  --glass:rgba(30,41,59,0.8);
   --border:rgba(99,102,241,0.2);
   --accent:#6366f1;
   --text:#f8fafc;
   --text-dim:#94a3b8;
-  --btn-hover:#4f46e5;
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif;}
 body{background:var(--bg);color:var(--text);}
@@ -28,19 +26,14 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
 .hamburger{display:none;flex-direction:column;width:28px;cursor:pointer;}
 .hamburger div{height:3px;background:var(--text);margin:4px 0;transition:0.3s;}
 main{max-width:800px;margin:40px auto;padding:0 5%;}
-button, select, input[type=number]{cursor:pointer;font-weight:600;}
-button.back-btn, button#loadQuestions, button#prevBtn, button#nextBtn, .timer-btn{
-  margin:8px 5px 20px 0;padding:10px 18px;border:none;border-radius:8px;background:var(--accent);color:white;transition:0.3s;
-}
-button.back-btn:hover, button#loadQuestions:hover, button#prevBtn:hover, button#nextBtn:hover, .timer-btn:hover{background:var(--btn-hover);}
-.question-card{background:var(--card);padding:20px;border-radius:15px;margin-bottom:20px;box-shadow:0 5px 15px rgba(0,0,0,0.3);}
+button.back-btn, button#loadQuestions, button#prevBtn, button#nextBtn, .time-btn{margin-bottom:20px;padding:10px 18px;border:none;border-radius:30px;background:var(--accent);color:white;cursor:pointer;font-weight:600;transition:0.3s;}
+button.back-btn:hover, button.time-btn:hover{opacity:0.85;}
+.question-card{background:var(--card);padding:20px;border-radius:15px;margin-bottom:20px;}
 .question-card h3{font-size:1rem;margin-bottom:10px;}
 .question-card p{margin-bottom:10px;color:var(--text);}
 .question-card .solution{color:var(--accent);font-style:italic;}
-select{padding:10px;border-radius:8px;border:1px solid var(--border);margin-right:10px;background:#0f172a;color:white;}
-input[type=range]{width:100%; margin-bottom:10px;}
-.timer-btn{font-size:0.9rem;}
-.timer-container{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+select, input[type=number]{padding:10px;border-radius:8px;border:1px solid var(--border);margin-right:10px;background:#0f172a;color:white;}
+.time-container{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
 @media(max-width:768px){
   .nav-links{display:none;}
   .hamburger{display:flex;}
@@ -49,13 +42,15 @@ input[type=range]{width:100%; margin-bottom:10px;}
 .hamburger.open div:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
 .hamburger.open div:nth-child(2){opacity:0;}
 .hamburger.open div:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+.back-btn{background:#1f2937;color:#6366f1;}
+.back-btn:hover{background:#111827;}
 </style>
 </head>
 <body>
 
 <header>
   <a href="dashboard.html" class="logo">IJMB<span>PRO</span></a>
-  <nav class="nav-links">
+  <nav class="nav-links" id="navLinks">
     <a href="dashboard.html">Dashboard</a>
     <a href="study.html">Study</a>
     <a href="exam.html">Exam Mode</a>
@@ -66,7 +61,8 @@ input[type=range]{width:100%; margin-bottom:10px;}
 </header>
 
 <main>
-  <button class="back-btn" onclick="goBack()">← Back</button>
+  <button class="back-btn" onclick="goBack()">← Back to Dashboard</button>
+
   <h1>Select Exam Parameters</h1>
 
   <div style="margin-bottom:20px;">
@@ -77,34 +73,37 @@ input[type=range]{width:100%; margin-bottom:10px;}
       <option value="Economics">Economics</option>
       <option value="Mathematics">Mathematics</option>
     </select>
+
     <select id="year"></select>
+
     <select id="paper">
       <option value="I">Paper I</option>
       <option value="II">Paper II</option>
       <option value="III">Paper III</option>
     </select>
+
     <select id="section">
       <option value="A">Section A</option>
       <option value="B">Section B</option>
       <option value="C">Section C</option>
       <option value="D">Section D</option>
     </select>
-    <button id="loadQuestions">Load Questions</button>
   </div>
 
-  <div class="timer-container">
-    <label for="timeRange">Set Timer (minutes):</label>
-    <input type="range" id="timeRange" min="1" max="180" value="30">
-    <span id="timeValue">30 min</span>
-    <div style="margin-top:5px;">
-      <button class="timer-btn" onclick="setTimer(30)">30 min</button>
-      <button class="timer-btn" onclick="setTimer(60)">1 hr</button>
-      <button class="timer-btn" onclick="setTimer(90)">1 hr 30 min</button>
-      <button class="timer-btn" onclick="setTimer(120)">2 hr</button>
-      <button class="timer-btn" onclick="setTimer(150)">2 hr 30 min</button>
-      <button class="timer-btn" onclick="setTimer(180)">3 hr</button>
+  <div>
+    <label>Exam Time (minutes)</label>
+    <input type="number" id="examTime" min="1" value="30">
+    <div class="time-container">
+      <button class="time-btn" onclick="setTime(30)">30 min</button>
+      <button class="time-btn" onclick="setTime(60)">1 hr</button>
+      <button class="time-btn" onclick="setTime(90)">1 hr 30 min</button>
+      <button class="time-btn" onclick="setTime(120)">2 hr</button>
+      <button class="time-btn" onclick="setTime(150)">2 hr 30 min</button>
+      <button class="time-btn" onclick="setTime(180)">3 hr</button>
     </div>
   </div>
+
+  <button id="loadQuestions">Load Questions</button>
 
   <div id="questions-container"></div>
   <div style="display:flex;gap:10px;margin-top:10px;">
@@ -114,34 +113,35 @@ input[type=range]{width:100%; margin-bottom:10px;}
 </main>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <script>
+// Firebase setup
 firebase.initializeApp({
   apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
   databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com"
 });
-const db = firebase.firestore();
+const db = firebase.database();
 
-// --- Animated Nav ---
+// --- Animated nav ---
 document.addEventListener('DOMContentLoaded', () => {
   const hamburger = document.getElementById('hamburger');
-  const navLinks = document.querySelector('.nav-links');
-  hamburger.addEventListener('click', () => {
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', ()=>{
     navLinks.classList.toggle('active');
     hamburger.classList.toggle('open');
   });
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
+  document.querySelectorAll('.nav-links a').forEach(link=>{
+    link.addEventListener('click', ()=>{
       navLinks.classList.remove('active');
       hamburger.classList.remove('open');
     });
   });
 
-  // Populate years
+  // Populate year dropdown
   const yearSelect = document.getElementById('year');
-  for(let y=2026; y>=2009; y--){
+  for(let y=2026;y>=2009;y--){
     const opt = document.createElement('option');
     opt.value = y;
     opt.textContent = y;
@@ -155,58 +155,48 @@ function goBack(){
   else{window.location.href='dashboard.html';}
 }
 
-// --- Timer quick buttons ---
-const timeRange = document.getElementById('timeRange');
-const timeValue = document.getElementById('timeValue');
-timeRange.addEventListener('input', ()=>{
-  timeValue.textContent = timeRange.value + ' min';
-});
-function setTimer(mins){
-  timeRange.value = mins;
-  timeValue.textContent = mins + (mins >= 60 ? ` min` : ' min');
+// --- Exam time quick buttons ---
+function setTime(min){
+  document.getElementById('examTime').value = min;
 }
 
-// --- Questions ---
 let questions = [];
 let currentIndex = 0;
 
-document.getElementById('loadQuestions').addEventListener('click', async ()=>{
+// --- Load Questions ---
+document.getElementById('loadQuestions').addEventListener('click', ()=>{
   const subject = document.getElementById('subject').value;
   const year = document.getElementById('year').value;
   const paper = document.getElementById('paper').value;
   const section = document.getElementById('section').value;
 
   const container = document.getElementById('questions-container');
-  container.innerHTML = 'Loading questions...';
+  container.innerHTML = 'Loading...';
   currentIndex = 0;
   questions = [];
 
-  try {
-    const snapshot = await db.collection('questions')
-      .doc(subject).collection(year).doc(paper).collection(section).get();
-
-    if(snapshot.empty){
-      container.innerHTML = '<p>No questions found for this selection.</p>';
+  const ref = db.ref(`questions/${subject}/${year}/${paper}/${section}`);
+  ref.once('value', snapshot=>{
+    if(!snapshot.exists()){
+      container.innerHTML = '<p>No questions found.</p>';
       return;
     }
 
-    snapshot.forEach(doc=>{
-      questions.push(doc.data());
+    snapshot.forEach(child=>{
+      questions.push(child.val());
     });
-
     renderQuestion();
-  } catch(err){
-    container.innerHTML = `<p>Error loading questions: ${err}</p>`;
-  }
+  }, err=>{
+    container.innerHTML = `<p>Error: ${err}</p>`;
+  });
 });
 
 function renderQuestion(){
   const container = document.getElementById('questions-container');
-  if(questions.length === 0){
+  if(questions.length===0){
     container.innerHTML = '';
     return;
   }
-
   const q = questions[currentIndex];
   container.innerHTML = `<div class="question-card">
     <h3>Question ${currentIndex+1} of ${questions.length}</h3>
@@ -218,16 +208,10 @@ function renderQuestion(){
 
 // --- Pagination ---
 document.getElementById('prevBtn').addEventListener('click', ()=>{
-  if(currentIndex>0){
-    currentIndex--;
-    renderQuestion();
-  }
+  if(currentIndex>0){currentIndex--;renderQuestion();}
 });
 document.getElementById('nextBtn').addEventListener('click', ()=>{
-  if(currentIndex<questions.length-1){
-    currentIndex++;
-    renderQuestion();
-  }
+  if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}
 });
 </script>
 
