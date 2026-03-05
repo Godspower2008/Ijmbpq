@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Subject | IJMB PRO</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root{
+    --bg:#020617;
+    --card:#0f172a;
+    --glass:rgba(30,41,59,0.8);
+    --border:rgba(99,102,241,0.2);
+    --accent:#6366f1;
+    --text:#f8fafc;
+    --text-dim:#94a3b8;
+}
+
+*{margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans',sans-serif;}
+body{background:var(--bg); color:var(--text);}
+
+/* HEADER */
+header{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:15px 5%; background:var(--glass); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border); position:sticky; top:0; z-index:1000;
+}
+.logo{font-weight:800; font-size:1.2rem; color:var(--text); text-decoration:none;}
+.logo span{color:var(--accent);}
+.nav-links{display:flex; gap:20px;}
+.nav-links a{color:var(--text-dim); text-decoration:none; font-weight:600;}
+.nav-links a:hover{color:var(--accent);}
+.hamburger{display:none; flex-direction:column; width:28px; cursor:pointer;}
+.hamburger div{height:3px; background:var(--text); margin:4px 0; transition:0.3s;}
+.hamburger.open div:nth-child(1){transform: rotate(45deg) translate(5px,5px);}
+.hamburger.open div:nth-child(2){opacity:0; transform: translateX(-20px);}
+.hamburger.open div:nth-child(3){transform: rotate(-45deg) translate(5px,-5px);}
+.nav-links.active{
+    display:flex; position:absolute; top:60px; right:5%; background:var(--bg);
+    padding:20px; border-radius:10px; flex-direction:column; box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* MAIN */
+main{max-width:1200px; margin:40px auto; padding:0 5%;}
+.back-btn{display:inline-block; margin-bottom:20px; background:var(--glass); color:var(--accent);
+    padding:10px 18px; border-radius:10px; text-decoration:none; font-weight:700;}
+.subject-title{font-size:1.6rem; margin-bottom:30px;}
+.question-card{background:var(--card); padding:20px; border-radius:15px; margin-bottom:15px; cursor:pointer; transition:0.3s;}
+.question-card.completed{background:#1e293b; opacity:0.8;}
+.question-card:hover{background:#1e293b;}
+</style>
+</head>
+
+<body>
+<header>
+    <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+    <nav class="nav-links">
+        <a href="ijmbpq.html">Dashboard</a>
+        <a href="study.html">Study</a>
+        <a href="exam.html">Exam Mode</a>
+        <a href="pricing.html">Upgrade</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <div class="hamburger" id="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</header>
+
+<main>
+    <a href="study.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Subjects</a>
+    <h1 class="subject-title">Loading...</h1>
+    <div class="questions-list">
+        <!-- Questions will be loaded here -->
+    </div>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<script src="common.js"></script>
+<script src="study-subject.js"></script>
+</body>
+</html>
