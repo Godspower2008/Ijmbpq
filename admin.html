@@ -29,18 +29,7 @@ button { width:100%; padding:16px; background:var(--accent); color:white; border
 </select>
 
 <label>Year</label>
-<select id="year">
-  <!-- Years 2009 to 2026 -->
-  <script>
-    const yearSelect = document.getElementById('year');
-    for(let y=2026; y>=2009; y--){
-      const opt = document.createElement('option');
-      opt.value = y;
-      opt.textContent = y;
-      yearSelect.appendChild(opt);
-    }
-  </script>
-</select>
+<select id="year"></select>
 
 <label>Paper</label>
 <select id="paper">
@@ -72,8 +61,7 @@ button { width:100%; padding:16px; background:var(--accent); color:white; border
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
-<!-- MathJax for formula preview -->
+<!-- MathJax -->
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <script>
@@ -82,6 +70,17 @@ firebase.initializeApp({
     databaseURL: "https://ijmb-portal-default-rtdb.firebaseio.com"
 });
 const db = firebase.database();
+
+// Populate Year Select
+document.addEventListener('DOMContentLoaded', () => {
+    const yearSelect = document.getElementById('year');
+    for(let y=2026; y>=2009; y--){
+        const opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+    }
+});
 
 function upload() {
     const s = document.getElementById('sub').value;
@@ -92,35 +91,22 @@ function upload() {
     const qText = document.getElementById('q').value;
     const solution = document.getElementById('sol').value;
 
-    // All fields except solution are compulsory
+    // Required fields validation
     if(!s || !y || !p || !sec || !marks || !qText) {
         alert("Please fill all required fields (Marking Scheme optional)");
         return;
     }
 
-    // Structure: questions/subject/year/paper/section
+    // Push to Firebase
     db.ref(`questions/${s}/${y}/${p}/${sec}`).push({
         marks: marks,
         text: qText,
-        solution: solution || ""  // allow empty solution
+        solution: solution || ""
     }).then(() => {
         alert("Question Uploaded Successfully!");
         document.getElementById('q').value = "";
         document.getElementById('sol').value = "";
-        MathJax.typeset(); // render formulas if any
-    }).catch(err => alert("Error: " + err));
-}
-
-    // Structure: questions/subject/year/paper/section
-    db.ref(`questions/${s}/${y}/${p}/${sec}`).push({
-        marks: marks,
-        text: qText,
-        solution: solution
-    }).then(() => {
-        alert("Question Uploaded Successfully!");
-        document.getElementById('q').value = "";
-        document.getElementById('sol').value = "";
-        MathJax.typeset(); // Render formulas if needed
+        MathJax.typeset(); // render formulas
     }).catch(err => alert("Error: " + err));
 }
 </script>
