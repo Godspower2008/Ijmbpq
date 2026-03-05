@@ -145,62 +145,19 @@ function startTimer(duration) {
 }
 
 // Submit Exam
-// --- Submit Exam with Firebase ---
-async function submitExam() {
+function submitExam() {
     clearInterval(timerInterval);
-    const user = auth.currentUser;
-    if(!user) return alert("Not logged in!");
-
     // Collect answers
     answers = questions.map((q,i)=>{
         const selected = document.querySelector(`input[name="q${i}"]:checked`);
         return selected ? selected.value : null;
     });
-
-    // Simple scoring (compare with question.correctAnswer)
-    let score = 0;
-    questions.forEach((q,i)=>{
-        if(q.correctAnswer && answers[i] === q.correctAnswer) score++;
-    });
-    const accuracy = Math.round((score/questions.length)*100);
-
-    // Save result to Firestore
-    try {
-        await db.collection('examResults').add({
-            userId: user.uid,
-            subjects: examSubjects,
-            numQuestions,
-            answers,
-            score,
-            accuracy,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        // Update user metrics
-        const userRef = db.collection('users').doc(user.uid);
-        const userDoc = await userRef.get();
-        if(userDoc.exists){
-            const data = userDoc.data();
-            // Update streak: +1 if last exam was yesterday or earlier (simple version)
-            const newStreak = (data.streak || 0) + 1;
-            const prevAvg = data.avgAccuracy || 0;
-            const prevCount = data.examCount || 0;
-
-            await userRef.update({
-                streak: newStreak,
-                avgAccuracy: Math.round((prevAvg*prevCount + accuracy)/(prevCount+1)),
-                examCount: (prevCount+1)
-            });
-        }
-
-        alert(`Exam finished! Score: ${score}/${questions.length} (${accuracy}%)`);
-        window.location.href="dashboard.html";
-
-    } catch(err){
-        console.error("Error saving exam result:", err);
-        alert("Error saving result, try again.");
-    }
+    // For demo, show results
+    alert(`Exam finished! You answered ${answers.filter(a=>a!=null).length} of ${questions.length}`);
+    // Could save results to Firestore here
+    window.location.href="dashboard.html";
 }
+
 loadExamQuestions();
 </script>
 </body>
