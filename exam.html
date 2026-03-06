@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Mode | IJMB PRO</title>
+    <title>Exam Hall | IJMB PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,257 +15,198 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
 
-        /* --- HEADER --- */
-        header {
-            display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--glass);
-            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
+        /* --- TOP BAR --- */
+        .exam-header {
+            height: 70px; background: var(--card); border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
+            position: sticky; top: 0; z-index: 100;
         }
-        .logo { font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
-        .logo span { color: var(--accent); }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        .status-pill { background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .timer-box { font-size: 1.4rem; font-weight: 800; color: var(--warning); display: flex; align-items: center; gap: 8px; }
+
+        /* --- MAIN LAYOUT --- */
+        .workspace { display: grid; grid-template-columns: 1fr 320px; height: calc(100vh - 70px); }
+
+        /* --- QUESTION SECTION --- */
+        .question-area { padding: 40px 10%; overflow-y: auto; position: relative; }
+        .q-meta { font-weight: 800; color: var(--accent); margin-bottom: 10px; display: block; }
+        .q-text { font-size: 1.2rem; line-height: 1.6; margin-bottom: 30px; }
+
+        .options-list { display: grid; gap: 12px; }
+        .option {
+            background: var(--card); border: 1px solid var(--border); padding: 18px;
+            border-radius: 12px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 15px;
+        }
+        .option:hover { border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
+        .option.selected { border-color: var(--accent); background: var(--accent); color: white; }
+        .opt-letter { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
+        .option.selected .opt-letter { border-color: white; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            background: var(--card); border-left: 1px solid var(--border); 
+            padding: 25px; display: flex; flex-direction: column; gap: 25px;
+        }
+        .sidebar-title { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; }
         
-        .hamburger { display: none; flex-direction: column; justify-content: space-around; width: 28px; height: 22px; cursor: pointer; z-index: 1100; }
-        .hamburger div { height: 3px; background: var(--text); border-radius: 2px; transition: 0.4s; }
-
-        @media(max-width: 768px) {
-            .nav-links { 
-                display: none; flex-direction: column; position: absolute; top: 60px; right: 5%; 
-                background: var(--bg); padding: 20px; border-radius: 10px; 
-                box-shadow: 0 8px 20px rgba(0,0,0,0.4); gap: 15px; z-index: 1001; 
-            }
-            .nav-links.active { display: flex; animation: fadeIn 0.3s ease forwards; }
-            .hamburger { display: flex; }
-            .hamburger.open div:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-            .hamburger.open div:nth-child(2) { opacity: 0; transform: translateX(-20px); }
-            .hamburger.open div:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; }
+        .q-dot { 
+            aspect-ratio: 1; background: #1e293b; border: 1px solid var(--border);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s;
         }
+        .q-dot.current { border: 2px solid var(--accent); color: var(--accent); }
+        .q-dot.answered { background: var(--accent); color: white; border: none; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- FOOTER NAV --- */
+        .action-btns { margin-top: auto; display: grid; gap: 10px; }
+        .btn-nav { padding: 15px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .btn-prev { background: #1e293b; color: white; }
+        .btn-next { background: var(--accent); color: white; }
+        .btn-submit { background: var(--btn-red); color: white; margin-top: 10px; }
 
-        main { max-width: 1000px; margin: 0 auto; padding: 20px 5%; }
-
-        /* --- BACK BUTTON --- */
-        .global-back-btn {
-            margin-bottom: 25px; padding: 8px 14px; border: none; border-radius: 8px; 
-            background: var(--accent); color: white; font-weight: 700; font-size: 0.75rem; 
-            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; 
-            transition: 0.3s; text-transform: uppercase;
+        @media (max-width: 900px) {
+            .workspace { grid-template-columns: 1fr; }
+            .sidebar { display: none; } /* On mobile, we can use a drawer for the q-grid */
         }
-        .global-back-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(99,102,241,0.3); }
-
-        /* --- RESUME BANNER --- */
-        #resumeBanner {
-            display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success);
-            padding: 15px 20px; border-radius: 15px; margin-bottom: 25px;
-            justify-content: space-between; align-items: center; animation: fadeIn 0.5s ease;
-        }
-
-        /* --- MODE SELECTION --- */
-        .mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .mode-card { 
-            background: var(--card); border: 1px solid var(--border); padding: 40px 25px; 
-            border-radius: 24px; text-align: center; cursor: pointer; transition: 0.3s;
-        }
-        .mode-card:hover { transform: translateY(-5px); border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
-        .mode-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; display: block; }
-
-        /* --- SETUP FORMS --- */
-        .setup-view { display: none; animation: slideIn 0.4s ease-out; max-width: 600px; margin: 0 auto; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-
-        .setup-card { background: var(--card); border: 1px solid var(--border); padding: 35px; border-radius: 25px; }
-        .input-group label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-        select, input { width: 100%; background: #1e293b; border: 1px solid var(--border); color: white; padding: 15px; border-radius: 12px; font-weight: 600; outline: none; margin-bottom: 20px; }
-
-        .btn-red-action { 
-            width: 100%; padding: 18px; background: var(--btn-red); color: white; 
-            border: none; border-radius: 50px; font-weight: 800; font-size: 1rem; 
-            cursor: pointer; transition: 0.3s; text-transform: uppercase;
-        }
-        .btn-red-action:hover { opacity: 0.9; transform: scale(1.02); }
-        .btn-resume { background: var(--success); padding: 8px 15px; border-radius: 8px; border: none; color: white; font-weight: 700; cursor: pointer; }
-
     </style>
 </head>
 <body>
 
-<header>
-    <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
-    <nav class="nav-links">
-        <a href="ijmbpq.html">Dashboard</a>
-        <a href="study.html">Study</a>
-        <a href="exam.html">Exam Mode</a>
-        <a href="pricing.html">Upgrade</a>
-    </nav>
-    <div class="hamburger" id="hamburger">
-        <div></div><div></div><div></div>
-    </div>
-</header>
-
-<main>
-    <button class="global-back-btn" onclick="handleBack()">
-        <i class="fa-solid fa-arrow-left"></i> Back
-    </button>
-
-    <div id="resumeBanner">
-        <span style="font-size: 0.9rem; font-weight: 600; color: var(--success);">
-            <i class="fa-solid fa-clock-rotate-left"></i> <span id="resumeText">Loading previous session...</span>
-        </span>
-        <button class="btn-resume" onclick="resumeSession()">Resume Now</button>
-    </div>
-
-    <div id="selectionView">
-        <h1 style="margin-bottom: 10px; font-size: 2.2rem;">Exam Mode</h1>
-        <p style="color: var(--text-dim); margin-bottom: 35px;">Select your preferred examination environment.</p>
+    <div class="exam-header">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span class="logo" style="font-weight: 800; font-size: 1.1rem;">IJMB<span style="color:var(--accent)">PRO</span></span>
+            <div class="status-pill" id="saveStatus"><i class="fa-solid fa-cloud-check"></i> Auto-saved</div>
+        </div>
         
-        <div class="mode-grid">
-            <div class="mode-card" onclick="openSetup('standard')">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <h3>Standard Exam</h3>
-                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 10px;">Full combination practice modeled after the official IJMB exam structure.</p>
-            </div>
-            <div class="mode-card" onclick="openSetup('cbt')">
-                <i class="fa-solid fa-laptop-code"></i>
-                <h3>CBT Simulator</h3>
-                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 10px;">Quick simulation for specific subjects with custom timing.</p>
-            </div>
+        <div class="timer-box">
+            <i class="fa-regular fa-clock"></i>
+            <span id="timer">01:45:00</span>
         </div>
     </div>
 
-    <div id="standardSetup" class="setup-view">
-        <h2 style="margin-bottom: 25px; text-align: center;">Standard Exam Setup</h2>
-        <div class="setup-card">
-            <div class="input-group">
-                <label>Select Combination</label>
-                <select id="combination">
-                    <option value="PCM">Physics, Chemistry, Mathematics (PCM)</option>
-                    <option value="PCB">Physics, Chemistry, Biology (PCB)</option>
-                    <option value="ART">Government, Literature, C.R.S (ART)</option>
-                    <option value="SMS">Economics, Government, Mathematics (SMS)</option>
-                </select>
+    <main class="workspace">
+        <section class="question-area">
+            <span class="q-meta" id="qNumber">QUESTION 1</span>
+            <div class="q-text" id="qText">
+                A body of mass 2kg is moving with a velocity of 10m/s. Calculate its kinetic energy.
             </div>
+
+            <div class="options-list">
+                <div class="option" onclick="selectOption(this, 'A')">
+                    <div class="opt-letter">A</div>
+                    <span class="opt-val">50 Joules</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'B')">
+                    <div class="opt-letter">B</div>
+                    <span class="opt-val">100 Joules</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'C')">
+                    <div class="opt-letter">C</div>
+                    <span class="opt-val">200 Joules</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'D')">
+                    <div class="opt-letter">D</div>
+                    <span class="opt-val">400 Joules</span>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <div>
+                <h3 class="sidebar-title">Subject Summary</h3>
+                <p style="font-size: 0.9rem; font-weight: 700; margin-top: 5px;" id="examSubject">Physics (Standard PCM)</p>
+            </div>
+
+            <div>
+                <h3 class="sidebar-title">Question Navigator</h3>
+                <div class="question-grid" id="qGrid">
+                    </div>
+            </div>
+
+            <div class="action-btns">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn-nav btn-prev" onclick="prevQ()"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+                    <button class="btn-nav btn-next" onclick="nextQ()">Next <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <button class="btn-nav btn-submit" onclick="confirmSubmit()">SUBMIT EXAM</button>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        let currentIdx = 1;
+        const totalQuestions = 50;
+        let answers = JSON.parse(localStorage.getItem('current_exam_answers')) || {};
+
+        // 1. GENERATE NAVIGATION DOTS
+        const qGrid = document.getElementById('qGrid');
+        function renderGrid() {
+            qGrid.innerHTML = '';
+            for (let i = 1; i <= totalQuestions; i++) {
+                const dot = document.createElement('div');
+                dot.className = `q-dot ${i === currentIdx ? 'current' : ''} ${answers[i] ? 'answered' : ''}`;
+                dot.innerText = i;
+                dot.onclick = () => jumpTo(i);
+                qGrid.appendChild(dot);
+            }
+        }
+
+        // 2. OPTION SELECTION
+        function selectOption(el, val) {
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            answers[currentIdx] = val;
             
-            <div class="input-group">
-                <label>Examination Year</label>
-                <select id="examYear"></select>
-            </div>
-
-            <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 20px; text-align: center;">
-                <i class="fa-solid fa-circle-info"></i> Your progress is automatically saved every 30 seconds.
-            </p>
-
-            <button class="btn-red-action" onclick="saveAndStart('standard')">Proceed to Exam</button>
-        </div>
-    </div>
-
-    <div id="cbtSetup" class="setup-view">
-        <h2 style="margin-bottom: 25px; text-align: center;">CBT Simulator</h2>
-        <div class="setup-card">
-            <div class="input-group">
-                <label>Subject</label>
-                <select id="cbtSubject"><option>Mathematics</option><option>Physics</option><option>Chemistry</option></select>
-            </div>
-            <div class="input-group">
-                <label>Number of Questions</label>
-                <input type="number" id="cbtQty" value="50">
-            </div>
-            <button class="btn-red-action" onclick="saveAndStart('cbt')">Start Simulation</button>
-        </div>
-    </div>
-</main>
-
-<script>
-    let activeStep = 'selection';
-
-    // 1. POPULATE YEARS
-    const yearDropdown = document.getElementById('examYear');
-    for(let y=2026; y>=2009; y--) {
-        let opt = document.createElement('option');
-        opt.value = y; opt.innerText = y;
-        yearDropdown.appendChild(opt);
-    }
-
-    // 2. AUTO-SAVE & RESUME LOGIC
-    window.onload = () => {
-        const savedSession = JSON.parse(localStorage.getItem('ijmb_exam_session'));
-        if(savedSession) {
-            const banner = document.getElementById('resumeBanner');
-            const text = document.getElementById('resumeText');
-            banner.style.display = 'flex';
-            text.innerText = `You have an unfinished ${savedSession.type === 'standard' ? savedSession.combination : savedSession.subject} (${savedSession.year || ''}) session.`;
-        }
-    }
-
-    function saveAndStart(mode) {
-        let sessionData = {
-            type: mode,
-            timestamp: new Date().getTime()
-        };
-
-        if(mode === 'standard') {
-            sessionData.combination = document.getElementById('combination').value;
-            sessionData.year = document.getElementById('examYear').value;
-        } else {
-            sessionData.subject = document.getElementById('cbtSubject').value;
-            sessionData.qty = document.getElementById('cbtQty').value;
+            // Auto-Save to LocalStorage
+            localStorage.setItem('current_exam_answers', JSON.stringify(answers));
+            showSaveStatus();
+            renderGrid();
         }
 
-        // Store the setup locally
-        localStorage.setItem('ijmb_exam_session', JSON.stringify(sessionData));
-        
-        // Redirect to the exam workspace (you will need an exam_workspace.html or similar)
-        alert("Session Saved! Entering Examination Hall...");
-        // window.location.href = 'exam_workspace.html'; 
-    }
-
-    function resumeSession() {
-        const savedSession = JSON.parse(localStorage.getItem('ijmb_exam_session'));
-        alert(`Resuming ${savedSession.type} session...`);
-        // window.location.href = 'exam_workspace.html';
-    }
-
-    // 3. NAVIGATION LOGIC
-    function openSetup(mode) {
-        document.getElementById('selectionView').style.display = 'none';
-        document.getElementById('resumeBanner').style.display = 'none';
-        if(mode === 'standard') {
-            document.getElementById('standardSetup').style.display = 'block';
-        } else {
-            document.getElementById('cbtSetup').style.display = 'block';
+        function showSaveStatus() {
+            const status = document.getElementById('saveStatus');
+            status.style.opacity = '1';
+            setTimeout(() => { status.style.opacity = '0.5'; }, 1000);
         }
-        activeStep = 'setup';
-    }
 
-    function handleBack() {
-        if(activeStep === 'setup') {
-            document.getElementById('standardSetup').style.display = 'none';
-            document.getElementById('cbtSetup').style.display = 'none';
-            document.getElementById('selectionView').style.display = 'block';
-            activeStep = 'selection';
-            // Re-check for session to show banner if it exists
-            window.onload();
-        } else {
-            window.location.href = 'ijmbpq.html';
+        // 3. NAVIGATION LOGIC
+        function jumpTo(n) {
+            currentIdx = n;
+            document.getElementById('qNumber').innerText = `QUESTION ${currentIdx}`;
+            // Here you would fetch the question text from your question array
+            renderGrid();
         }
-    }
 
-    // 4. HAMBURGER ANIMATION
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.querySelector('.nav-links');
-    hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        hamburger.classList.toggle('open');
-    });
+        function nextQ() { if(currentIdx < totalQuestions) jumpTo(currentIdx + 1); }
+        function prevQ() { if(currentIdx > 1) jumpTo(currentIdx - 1); }
 
-    /* Note for the Workspace:
-       In your actual Exam Workspace code, you should include:
-       localStorage.removeItem('ijmb_exam_session');
-       once the student clicks "Submit Exam" so they don't see the resume banner for finished tests.
-    */
-</script>
+        // 4. TIMER LOGIC
+        let seconds = 3600; // 1 Hour
+        const timerEl = document.getElementById('timer');
+        setInterval(() => {
+            if(seconds <= 0) return;
+            seconds--;
+            let h = Math.floor(seconds / 3600);
+            let m = Math.floor((seconds % 3600) / 60);
+            let s = seconds % 60;
+            timerEl.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            if(seconds < 300) timerEl.style.color = 'var(--btn-red)'; // Red timer at 5 mins
+        }, 1000);
 
+        // 5. SUBMIT
+        function confirmSubmit() {
+            if(confirm("Are you sure you want to submit? This action cannot be undone.")) {
+                localStorage.removeItem('ijmb_exam_session');
+                localStorage.removeItem('current_exam_answers');
+                alert("Exam Submitted Successfully!");
+                window.location.href = 'ijmbpq.html';
+            }
+        }
+
+        renderGrid();
+    </script>
 </body>
 </html>
