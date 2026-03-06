@@ -21,15 +21,14 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; transition: 0.3s; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; transition: 0.3s; }
 
-        /* --- FIXED HEADER --- */
+        /* --- HEADER --- */
         header {
             height: 70px; background: var(--card); border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            position: fixed; top: 0; width: 100%; z-index: 1000;
         }
-        
         .header-left, .header-right { display: flex; align-items: center; gap: 10px; }
         .logo { font-weight: 800; font-size: 1.1rem; color: var(--text); text-decoration: none; }
         .logo span { color: var(--accent); }
@@ -42,60 +41,66 @@
 
         .profile-btn { 
             width: 40px; height: 40px; border-radius: 12px; border: 2px solid var(--accent); 
-            cursor: pointer; padding: 2px; background: var(--bg); overflow: hidden;
+            cursor: pointer; padding: 2px; background: var(--bg);
         }
-        .profile-btn img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover; }
+        .profile-btn img { width: 100%; height: 100%; border-radius: 8px; }
+
+        /* --- CONTENT WRAPPER --- */
+        main { padding-top: 85px; height: 100vh; overflow-y: auto; }
+        .container { max-width: 600px; margin: 0 auto; padding: 0 5% 100px 5%; }
+
+        /* --- BACK LINK --- */
+        .back-area { margin-bottom: 20px; }
+        .back-link { color: var(--text-dim); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+
+        /* --- CARDS --- */
+        .mode-card {
+            background: var(--card); padding: 30px; border-radius: 24px; border: 1px solid var(--border);
+            cursor: pointer; transition: 0.3s; margin-bottom: 15px;
+        }
+        .mode-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+        /* --- EXAM WORKSPACE --- */
+        #examWorkspace { 
+            display: none; position: fixed; inset: 0; background: var(--bg); z-index: 2000;
+            grid-template-columns: 1fr 320px; padding-top: 70px;
+        }
+        .question-area { padding: 40px 8%; overflow-y: auto; padding-bottom: 120px; }
+        .sidebar { background: var(--card); border-left: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; }
+        
+        .option { 
+            background: var(--card); border: 1px solid var(--border); padding: 18px; 
+            border-radius: 15px; cursor: pointer; display: flex; align-items: center; 
+            gap: 15px; margin-bottom: 12px; font-weight: 600;
+        }
+        .option.selected { border-color: var(--accent); background: var(--accent); color: white; }
+
+        .q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; }
+        .q-num { 
+            aspect-ratio: 1; border: 1px solid var(--border); border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; font-weight: 800; cursor: pointer; 
+        }
+        .q-num.active { border: 2px solid var(--accent); color: var(--accent); }
+        .q-num.answered { background: var(--accent); color: white; border: none; }
+
+        /* --- MOBILE EXAM NAV --- */
+        .mobile-exam-nav {
+            display: none; position: fixed; bottom: 0; width: 100%; background: var(--card);
+            padding: 15px 5%; border-top: 1px solid var(--border); grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+        }
+
+        @media (max-width: 900px) {
+            #examWorkspace { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .mobile-exam-nav { display: grid; }
+        }
 
         /* --- SIDE NAV --- */
         #sideNav {
             position: fixed; top: 0; left: -300px; width: 280px; height: 100%;
-            background: var(--card); z-index: 2000; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 30px 20px; border-right: 1px solid var(--border);
+            background: var(--card); z-index: 3000; transition: 0.4s; padding: 30px 20px;
         }
-        #sideNav.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
-        .nav-link { display: flex; align-items: center; gap: 12px; padding: 15px; color: var(--text); text-decoration: none; font-weight: 600; border-radius: 12px; margin-bottom: 5px; }
-        .nav-link:hover { background: var(--border); color: var(--accent); }
-
-        /* --- MAIN CONTENT AREA --- */
-        main { padding-top: 85px; padding-bottom: 30px; width: 100%; max-width: 600px; margin: 0 auto; padding-left: 5%; padding-right: 5%; }
-
-        /* --- BACK BUTTON SECTION --- */
-        .back-area { margin-bottom: 25px; display: flex; align-items: center; }
-        .back-link { color: var(--text-dim); text-decoration: none; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .back-link:hover { color: var(--accent); }
-
-        /* --- VIEW STEPS --- */
-        .view-step { display: none; animation: fadeIn 0.4s ease; }
-        .view-step.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- CARDS --- */
-        .mode-card {
-            background: var(--card); padding: 35px; border-radius: 28px; border: 1px solid var(--border);
-            cursor: pointer; transition: 0.3s; margin-bottom: 20px; position: relative; overflow: hidden;
-        }
-        .mode-card:hover { border-color: var(--accent); transform: scale(1.02); }
-        .mode-card i { font-size: 2rem; margin-bottom: 15px; display: block; }
-        .mode-card h3 { margin-bottom: 5px; font-size: 1.3rem; }
-        .mode-card p { color: var(--text-dim); font-size: 0.9rem; }
-
-        /* --- PROFILE MODAL --- */
-        .modal-overlay {
-            position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(10px);
-            display: none; align-items: center; justify-content: center; z-index: 3000;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal { background: var(--card); border: 1px solid var(--border); width: 90%; max-width: 400px; padding: 30px; border-radius: 30px; text-align: center; }
-        .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 25px 0; }
-        .avatar-opt { cursor: pointer; border-radius: 12px; border: 2px solid transparent; padding: 4px; }
-        .avatar-opt.active { border-color: var(--accent); background: rgba(99, 102, 241, 0.1); }
-        .avatar-opt img { width: 100%; border-radius: 8px; }
-
-        /* --- EXAM UI --- */
-        #examWorkspace { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 1500; padding-top: 80px; }
-        .q-box { padding: 30px; max-width: 800px; margin: 0 auto; }
-        .option { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 16px; margin-bottom: 12px; cursor: pointer; display: flex; gap: 15px; font-weight: 600; }
-        .option.selected { background: var(--accent); border-color: var(--accent); color: white; }
+        #sideNav.open { left: 0; }
     </style>
 </head>
 <body>
@@ -106,7 +111,7 @@
             <a href="#" class="logo">IJMB<span>PRO</span></a>
         </div>
         <div class="header-right">
-            <div id="timerDisplay" style="display:none; color:var(--warning); font-weight:800; margin-right:10px;">60:00</div>
+            <div id="timer" style="display:none; color:var(--warning); font-weight:800; background:rgba(245,158,11,0.1); padding:5px 12px; border-radius:8px;">60:00</div>
             <div class="profile-btn" onclick="openProfile()">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" id="headerAvatar">
             </div>
@@ -114,116 +119,146 @@
     </header>
 
     <nav id="sideNav">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h2 class="logo">HALL<span>MENU</span></h2>
-            <i class="fa-solid fa-xmark" onclick="toggleNav()" style="cursor:pointer; font-size:1.5rem;"></i>
-        </div>
-        <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
-        <a href="ijmbpq.html" class="nav-link"><i class="fa-solid fa-book"></i> Library</a>
-        <a href="#" class="nav-link" onclick="openProfile()"><i class="fa-solid fa-user-gear"></i> Settings</a>
-        <hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
-        <a href="#" class="nav-link" style="color:var(--btn-red)" onclick="location.reload()"><i class="fa-solid fa-power-off"></i> Reset Session</a>
+        <h2 class="logo" style="margin-bottom:30px;">MENU</h2>
+        <a href="ijmbpq.html" style="text-decoration:none; color:var(--text); display:block; padding:15px 0; font-weight:700;">Library</a>
+        <a href="#" onclick="location.reload()" style="text-decoration:none; color:var(--btn-red); display:block; padding:15px 0; font-weight:700;">Reset Hall</a>
     </nav>
 
-    <div class="modal-overlay" id="profileModal" onclick="closeProfile(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <h3 style="margin-bottom: 10px;">Profile Settings</h3>
-            <p style="font-size:0.8rem; color:var(--text-dim);">Pick your student avatar</p>
-            <div class="avatar-grid">
-                <div class="avatar-opt active" onclick="setAvatar(this, 'Felix')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"></div>
-                <div class="avatar-opt" onclick="setAvatar(this, 'Aneka')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka"></div>
-                <div class="avatar-opt" onclick="setAvatar(this, 'Max')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max"></div>
-                <div class="avatar-opt" onclick="setAvatar(this, 'Jude')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jude"></div>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; padding:0 10px;">
-                <span style="font-weight:700;">Dark/Light Mode</span>
-                <button class="icon-btn" onclick="toggleTheme()" id="themeBtn"><i class="fa-solid fa-moon"></i></button>
-            </div>
-            <button class="icon-btn" onclick="closeProfile()" style="width:100%; height:55px; border-radius:50px; background:var(--accent); color:white; border:none; font-weight:800; letter-spacing:1px;">SAVE CHANGES</button>
-        </div>
-    </div>
-
-    <main>
-        <div class="back-area">
-            <div class="back-link" onclick="goBack()">
-                <i class="fa-solid fa-arrow-left"></i>
-                GO BACK
-            </div>
-        </div>
-
-        <div id="view-selection" class="view-step active">
-            <h1 style="margin-bottom:25px; font-weight:800;">Exam Hall</h1>
-            
-            <div class="mode-card" onclick="showView('standard')">
-                <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i>
-                <h3>Standard Exam</h3>
-                <p>Practice with full combinations and official timing.</p>
+    <main id="mainContent">
+        <div class="container">
+            <div class="back-area">
+                <div class="back-link" onclick="goBack()">
+                    <i class="fa-solid fa-arrow-left"></i> GO BACK
+                </div>
             </div>
 
-            <div class="mode-card" onclick="showView('cbt')">
-                <i class="fa-solid fa-bolt" style="color:var(--warning);"></i>
-                <h3>CBT Simulator</h3>
-                <p>Quick subject speed drill for fast-paced practice.</p>
+            <div id="view-selection" class="active">
+                <h1 style="margin-bottom:20px;">Exam Hall</h1>
+                <div class="mode-card" onclick="showSetup('standard')">
+                    <i class="fa-solid fa-graduation-cap" style="color:var(--accent)"></i>
+                    <h3>Standard Exam</h3>
+                    <p>Full subject combinations and timing.</p>
+                </div>
+                <div class="mode-card" onclick="showSetup('cbt')">
+                    <i class="fa-solid fa-bolt" style="color:var(--warning)"></i>
+                    <h3>CBT Simulator</h3>
+                    <p>Fast single-subject drill.</p>
+                </div>
             </div>
-        </div>
 
-        <div id="view-standard" class="view-step">
-            <h2 style="margin-bottom:20px;">Exam Setup</h2>
-            <div style="background:var(--card); padding:25px; border-radius:24px; border:1px solid var(--border);">
-                <label style="font-size:0.7rem; font-weight:800; color:var(--accent); text-transform:uppercase;">Subject Combo</label>
-                <select style="width:100%; padding:15px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:12px; margin:10px 0 25px 0; font-weight:600;">
-                    <option>Physics, Chemistry, Maths (PCM)</option>
-                    <option>Biology, Chemistry, Physics (PCB)</option>
-                </select>
-                <button onclick="startExam()" style="width:100%; padding:20px; border-radius:50px; background:var(--accent); color:white; border:none; font-weight:800; cursor:pointer;">START EXAM</button>
+            <div id="view-setup" style="display:none;">
+                <h2 id="setupTitle" style="margin-bottom:20px;">Setup</h2>
+                <div style="background:var(--card); padding:25px; border-radius:24px; border:1px solid var(--border);">
+                    <select id="subSelect" style="width:100%; padding:15px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:12px; margin-bottom:20px; font-weight:600;">
+                        <option>Physics, Chemistry, Maths</option>
+                        <option>Government, Literature, Economics</option>
+                    </select>
+                    <button onclick="startExam()" style="width:100%; padding:20px; border-radius:50px; background:var(--accent); color:white; border:none; font-weight:800;">START SESSION</button>
+                </div>
             </div>
         </div>
     </main>
 
     <div id="examWorkspace">
-        <div class="q-box">
-            <span style="color:var(--accent); font-weight:800;">QUESTION 01</span>
-            <h2 style="margin:20px 0; line-height:1.4;">What is the primary function of the mitochondria in a cell?</h2>
-            <div class="option" onclick="this.classList.toggle('selected')"><span>A</span> Power Generation</div>
-            <div class="option" onclick="this.classList.toggle('selected')"><span>B</span> Protein Synthesis</div>
-            <button onclick="location.reload()" style="margin-top:40px; width:100%; padding:15px; border-radius:12px; border:none; background:var(--btn-red); color:white; font-weight:800;">END EXAM</button>
+        <section class="question-area">
+            <span id="qIdx" style="font-weight:800; color:var(--accent);">QUESTION 1</span>
+            <h2 id="qText" style="margin:20px 0; line-height:1.4;">Loading question...</h2>
+            <div id="options">
+                <div class="option" onclick="pick('A')"><div style="width:25px;">A</div> <span id="optA">Option A</span></div>
+                <div class="option" onclick="pick('B')"><div style="width:25px;">B</div> <span id="optB">Option B</span></div>
+                <div class="option" onclick="pick('C')"><div style="width:25px;">C</div> <span id="optC">Option C</span></div>
+                <div class="option" onclick="pick('D')"><div style="width:25px;">D</div> <span id="optD">Option D</span></div>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <h4 style="font-size:0.7rem; color:var(--text-dim); letter-spacing:1px;">NAVIGATOR</h4>
+            <div class="q-grid" id="qGrid"></div>
+            <button onclick="finish()" style="margin-top:auto; padding:18px; border-radius:15px; background:var(--accent); color:white; border:none; font-weight:800;">SUBMIT EXAM</button>
+        </aside>
+
+        <div class="mobile-exam-nav">
+            <button class="icon-btn" style="width:100%" onclick="prev()"><i class="fa-solid fa-chevron-left"></i></button>
+            <button onclick="finish()" style="background:var(--accent); color:white; border:none; border-radius:12px; font-weight:800;">SUBMIT</button>
+            <button class="icon-btn" style="width:100%" onclick="next()"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
     </div>
 
     <script>
+        let current = 0;
+        let answers = {};
+        const questions = [
+            { q: "What is the result of 5 + 5?", a: "8", b: "10", c: "12", d: "15", correct: "B" },
+            { q: "Which is a noble gas?", a: "Oxygen", b: "Nitrogen", c: "Helium", d: "Hydrogen", correct: "C" },
+            { q: "SI unit of Force?", a: "Joule", b: "Watt", c: "Newton", d: "Pascal", correct: "C" }
+        ];
+
         function toggleNav() { document.getElementById('sideNav').classList.toggle('open'); }
-        function openProfile() { document.getElementById('profileModal').classList.add('open'); }
-        function closeProfile() { document.getElementById('profileModal').classList.remove('open'); }
-        
+
         function goBack() {
-            const currentView = document.querySelector('.view-step.active');
-            if (currentView && currentView.id === 'view-selection') {
-                window.location.href = 'ijmbpq.html';
+            if(document.getElementById('view-setup').style.display === 'block') {
+                document.getElementById('view-setup').style.display = 'none';
+                document.getElementById('view-selection').style.display = 'block';
             } else {
-                showView('selection');
+                window.location.href = 'ijmbpq.html';
             }
         }
 
-        function showView(id) {
-            document.querySelectorAll('.view-step').forEach(v => v.classList.remove('active'));
-            document.getElementById('view-' + id).classList.add('active');
-        }
-
-        function setAvatar(el, name) {
-            document.querySelectorAll('.avatar-opt').forEach(opt => opt.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`;
-        }
-
-        function toggleTheme() { 
-            document.body.classList.toggle('light-mode');
-            const icon = document.querySelector('#themeBtn i');
-            icon.className = document.body.classList.contains('light-mode') ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        function showSetup(type) {
+            document.getElementById('view-selection').style.display = 'none';
+            document.getElementById('view-setup').style.display = 'block';
+            document.getElementById('setupTitle').innerText = type === 'standard' ? 'Standard Exam Setup' : 'CBT Drill Setup';
         }
 
         function startExam() {
-            document.getElementById('examWorkspace').style.display = 'block';
-            document.getElementById('timerDisplay').style.display = 'block';
+            document.getElementById('examWorkspace').style.display = 'grid';
+            document.getElementById('timer').style.display = 'block';
+            loadQ(0);
+        }
+
+        function loadQ(i) {
+            current = i;
+            document.getElementById('qIdx').innerText = `QUESTION ${i + 1}`;
+            document.getElementById('qText').innerText = questions[i].q;
+            document.getElementById('optA').innerText = questions[i].a;
+            document.getElementById('optB').innerText = questions[i].b;
+            document.getElementById('optC').innerText = questions[i].c;
+            document.getElementById('optD').innerText = questions[i].d;
+
+            // Mark selected
+            document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+            if(answers[i]) {
+                const idx = ["A","B","C","D"].indexOf(answers[i]);
+                document.querySelectorAll('.option')[idx].classList.add('selected');
+            }
+            renderGrid();
+        }
+
+        function pick(val) {
+            answers[current] = val;
+            loadQ(current);
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('qGrid');
+            grid.innerHTML = '';
+            questions.forEach((_, i) => {
+                const div = document.createElement('div');
+                div.className = `q-num ${i === current ? 'active' : ''} ${answers[i] ? 'answered' : ''}`;
+                div.innerText = i + 1;
+                div.onclick = () => loadQ(i);
+                grid.appendChild(div);
+            });
+        }
+
+        function next() { if(current < questions.length - 1) loadQ(current + 1); }
+        function prev() { if(current > 0) loadQ(current - 1); }
+
+        function finish() {
+            if(confirm("Are you sure you want to submit?")) {
+                alert("Exam Submitted! Check your results on the dashboard.");
+                location.reload();
+            }
         }
     </script>
 </body>
