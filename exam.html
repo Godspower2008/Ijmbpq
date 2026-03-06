@@ -126,11 +126,11 @@
             <i class="fa-solid fa-xmark" onclick="toggleNav()" style="cursor:pointer; color: var(--text-dim);"></i>
         </div>
         
-        <a href="#" class="nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-book-open"></i> Study Mode</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-rocket"></i> Upgrade Plan</a>
+        <a href="ijmbpq.html" class="nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="study.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Study Mode</a>
+        <a href="pricing.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Upgrade Plan</a>
         <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
-        <a href="#" onclick="handleLogout()" class="nav-item" style="color: var(--btn-red); border: none;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        <a href="#" onclick="handleLogout()" class="nav-item" style="color: var(--btn-red); border: none; margin-top: 20px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </nav>
 
     <div id="calcBox">
@@ -201,14 +201,14 @@
                 document.getElementById('setupView').style.display = 'none';
                 document.getElementById('homeView').style.display = 'block';
             } else {
-                window.history.back();
+                window.location.href = 'ijmbpq.html';
             }
         }
 
         function handleLogout() {
             if(confirm("Are you sure you want to logout?")) {
-                alert("Logging out...");
-                location.reload();
+                // Redirect to a login page if you have one, e.g., login.html
+                window.location.href = 'login.html'; 
             }
         }
 
@@ -234,7 +234,6 @@
             document.getElementById('backBtn').style.color = "var(--btn-red)";
         }
 
-        // Calculator Logic
         function calcIn(v) { document.getElementById('calcDisplay').value += v; }
         function calcClr() { document.getElementById('calcDisplay').value = ""; }
         function calcRes() {
