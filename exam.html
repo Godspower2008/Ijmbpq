@@ -47,7 +47,7 @@
 
         main { max-width: 1000px; margin: 0 auto; padding: 20px 5%; }
 
-        /* --- UNIFIED BACK BUTTON --- */
+        /* --- BACK BUTTON --- */
         .global-back-btn {
             margin-bottom: 25px; padding: 8px 14px; border: none; border-radius: 8px; 
             background: var(--accent); color: white; font-weight: 700; font-size: 0.75rem; 
@@ -60,7 +60,7 @@
         #resumeBanner {
             display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success);
             padding: 15px 20px; border-radius: 15px; margin-bottom: 25px;
-            justify-content: space-between; align-items: center;
+            justify-content: space-between; align-items: center; animation: fadeIn 0.5s ease;
         }
 
         /* --- MODE SELECTION --- */
@@ -77,7 +77,6 @@
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
         .setup-card { background: var(--card); border: 1px solid var(--border); padding: 35px; border-radius: 25px; }
-        
         .input-group label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
         select, input { width: 100%; background: #1e293b; border: 1px solid var(--border); color: white; padding: 15px; border-radius: 12px; font-weight: 600; outline: none; margin-bottom: 20px; }
 
@@ -87,6 +86,7 @@
             cursor: pointer; transition: 0.3s; text-transform: uppercase;
         }
         .btn-red-action:hover { opacity: 0.9; transform: scale(1.02); }
+        .btn-resume { background: var(--success); padding: 8px 15px; border-radius: 8px; border: none; color: white; font-weight: 700; cursor: pointer; }
 
     </style>
 </head>
@@ -112,9 +112,9 @@
 
     <div id="resumeBanner">
         <span style="font-size: 0.9rem; font-weight: 600; color: var(--success);">
-            <i class="fa-solid fa-clock-rotate-left"></i> You have an unfinished PCM 2024 session.
+            <i class="fa-solid fa-clock-rotate-left"></i> <span id="resumeText">Loading previous session...</span>
         </span>
-        <button class="global-back-btn" style="margin-bottom:0; background: var(--success);" onclick="startSession()">Resume</button>
+        <button class="btn-resume" onclick="resumeSession()">Resume Now</button>
     </div>
 
     <div id="selectionView">
@@ -154,10 +154,10 @@
             </div>
 
             <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 20px; text-align: center;">
-                <i class="fa-solid fa-circle-info"></i> All papers (I & II) and official question counts are pre-configured for this mode.
+                <i class="fa-solid fa-circle-info"></i> Your progress is automatically saved every 30 seconds.
             </p>
 
-            <button class="btn-red-action" onclick="startSession()">Proceed to Exam</button>
+            <button class="btn-red-action" onclick="saveAndStart('standard')">Proceed to Exam</button>
         </div>
     </div>
 
@@ -166,22 +166,21 @@
         <div class="setup-card">
             <div class="input-group">
                 <label>Subject</label>
-                <select><option>Mathematics</option><option>Physics</option><option>Chemistry</option></select>
+                <select id="cbtSubject"><option>Mathematics</option><option>Physics</option><option>Chemistry</option></select>
             </div>
             <div class="input-group">
                 <label>Number of Questions</label>
-                <input type="number" value="50">
+                <input type="number" id="cbtQty" value="50">
             </div>
-            <button class="btn-red-action" onclick="startSession()">Start Simulation</button>
+            <button class="btn-red-action" onclick="saveAndStart('cbt')">Start Simulation</button>
         </div>
     </div>
-
 </main>
 
 <script>
     let activeStep = 'selection';
 
-    // Populate Year Select
+    // 1. POPULATE YEARS
     const yearDropdown = document.getElementById('examYear');
     for(let y=2026; y>=2009; y--) {
         let opt = document.createElement('option');
@@ -189,12 +188,46 @@
         yearDropdown.appendChild(opt);
     }
 
-    // Mock check for unfinished session
+    // 2. AUTO-SAVE & RESUME LOGIC
     window.onload = () => {
-        const hasSession = true; // In real use, check localStorage or Firebase
-        if(hasSession) document.getElementById('resumeBanner').style.display = 'flex';
+        const savedSession = JSON.parse(localStorage.getItem('ijmb_exam_session'));
+        if(savedSession) {
+            const banner = document.getElementById('resumeBanner');
+            const text = document.getElementById('resumeText');
+            banner.style.display = 'flex';
+            text.innerText = `You have an unfinished ${savedSession.type === 'standard' ? savedSession.combination : savedSession.subject} (${savedSession.year || ''}) session.`;
+        }
     }
 
+    function saveAndStart(mode) {
+        let sessionData = {
+            type: mode,
+            timestamp: new Date().getTime()
+        };
+
+        if(mode === 'standard') {
+            sessionData.combination = document.getElementById('combination').value;
+            sessionData.year = document.getElementById('examYear').value;
+        } else {
+            sessionData.subject = document.getElementById('cbtSubject').value;
+            sessionData.qty = document.getElementById('cbtQty').value;
+        }
+
+        // Store the setup locally
+        localStorage.setItem('ijmb_exam_session', JSON.stringify(sessionData));
+        
+        // Redirect to the exam workspace (you will need an exam_workspace.html or similar)
+        alert("Session Saved! Entering Examination Hall...");
+        // window.location.href = 'exam_workspace.html'; 
+    }
+
+    function resumeSession() {
+        const savedSession = JSON.parse(localStorage.getItem('ijmb_exam_session'));
+        alert(`Resuming ${savedSession.type} session...`);
+        // window.location.href = 'exam_workspace.html';
+    }
+
+    // 3. NAVIGATION LOGIC
     function openSetup(mode) {
         document.getElementById('selectionView').style.display = 'none';
         document.getElementById('resumeBanner').style.display = 'none';
@@ -212,23 +245,26 @@
             document.getElementById('cbtSetup').style.display = 'none';
             document.getElementById('selectionView').style.display = 'block';
             activeStep = 'selection';
+            // Re-check for session to show banner if it exists
+            window.onload();
         } else {
             window.location.href = 'ijmbpq.html';
         }
     }
 
-    function startSession() {
-        alert("Entering Examination Hall. Good luck!");
-        // Redirection to the actual exam workspace
-    }
-
-    // Hamburger Logic
+    // 4. HAMBURGER ANIMATION
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.querySelector('.nav-links');
     hamburger.addEventListener('click', () => {
         navLinks.classList.toggle('active');
         hamburger.classList.toggle('open');
     });
+
+    /* Note for the Workspace:
+       In your actual Exam Workspace code, you should include:
+       localStorage.removeItem('ijmb_exam_session');
+       once the student clicks "Submit Exam" so they don't see the resume banner for finished tests.
+    */
 </script>
 
 </body>
