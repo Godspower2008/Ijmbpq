@@ -6,13 +6,16 @@
     <title>Exam Hall | IJMB PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
+            /* Dark Mode (Default) */
             --bg: #020617; --card: #0f172a; --border: rgba(99, 102, 241, 0.2); 
             --accent: #6366f1; --text: #f8fafc; --text-dim: #94a3b8; 
             --success: #10b981; --warning: #f59e0b; --btn-red: #ef4444;
             --input-bg: rgba(15, 23, 42, 0.8);
             --header-bg: #0f172a;
+            --workspace-font: 1.1rem;
         }
 
         body.light-mode {
@@ -22,31 +25,16 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; transition: background 0.3s ease; }
-
-        /* --- PULSE ANIMATION --- */
-        @keyframes timerPulse {
-            0% { transform: scale(1); text-shadow: 0 0 0px var(--btn-red); }
-            50% { transform: scale(1.1); text-shadow: 0 0 10px var(--btn-red); }
-            100% { transform: scale(1); text-shadow: 0 0 0px var(--btn-red); }
-        }
-        .timer-critical { color: var(--btn-red) !important; animation: timerPulse 1s infinite; }
-
-        @media print {
-            header, .sub-nav, #sideNav, .bottom-nav, #calcBox, #calcTool, #reviewBtn, .no-print { display: none !important; }
-            main { padding: 0 !important; margin: 0 !important; height: auto !important; overflow: visible !important; }
-            body { background: white !important; color: black !important; }
-            .card { border: 1px solid #ccc !important; box-shadow: none !important; background: white !important; color: black !important; }
-            #resultView, #reviewSection { display: block !important; }
-        }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
 
         header {
             height: 65px; background: var(--header-bg); border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; padding: 0 4%;
             position: fixed; top: 0; width: 100%; z-index: 2000;
         }
-        .header-left { display: flex; align-items: center; gap: 15px; }
-        .logo { font-weight: 800; font-size: 1.1rem; }
+
+        .header-left { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+        .logo { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.5px; white-space: nowrap; }
         .header-right { display: flex; align-items: center; gap: 12px; }
         
         .sub-nav {
@@ -58,7 +46,7 @@
         .icon-btn {
             background: var(--card); border: 1px solid var(--border); color: var(--text);
             width: 40px; height: 40px; border-radius: 10px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: center; transition: 0.2s;
         }
 
         .back-btn-text {
@@ -66,7 +54,10 @@
             font-size: 0.85rem; display: flex; align-items: center; gap: 8px; cursor: pointer;
         }
 
-        .profile-circle { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--accent); overflow: hidden; background: #1e293b; transition: 0.3s; }
+        .profile-circle {
+            width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--accent);
+            overflow: hidden; background: #1e293b;
+        }
         .profile-circle img { width: 100%; height: 100%; object-fit: cover; }
 
         #sideNav {
@@ -75,18 +66,27 @@
             border-right: 1px solid var(--border);
         }
         #sideNav.open { left: 0; }
-        .nav-item { color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 15px; padding: 15px 0; font-weight: 600; border-bottom: 1px solid var(--border); }
+        .nav-item {
+            color: var(--text-dim); text-decoration: none; display: flex; 
+            align-items: center; gap: 15px; padding: 15px 0; font-weight: 600;
+            transition: 0.3s; border-bottom: 1px solid var(--border);
+        }
+        .nav-item:hover { color: var(--accent); }
 
         main { padding-top: 130px; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
         .container { max-width: 700px; margin: 0 auto; padding: 0 5%; }
-        .card { background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 15px; }
+        .card { background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
 
-        .setting-input { width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); outline: none; margin-bottom: 15px; }
+        .setting-group { margin-bottom: 20px; }
+        .setting-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; }
+        .setting-input { 
+            width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid var(--border); 
+            border-radius: 12px; color: var(--text); outline: none; transition: 0.3s;
+        }
         
-        .avatar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
-        .avatar-option { width: 100%; aspect-ratio: 1; border-radius: 15px; border: 2px solid transparent; cursor: pointer; overflow: hidden; background: var(--input-bg); transition: 0.2s; }
-        .avatar-option img { width: 100%; height: 100%; object-fit: cover; }
-        .avatar-option.active { border-color: var(--accent); transform: scale(1.05); }
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .toggle-row:last-child { border-bottom: none; }
+        .toggle-row span { font-weight: 500; font-size: 0.95rem; }
 
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -95,17 +95,33 @@
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(20px); }
         
-        .btn-primary { width:100%; padding:18px; border-radius:12px; background:var(--accent); color:white; border:none; font-weight:800; cursor:pointer; margin-top: 10px; }
-        .btn-outline { width:100%; padding:15px; border-radius:12px; background:transparent; color:var(--text); border:1px solid var(--border); font-weight:700; cursor:pointer; margin-top: 10px; }
-
-        .theory-field { width: 100%; min-height: 300px; background: rgba(0,0,0,0.05); border: 1px solid var(--border); border-radius: 20px; color: var(--text); padding: 20px; font-size: 1.1rem; resize: none; outline: none; margin-top: 20px; }
-        #calcBox { position: fixed; top: 125px; right: 4%; width: 260px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 15px; z-index: 3000; display: none; }
+        #calcBox {
+            position: fixed; top: 125px; right: 4%; width: 260px; background: var(--card);
+            border: 1px solid var(--border); border-radius: 20px; padding: 15px; z-index: 3000; display: none; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+        }
         .calc-screen { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 12px; color: var(--text); text-align: right; font-size: 1.2rem; border-radius: 10px; margin-bottom: 10px; }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
         .calc-grid button { padding: 12px; border-radius: 8px; border: none; background: #1e293b; color: white; font-weight: 700; cursor: pointer; }
+        body.light-mode .calc-grid button { background: #e2e8f0; color: #0f172a; }
+        
+        .theory-field { width: 100%; min-height: 300px; background: rgba(0,0,0,0.05); border: 1px solid var(--border); border-radius: 20px; color: var(--text); padding: 20px; font-size: var(--workspace-font); resize: none; outline: none; margin-top: 20px; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card); padding: 15px 5%; border-top: 1px solid var(--border); display: none; justify-content: space-between; }
+        
+        .char-counter { font-size: 0.75rem; color: var(--text-dim); text-align: right; margin-top: 5px; }
+
+        .btn-primary { width:100%; padding:18px; border-radius:50px; background:var(--accent); color:white; border:none; font-weight:800; cursor:pointer; transition: 0.3s; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-success { width:100%; padding:20px; border-radius:15px; background:var(--success); color:white; border:none; font-weight:800; margin-top:20px; cursor: pointer; transition: 0.3s; }
+        .btn-success:hover { background: #059669; }
+
+        .btn-outline-red { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--btn-red); background: transparent; color: var(--btn-red); font-weight: 700; cursor: pointer; margin-top: 10px; }
+
+        select.setting-input { appearance: none; cursor: pointer; }
+
+        #pdf-content { color: #000; padding: 40px; display: none; }
     </style>
 </head>
-<body onload="checkSavedTheme()">
+<body>
 
     <header>
         <div class="header-left">
@@ -114,8 +130,8 @@
         </div>
         <div class="header-right">
             <div id="examTimer" style="display:none; font-weight: 800; color: var(--warning); margin-right: 10px;">60:00</div>
-            <div class="profile-circle" id="headerProfile">
-                <img id="mainAvatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
+            <div id="userProfile" class="profile-circle">
+                <img id="avatarImg" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
             </div>
             <button id="calcTool" class="icon-btn" onclick="toggleCalc()" style="display:none;"><i class="fa-solid fa-calculator"></i></button>
         </div>
@@ -131,11 +147,13 @@
     <nav id="sideNav">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <h2 style="font-size: 1.2rem;">MENU</h2>
-            <i class="fa-solid fa-xmark" onclick="toggleNav()" style="cursor:pointer;"></i>
+            <i class="fa-solid fa-xmark" onclick="toggleNav()" style="cursor:pointer; color: var(--text-dim);"></i>
         </div>
-        <a href="ijmbpq.html" class="nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="#" class="nav-item" onclick="location.reload()"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-book-open"></i> Study Mode</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-rocket"></i> Upgrade Plan</a>
         <a href="#" class="nav-item" onclick="openSettings(); toggleNav();"><i class="fa-solid fa-gear"></i> Settings</a>
-        <a href="#" onclick="handleLogout()" class="nav-item" style="color: var(--btn-red); border:none;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        <a href="#" onclick="handleLogout()" class="nav-item" style="color: var(--btn-red); border: none; margin-top: 20px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </nav>
 
     <main>
@@ -150,63 +168,133 @@
 
         <div class="container" id="settingsView" style="display:none;">
             <h1 style="margin-bottom:20px;">Settings</h1>
+            
             <div class="card">
-                <h4 style="font-size: 0.75rem; color: var(--accent); text-transform: uppercase; margin-bottom: 15px;">Profile Picture</h4>
-                <div class="avatar-grid">
-                    <div class="avatar-option active" onclick="setAvatar(this, 'Felix')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"></div>
-                    <div class="avatar-option" onclick="setAvatar(this, 'Aneka')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka"></div>
-                    <div class="avatar-option" onclick="setAvatar(this, 'Jasper')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jasper"></div>
-                    <div class="avatar-option" onclick="setAvatar(this, 'Precious')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Precious"></div>
-                    <div class="avatar-option" onclick="setAvatar(this, 'Milo')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Milo"></div>
-                    <div class="avatar-option" onclick="setAvatar(this, 'Sasha')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sasha"></div>
+                <label class="setting-label">Account Details</label>
+                <div class="setting-group">
+                    <input type="text" class="setting-input" value="Felix" id="setName" placeholder="Your Name">
                 </div>
+                <div class="setting-group">
+                    <input type="email" class="setting-input" value="felix@ijmbpro.com" id="setEmail" placeholder="Email Address">
+                </div>
+                <button onclick="saveSettings()" class="btn-primary" style="border-radius: 12px;">UPDATE PROFILE</button>
             </div>
+
             <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span>Light Mode</span>
+                <label class="setting-label">Appearance & Layout</label>
+                <div class="setting-group">
+                    <span style="font-size: 0.85rem; color: var(--text-dim); display: block; margin-bottom: 5px;">Question Font Size</span>
+                    <select class="setting-input" id="fontSizeSelect" onchange="updateFontSize()">
+                        <option value="0.9rem">Small</option>
+                        <option value="1.1rem" selected>Medium (Default)</option>
+                        <option value="1.3rem">Large</option>
+                        <option value="1.5rem">Extra Large</option>
+                    </select>
+                </div>
+                
+                <div class="toggle-row">
+                    <span>Dark Mode</span>
                     <label class="switch">
                         <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
                         <span class="slider"></span>
                     </label>
                 </div>
             </div>
+
+            <div class="card">
+                <label class="setting-label">Exam Preferences</label>
+                <div class="toggle-row">
+                    <div>
+                        <span style="display:block;">Auto-save Progress</span>
+                        <small style="color:var(--text-dim); font-size:0.7rem;">Saves your answer every 30 seconds</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="autoSaveToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="toggle-row">
+                    <div>
+                        <span style="display:block;">Show Countdown Timer</span>
+                        <small style="color:var(--text-dim); font-size:0.7rem;">Keep timer visible during exam</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="showTimerToggle" checked onchange="updateTimerVisibility()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="toggle-row">
+                    <div>
+                        <span style="display:block;">Exam Focus Mode</span>
+                        <small style="color:var(--text-dim); font-size:0.7rem;">Hides notifications & distractions</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="focusModeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="card">
+                <label class="setting-label">Security & Data</label>
+                <p style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 15px;">Clear your local exam cache if you experience technical issues.</p>
+                <button class="btn-outline-red" onclick="clearCache()">CLEAR EXAM CACHE</button>
+            </div>
         </div>
 
         <div class="container" id="setupView" style="display:none;">
             <h2>Configure Exam</h2>
             <div class="card" style="margin-top:20px;">
-                <select id="subject" class="setting-input">
-                    <option disabled selected>Choose combination...</option>
+                <label style="display:block; margin-bottom:10px; font-size:0.8rem; color:var(--text-dim);">SELECT SUBJECT COMBINATION</label>
+                <select id="subject" class="setting-input" style="margin-bottom: 20px;">
+                    <option disabled selected>Choose your combination...</option>
                     <option>Physics / Chemistry / Mathematics (PCM)</option>
                     <option>Physics / Chemistry / Biology (PCB)</option>
+                    <option>Government / Literature / Christian Religious Studies (GLC)</option>
                 </select>
-                <button onclick="startExam()" class="btn-primary" style="border-radius: 50px;">START EXAM</button>
+                <button onclick="startExam()" class="btn-primary">START EXAM</button>
             </div>
         </div>
 
         <div class="container" id="examWorkspace" style="display:none;">
-            <div class="card">
-                <span style="color:var(--accent); font-weight:800; font-size:0.75rem;">QUESTION 1</span>
-                <h3>Evaluate the significance of the 1914 Amalgamation in Nigerian History.</h3>
+            <div id="questionContainer" style="background:var(--card); padding:20px; border-radius:20px; border:1px solid var(--border);">
+                <span id="qNumber" style="color:var(--accent); font-weight:800; font-size:0.75rem;">QUESTION 1</span>
+                <h3 id="qText" style="margin-top:5px; line-height:1.4;">Evaluate the significance of the 1914 Amalgamation in Nigerian History.</h3>
             </div>
-            <textarea class="theory-field" id="examResponse" placeholder="Type your answer..."></textarea>
-            <button onclick="submitExam()" class="btn-primary" style="background:var(--success)">SUBMIT PAPER</button>
+            <textarea id="theoryInput" class="theory-field" placeholder="Type your full working and answer here..." oninput="updateCharCount()"></textarea>
+            <div class="char-counter"><span id="charCount">0</span> characters</div>
+            
+            <button onclick="submitExam()" class="btn-success">
+                <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i> FINISH & SUBMIT
+            </button>
         </div>
 
         <div class="container" id="resultView" style="display:none; text-align: center;">
-            <h1 style="font-size: 2.5rem;" class="no-print">Submitted!</h1>
-            <div class="card" style="text-align: left; margin-top: 20px;">
-                <h3 id="resSubject">Subject Combination</h3>
-                <div id="reviewSection" style="display:none; margin-top:20px; border-top:1px solid var(--border); padding-top:20px;">
-                    <p style="font-size:0.75rem; color:var(--success); font-weight:700;">YOUR RESPONSE:</p>
-                    <div id="savedAnswer" style="background:var(--input-bg); padding:15px; border-radius:10px; margin-top:10px; font-style:italic;"></div>
+            <div class="card">
+                <i class="fa-solid fa-circle-check" style="color:var(--success); font-size: 4rem; margin-bottom: 20px;"></i>
+                <h2>Exam Submitted!</h2>
+                <p style="color:var(--text-dim); margin-top: 10px;">Your responses have been securely saved.</p>
+                
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button onclick="generatePDF()" style="flex: 1; padding: 15px; border-radius: 12px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> PRINT PDF
+                    </button>
+                    <button onclick="location.reload()" style="flex: 1; padding: 15px; border-radius: 12px; border: none; background: var(--accent); color: white; font-weight: 700; cursor: pointer;">
+                        EXIT HALL
+                    </button>
                 </div>
-                <button id="reviewBtn" onclick="toggleReview()" class="btn-outline no-print" style="width: auto; padding: 8px 15px;">Review Answers</button>
             </div>
-            <button onclick="window.print()" class="btn-outline no-print"><i class="fa-solid fa-file-pdf"></i> &nbsp; Download Paper (PDF)</button>
-            <button onclick="location.href='ijmbpq.html'" class="btn-primary no-print">BACK TO DASHBOARD</button>
         </div>
     </main>
+
+    <div id="pdf-content"></div>
+
+    <div class="bottom-nav" id="examFooter">
+        <button class="icon-btn" style="width:48%; height:50px;" onclick="changeQuestion(-1)">PREVIOUS</button>
+        <button class="icon-btn" style="width:48%; height:50px; background: var(--accent);" onclick="changeQuestion(1)">NEXT</button>
+    </div>
 
     <div id="calcBox">
         <input type="text" id="calcDisplay" class="calc-screen" readonly placeholder="0">
@@ -221,28 +309,16 @@
     <script>
         let inExam = false;
         let timerId;
+        let currentQIndex = 0;
+        let examData = {};
         let selectedSubject = "";
 
-        function checkSavedTheme() {
-            if (localStorage.getItem('theme') === 'light') {
-                document.body.classList.add('light-mode');
-                document.getElementById('themeToggle').checked = true;
-            }
-            const savedAvatar = localStorage.getItem('userAvatar');
-            if (savedAvatar) document.getElementById('mainAvatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${savedAvatar}`;
-        }
-
-        function setAvatar(el, seed) {
-            document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('mainAvatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
-            localStorage.setItem('userAvatar', seed);
-        }
-
-        function toggleTheme() {
-            const isLight = document.body.classList.toggle('light-mode');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
+        const questions = [
+            "Evaluate the significance of the 1914 Amalgamation in Nigerian History.",
+            "Discuss the role of military rule in Nigeria's political development.",
+            "Explain the concept of Federalism in the context of the Nigerian constitution.",
+            "Analyze the impact of the oil industry on Nigeria's economic policies."
+        ];
 
         function toggleNav() { document.getElementById('sideNav').classList.toggle('open'); }
         function toggleCalc() { 
@@ -250,64 +326,155 @@
             calc.style.display = calc.style.display === 'block' ? 'none' : 'block';
         }
 
-        function hideAllViews() {
-            ['homeView', 'setupView', 'examWorkspace', 'settingsView', 'resultView'].forEach(v => document.getElementById(v).style.display = 'none');
+        function toggleTheme() { document.body.classList.toggle('light-mode'); }
+
+        function updateFontSize() {
+            const size = document.getElementById('fontSizeSelect').value;
+            document.documentElement.style.setProperty('--workspace-font', size);
+        }
+
+        function updateTimerVisibility() {
+            const timer = document.getElementById('examTimer');
+            if (inExam) {
+                timer.style.visibility = document.getElementById('showTimerToggle').checked ? 'visible' : 'hidden';
+            }
+        }
+
+        function clearCache() {
+            if(confirm("This will clear all saved answers. Continue?")) {
+                examData = {};
+                localStorage.clear();
+                alert("Cache Cleared!");
+            }
         }
 
         function handleBack() {
-            if (inExam) { if (confirm("Quit exam?")) location.reload(); }
-            else { hideAllViews(); document.getElementById('homeView').style.display = 'block'; }
+            if (inExam) {
+                if (confirm("Quit exam? Progress will be lost.")) location.reload();
+            } else if (document.getElementById('setupView').style.display === 'block' || document.getElementById('settingsView').style.display === 'block') {
+                hideAllViews();
+                document.getElementById('homeView').style.display = 'block';
+                document.getElementById('backLabel').innerText = "GO BACK";
+                document.getElementById('backBtn').style.color = "var(--text-dim)";
+            }
         }
 
-        function openSettings() { hideAllViews(); document.getElementById('settingsView').style.display = 'block'; }
-        function openSetup() { hideAllViews(); document.getElementById('setupView').style.display = 'block'; }
+        function hideAllViews() {
+            const views = ['homeView', 'setupView', 'examWorkspace', 'settingsView', 'resultView'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+        }
+
+        function openSettings() {
+            hideAllViews();
+            document.getElementById('settingsView').style.display = 'block';
+            document.getElementById('backLabel').innerText = "BACK TO HOME";
+        }
+
+        function saveSettings() {
+            const name = document.getElementById('setName').value;
+            document.getElementById('avatarImg').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`;
+            alert('Preferences updated!');
+            handleBack();
+        }
+
+        function openSetup() {
+            hideAllViews();
+            document.getElementById('setupView').style.display = 'block';
+            document.getElementById('backLabel').innerText = "CANCEL SETUP";
+        }
 
         function startExam() {
             selectedSubject = document.getElementById('subject').value;
-            if(!selectedSubject || selectedSubject.includes("Choose")) return alert("Select a subject");
+            if(selectedSubject.includes("Choose")) return alert("Please select a combination");
+            
             inExam = true;
             hideAllViews();
             document.getElementById('examWorkspace').style.display = 'block';
-            document.getElementById('examTimer').style.display = 'block';
+            document.getElementById('examFooter').style.display = 'flex';
+            
+            const timerElem = document.getElementById('examTimer');
+            timerElem.style.display = 'block';
+            updateTimerVisibility();
+
+            document.getElementById('userProfile').style.display = 'none';
             document.getElementById('calcTool').style.display = 'flex';
+            document.getElementById('backLabel').innerText = "EXIT EXAM";
+            document.getElementById('backBtn').style.color = "var(--btn-red)";
+
+            if(document.getElementById('focusModeToggle').checked) {
+                document.querySelector('header').style.boxShadow = "none";
+            }
+
+            loadQuestion(0);
             startTimer(3600);
+        }
+
+        function loadQuestion(index) {
+            examData[currentQIndex] = document.getElementById('theoryInput').value;
+            currentQIndex = index;
+            document.getElementById('qNumber').innerText = `QUESTION ${index + 1}`;
+            document.getElementById('qText').innerText = questions[index];
+            document.getElementById('theoryInput').value = examData[index] || "";
+            updateCharCount();
+        }
+
+        function changeQuestion(step) {
+            let nextIndex = currentQIndex + step;
+            if (nextIndex >= 0 && nextIndex < questions.length) loadQuestion(nextIndex);
+        }
+
+        function updateCharCount() {
+            document.getElementById('charCount').innerText = document.getElementById('theoryInput').value.length;
         }
 
         function startTimer(duration) {
             let timer = duration;
-            let timerEl = document.getElementById('examTimer');
             timerId = setInterval(() => {
-                let mins = Math.floor(timer / 60);
-                let secs = timer % 60;
-                timerEl.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-
-                // Critical Alert (5 minutes left)
-                if (timer === 300) {
-                    timerEl.classList.add('timer-critical');
-                    if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
+                let mins = parseInt(timer / 60, 10);
+                let secs = parseInt(timer % 60, 10);
+                document.getElementById('examTimer').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                
+                if (timer < 300) document.getElementById('examTimer').style.color = "var(--btn-red)";
+                
+                // Optional Auto-save logic
+                if (timer % 30 === 0 && document.getElementById('autoSaveToggle').checked) {
+                    examData[currentQIndex] = document.getElementById('theoryInput').value;
+                    console.log("Auto-saved");
                 }
 
-                if (--timer < 0) submitExam(true);
+                if (--timer < 0) { clearInterval(timerId); submitExam(true); }
             }, 1000);
         }
 
         function submitExam(auto = false) {
-            if(!auto && !confirm("Submit paper?")) return;
-            const resp = document.getElementById('examResponse').value || "No answer provided.";
+            if(!auto && !confirm("Ready to submit your paper?")) return;
+            examData[currentQIndex] = document.getElementById('theoryInput').value;
             clearInterval(timerId);
-            inExam = false;
             hideAllViews();
-            document.getElementById('examTimer').classList.remove('timer-critical');
+            document.getElementById('examFooter').style.display = 'none';
             document.getElementById('examTimer').style.display = 'none';
-            document.getElementById('calcTool').style.display = 'none';
-            document.getElementById('resSubject').innerText = selectedSubject;
-            document.getElementById('savedAnswer').innerText = resp;
             document.getElementById('resultView').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'none';
         }
 
-        function toggleReview() {
-            const sec = document.getElementById('reviewSection');
-            sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
+        function generatePDF() {
+            const name = document.getElementById('setName').value;
+            const pdfContainer = document.getElementById('pdf-content');
+            
+            let html = `<div style="padding: 20px;">
+                <h1 style="text-align:center;">IJMB PRO - EXAM REPORT</h1>
+                <p><strong>Candidate:</strong> ${name}</p>
+                <p><strong>Subject:</strong> ${selectedSubject}</p><hr>`;
+
+            questions.forEach((q, index) => {
+                html += `<div style="margin-top:20px;">
+                    <p><strong>Q${index + 1}: ${q}</strong></p>
+                    <p style="background:#f0f0f0; padding:10px;">${examData[index] || "No answer."}</p>
+                </div>`;
+            });
+            html += `</div>`;
+            pdfContainer.innerHTML = html;
+            html2pdf().from(pdfContainer).save(`${name}_Exam.pdf`);
         }
 
         function calcIn(v) { document.getElementById('calcDisplay').value += v; }
@@ -317,7 +484,7 @@
             catch { document.getElementById('calcDisplay').value = "Error"; }
         }
 
-        function handleLogout() { if(confirm("Logout?")) window.location.href = 'Landing.html'; }
+        function handleLogout() { if(confirm("Logout?")) location.reload(); }
     </script>
 </body>
 </html>
