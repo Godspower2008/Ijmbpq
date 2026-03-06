@@ -56,6 +56,13 @@
         }
         .global-back-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(99,102,241,0.3); }
 
+        /* --- RESUME BANNER --- */
+        #resumeBanner {
+            display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success);
+            padding: 15px 20px; border-radius: 15px; margin-bottom: 25px;
+            justify-content: space-between; align-items: center;
+        }
+
         /* --- MODE SELECTION --- */
         .mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .mode-card { 
@@ -66,26 +73,20 @@
         .mode-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; display: block; }
 
         /* --- SETUP FORMS --- */
-        .setup-view { display: none; animation: slideIn 0.4s ease-out; max-width: 700px; margin: 0 auto; }
+        .setup-view { display: none; animation: slideIn 0.4s ease-out; max-width: 600px; margin: 0 auto; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
         .setup-card { background: var(--card); border: 1px solid var(--border); padding: 35px; border-radius: 25px; }
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         
-        .input-group label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        select, input { width: 100%; background: #1e293b; border: 1px solid var(--border); color: white; padding: 14px; border-radius: 12px; font-weight: 600; outline: none; transition: 0.3s; }
-        select:focus { border-color: var(--accent); }
-
-        /* CBT ICON STYLES */
-        .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .icon-box { padding: 10px; border-radius: 10px; color: white; }
+        .input-group label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        select, input { width: 100%; background: #1e293b; border: 1px solid var(--border); color: white; padding: 15px; border-radius: 12px; font-weight: 600; outline: none; margin-bottom: 20px; }
 
         .btn-red-action { 
             width: 100%; padding: 18px; background: var(--btn-red); color: white; 
             border: none; border-radius: 50px; font-weight: 800; font-size: 1rem; 
-            cursor: pointer; transition: 0.3s; margin-top: 25px; text-transform: uppercase;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase;
         }
-        .btn-red-action:hover { opacity: 0.9; transform: scale(1.02); box-shadow: 0 10px 20px rgba(204, 29, 29, 0.2); }
+        .btn-red-action:hover { opacity: 0.9; transform: scale(1.02); }
 
     </style>
 </head>
@@ -109,6 +110,13 @@
         <i class="fa-solid fa-arrow-left"></i> Back
     </button>
 
+    <div id="resumeBanner">
+        <span style="font-size: 0.9rem; font-weight: 600; color: var(--success);">
+            <i class="fa-solid fa-clock-rotate-left"></i> You have an unfinished PCM 2024 session.
+        </span>
+        <button class="global-back-btn" style="margin-bottom:0; background: var(--success);" onclick="startSession()">Resume</button>
+    </div>
+
     <div id="selectionView">
         <h1 style="margin-bottom: 10px; font-size: 2.2rem;">Exam Mode</h1>
         <p style="color: var(--text-dim); margin-bottom: 35px;">Select your preferred examination environment.</p>
@@ -117,72 +125,54 @@
             <div class="mode-card" onclick="openSetup('standard')">
                 <i class="fa-solid fa-graduation-cap"></i>
                 <h3>Standard Exam</h3>
-                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 10px;">Practice with full subject combinations (e.g. PCM, ART, SMS).</p>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 10px;">Full combination practice modeled after the official IJMB exam structure.</p>
             </div>
             <div class="mode-card" onclick="openSetup('cbt')">
                 <i class="fa-solid fa-laptop-code"></i>
                 <h3>CBT Simulator</h3>
-                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 10px;">Highly customizable simulation with specific parameters.</p>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 10px;">Quick simulation for specific subjects with custom timing.</p>
             </div>
         </div>
     </div>
 
     <div id="standardSetup" class="setup-view">
-        <div class="section-header">
-            <div class="icon-box" style="background: var(--accent);"><i class="fa-solid fa-layer-group"></i></div>
-            <h2 style="font-size: 1.3rem;">Standard Exam Setup</h2>
-        </div>
-        
+        <h2 style="margin-bottom: 25px; text-align: center;">Standard Exam Setup</h2>
         <div class="setup-card">
-            <div class="form-grid">
-                <div class="input-group">
-                    <label>Subject Combination</label>
-                    <select id="combination">
-                        <option value="PCM">Physics, Chemistry, Mathematics (PCM)</option>
-                        <option value="PCB">Physics, Chemistry, Biology (PCB)</option>
-                        <option value="ART">Government, Literature, C.R.S (ART)</option>
-                        <option value="SMS">Economics, Government, Mathematics (SMS)</option>
-                        <option value="BEA">Business Management, Economics, Accounting (BEA)</option>
-                    </select>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="input-group">
-                        <label>Exam Year</label>
-                        <select id="examYear"></select>
-                    </div>
-                    <div class="input-group">
-                        <label>Paper Type</label>
-                        <select><option>Type I</option><option>Type II</option></select>
-                    </div>
-                </div>
+            <div class="input-group">
+                <label>Select Combination</label>
+                <select id="combination">
+                    <option value="PCM">Physics, Chemistry, Mathematics (PCM)</option>
+                    <option value="PCB">Physics, Chemistry, Biology (PCB)</option>
+                    <option value="ART">Government, Literature, C.R.S (ART)</option>
+                    <option value="SMS">Economics, Government, Mathematics (SMS)</option>
+                </select>
             </div>
-            <button class="btn-red-action" onclick="startSession()">Start Standard Exam</button>
+            
+            <div class="input-group">
+                <label>Examination Year</label>
+                <select id="examYear"></select>
+            </div>
+
+            <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 20px; text-align: center;">
+                <i class="fa-solid fa-circle-info"></i> All papers (I & II) and official question counts are pre-configured for this mode.
+            </p>
+
+            <button class="btn-red-action" onclick="startSession()">Proceed to Exam</button>
         </div>
     </div>
 
     <div id="cbtSetup" class="setup-view">
-        <div class="section-header">
-            <div class="icon-box" style="background: #4f46e5;"><i class="fa-solid fa-list-check"></i></div>
-            <h2 style="font-size: 1.3rem;">CBT Parameters</h2>
-        </div>
-
+        <h2 style="margin-bottom: 25px; text-align: center;">CBT Simulator</h2>
         <div class="setup-card">
-            <div class="form-grid">
-                <div class="input-group">
-                    <label>Select Subject</label>
-                    <select><option>Mathematics</option><option>Physics</option><option>Chemistry</option></select>
-                </div>
-                <div class="input-group">
-                    <label>Number of Questions</label>
-                    <input type="number" value="50">
-                </div>
-                <div class="input-group">
-                    <label>Duration (Minutes)</label>
-                    <input type="number" value="60">
-                </div>
+            <div class="input-group">
+                <label>Subject</label>
+                <select><option>Mathematics</option><option>Physics</option><option>Chemistry</option></select>
             </div>
-            <button class="btn-red-action" onclick="startSession()">Launch Simulator</button>
+            <div class="input-group">
+                <label>Number of Questions</label>
+                <input type="number" value="50">
+            </div>
+            <button class="btn-red-action" onclick="startSession()">Start Simulation</button>
         </div>
     </div>
 
@@ -199,15 +189,21 @@
         yearDropdown.appendChild(opt);
     }
 
+    // Mock check for unfinished session
+    window.onload = () => {
+        const hasSession = true; // In real use, check localStorage or Firebase
+        if(hasSession) document.getElementById('resumeBanner').style.display = 'flex';
+    }
+
     function openSetup(mode) {
         document.getElementById('selectionView').style.display = 'none';
+        document.getElementById('resumeBanner').style.display = 'none';
         if(mode === 'standard') {
             document.getElementById('standardSetup').style.display = 'block';
         } else {
             document.getElementById('cbtSetup').style.display = 'block';
         }
         activeStep = 'setup';
-        window.scrollTo(0,0);
     }
 
     function handleBack() {
@@ -222,8 +218,8 @@
     }
 
     function startSession() {
-        alert("Preparing your examination environment...");
-        // Add your question loading logic here
+        alert("Entering Examination Hall. Good luck!");
+        // Redirection to the actual exam workspace
     }
 
     // Hamburger Logic
