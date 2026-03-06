@@ -24,36 +24,31 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            height: 100vh; 
+            overflow: hidden; 
+            transition: background 0.3s ease, color 0.3s ease; 
+        }
 
-        /* --- MAIN HEADER (Fixed Logo Position) --- */
+        /* --- MAIN HEADER --- */
         header {
             height: 65px; background: var(--header-bg); border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; padding: 0 4%;
-            position: fixed; top: 0; width: 100%; z-index: 2000;
+            position: fixed; top: 0; width: 100%; z-index: 2000; transition: background 0.3s;
         }
 
-        .header-left { 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; /* Spacing between Hamburger and Logo */
-            flex-shrink: 0;
-        }
-
-        .logo {
-            font-weight: 800; 
-            font-size: 1.1rem; 
-            letter-spacing: -0.5px;
-            white-space: nowrap;
-        }
-
+        .header-left { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+        .logo { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.5px; white-space: nowrap; }
         .header-right { display: flex; align-items: center; gap: 12px; }
         
         /* --- SUB NAVIGATION --- */
         .sub-nav {
             height: 50px; background: var(--bg); border-bottom: 1px solid var(--border);
             display: flex; align-items: center; padding: 0 4%;
-            position: fixed; top: 65px; width: 100%; z-index: 1900;
+            position: fixed; top: 65px; width: 100%; z-index: 1900; transition: background 0.3s;
         }
 
         .icon-btn {
@@ -90,7 +85,7 @@
         /* --- CONTENT AREAS --- */
         main { padding-top: 130px; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
         .container { max-width: 700px; margin: 0 auto; padding: 0 5%; }
-        .card { background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .card { background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: background 0.3s, border 0.3s; }
 
         /* --- SETTINGS SPECIFIC --- */
         .setting-group { margin-bottom: 20px; }
@@ -99,10 +94,10 @@
             width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid var(--border); 
             border-radius: 12px; color: var(--text); outline: none; transition: 0.3s;
         }
-        .setting-input:focus { border-color: var(--accent); }
         
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
 
+        /* Switch Toggle */
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 24px; }
@@ -110,7 +105,7 @@
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(20px); }
         
-        /* --- CALCULATOR & EXAM --- */
+        /* --- CALCULATOR --- */
         #calcBox {
             position: fixed; top: 125px; right: 4%; width: 260px; background: var(--card);
             border: 1px solid var(--border); border-radius: 20px; padding: 15px; z-index: 3000; display: none; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
@@ -124,7 +119,7 @@
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card); padding: 15px 5%; border-top: 1px solid var(--border); display: none; justify-content: space-between; }
     </style>
 </head>
-<body>
+<body onload="checkSavedTheme()">
 
     <header>
         <div class="header-left">
@@ -240,14 +235,25 @@
         let inExam = false;
         let timerId;
 
+        /* --- THEME LOGIC --- */
+        function checkSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('themeToggle').checked = true;
+            }
+        }
+
+        function toggleTheme() {
+            const isLight = document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
+        /* --- NAV LOGIC --- */
         function toggleNav() { document.getElementById('sideNav').classList.toggle('open'); }
         function toggleCalc() { 
             const calc = document.getElementById('calcBox');
             calc.style.display = calc.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
         }
 
         function handleBack() {
@@ -311,7 +317,7 @@
                 let mins = parseInt(timer / 60, 10);
                 let secs = parseInt(timer % 60, 10);
                 document.getElementById('examTimer').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-                if (--timer < 0) { clearInterval(timerId); location.reload(); }
+                if (--timer < 0) { clearInterval(timerId); alert("Time up!"); location.reload(); }
             }, 1000);
         }
 
