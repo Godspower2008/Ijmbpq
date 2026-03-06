@@ -10,12 +10,14 @@
         :root {
             --bg: #020617; --card: #0f172a; --border: rgba(99, 102, 241, 0.2); 
             --accent: #6366f1; --text: #f8fafc; --text-dim: #94a3b8; 
-            --success: #10b981; --warning: #f59e0b; --overlay: rgba(2, 6, 23, 0.85);
+            --success: #10b981; --warning: #f59e0b; --btn-red: #ef4444;
+            --overlay: rgba(2, 6, 23, 0.9);
         }
 
         body.light-mode {
             --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; 
-            --text: #0f172a; --text-dim: #64748b; --accent: #4f46e5; --overlay: rgba(255, 255, 255, 0.85);
+            --text: #0f172a; --text-dim: #64748b; --accent: #4f46e5;
+            --overlay: rgba(255, 255, 255, 0.9);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -37,69 +39,80 @@
             display: flex; align-items: center; justify-content: center; transition: 0.2s;
         }
 
-        /* --- HAMBURGER MENU (DRAWER) --- */
+        /* --- SIDE NAV --- */
         #sideNav {
             position: fixed; top: 0; left: -300px; width: 280px; height: 100%;
             background: var(--card); z-index: 2000; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             padding: 30px 20px; border-right: 1px solid var(--border);
         }
         #sideNav.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.3); }
+
+        .user-profile {
+            background: var(--bg); border: 1px solid var(--border); padding: 20px;
+            border-radius: 20px; margin-bottom: 30px; text-align: center;
+        }
+        .nav-avatar { width: 70px; height: 70px; border-radius: 50%; margin-bottom: 10px; border: 2px solid var(--accent); padding: 3px; }
+        .status-badge { font-size: 0.6rem; font-weight: 800; background: var(--accent); color: white; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; }
+
         .nav-link {
-            display: flex; align-items: center; gap: 15px; padding: 15px;
+            display: flex; align-items: center; gap: 15px; padding: 14px;
             color: var(--text); text-decoration: none; font-weight: 600; border-radius: 12px; margin-bottom: 5px;
         }
         .nav-link:hover { background: var(--border); color: var(--accent); }
 
         /* --- SETTINGS MODAL --- */
         .modal-overlay {
-            position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(5px);
+            position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(8px);
             display: none; align-items: center; justify-content: center; z-index: 3000;
         }
         .modal-overlay.open { display: flex; }
         .modal {
-            background: var(--card); border: 1px solid var(--border); width: 90%; max-width: 400px;
-            padding: 30px; border-radius: 24px; animation: modalPop 0.3s ease;
+            background: var(--card); border: 1px solid var(--border); width: 90%; max-width: 420px;
+            padding: 30px; border-radius: 28px; animation: modalPop 0.3s ease;
         }
-        @keyframes modalPop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes modalPop { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Avatar Selection Grid */
+        .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 15px 0 25px 0; }
+        .avatar-opt {
+            width: 100%; aspect-ratio: 1; border-radius: 15px; border: 2px solid transparent;
+            cursor: pointer; transition: 0.2s; padding: 5px;
+        }
+        .avatar-opt.active { border-color: var(--accent); background: rgba(99, 102, 241, 0.1); }
+        .avatar-opt img { width: 100%; height: 100%; border-radius: 10px; object-fit: cover; }
 
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         
-        /* --- TOGGLE SWITCH --- */
-        .switch { position: relative; display: inline-block; width: 45px; height: 24px; }
+        /* Toggle Switch */
+        .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; inset: 0; background-color: var(--border);
-            transition: .4s; border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-            background-color: white; transition: .4s; border-radius: 50%;
-        }
+        .slider { position: absolute; cursor: pointer; inset: 0; background-color: var(--border); transition: .3s; border-radius: 30px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background: white; transition: .3s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(21px); }
+        input:checked + .slider:before { transform: translateX(22px); }
 
-        /* --- EXAM ELEMENTS --- */
+        /* --- EXAM UI --- */
         .view-step { display: none; height: calc(100vh - 70px); overflow-y: auto; padding: 30px 5%; animation: fadeIn 0.3s; }
         .view-step.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         #examWorkspace { display: none; grid-template-columns: 1fr 340px; height: calc(100vh - 70px); }
-        .sidebar { background: var(--card); border-left: 1px solid var(--border); padding: 30px; display: flex; flex-direction: column; }
         .question-area { padding: 40px 10%; overflow-y: auto; padding-bottom: 120px; }
+        .sidebar { background: var(--card); border-left: 1px solid var(--border); padding: 30px; display: flex; flex-direction: column; }
         
         .option {
-            background: var(--card); border: 1px solid var(--border); padding: 20px;
-            border-radius: 16px; cursor: pointer; display: flex; align-items: center; gap: 15px; margin-bottom: 12px;
+            background: var(--card); border: 1px solid var(--border); padding: 18px;
+            border-radius: 15px; cursor: pointer; display: flex; align-items: center; gap: 15px; margin-bottom: 12px;
         }
         .option.selected { border-color: var(--accent); background: var(--accent); color: white; }
 
-        /* --- MOBILE ADAPTATION --- */
+        .timer-box { font-size: 1.1rem; font-weight: 800; color: var(--warning); display: none; align-items: center; gap: 8px; }
+
         .mobile-nav-bar {
             display: none; position: fixed; bottom: 0; left: 0; width: 100%; 
             background: var(--card); border-top: 1px solid var(--border);
             padding: 15px 5%; grid-template-columns: 1fr 1.5fr 1fr; gap: 10px; z-index: 1100;
         }
-        .timer-box { font-size: 1.1rem; font-weight: 800; color: var(--warning); display: none; }
 
         @media (max-width: 900px) {
             #examWorkspace { grid-template-columns: 1fr; }
@@ -113,10 +126,17 @@
 <body>
 
     <nav id="sideNav">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 class="logo">IJMB<span>MENU</span></h2>
-            <i class="fa-solid fa-xmark" onclick="toggleNav()" style="cursor:pointer; font-size:1.5rem;"></i>
+            <i class="fa-solid fa-xmark" onclick="toggleNav()" style="cursor:pointer; font-size:1.2rem;"></i>
         </div>
+
+        <div class="user-profile">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" id="displayAvatar" class="nav-avatar">
+            <h4 style="font-size: 1rem; margin-bottom: 4px;">Student Pro</h4>
+            <span class="status-badge">IJMB Candidate</span>
+        </div>
+
         <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
         <a href="ijmbpq.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Past Questions</a>
         <a href="#" class="nav-link" onclick="openSettings()"><i class="fa-solid fa-gear"></i> Settings</a>
@@ -126,118 +146,117 @@
 
     <div class="modal-overlay" id="settingsModal" onclick="closeSettings(event)">
         <div class="modal" onclick="event.stopPropagation()">
-            <h2 style="margin-bottom: 25px;">Preferences</h2>
+            <h3 style="margin-bottom: 20px;">Hall Settings</h3>
+            
+            <label style="font-size: 0.7rem; font-weight: 800; color: var(--accent); text-transform: uppercase;">Select Avatar</label>
+            <div class="avatar-grid">
+                <div class="avatar-opt active" onclick="setAvatar(this, 'Felix')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"></div>
+                <div class="avatar-opt" onclick="setAvatar(this, 'Aneka')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka"></div>
+                <div class="avatar-opt" onclick="setAvatar(this, 'Max')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max"></div>
+                <div class="avatar-opt" onclick="setAvatar(this, 'Jude')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jude"></div>
+            </div>
+
             <div class="setting-row">
                 <div>
-                    <h4 style="font-size:0.95rem;">Appearance</h4>
-                    <p style="font-size:0.75rem; color:var(--text-dim);">Toggle Light or Dark mode</p>
+                    <h4 style="font-size:0.9rem;">Night Mode</h4>
+                    <p style="font-size:0.7rem; color:var(--text-dim);">Dark theme for study</p>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="themeInput" onchange="toggleTheme()">
+                    <input type="checkbox" id="themeSwitch" onchange="toggleTheme()">
                     <span class="slider"></span>
                 </label>
             </div>
-            <div class="setting-row">
-                <div>
-                    <h4 style="font-size:0.95rem;">Timer Visibility</h4>
-                    <p style="font-size:0.75rem; color:var(--text-dim);">Show/Hide exam timer</p>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <button class="icon-btn" onclick="closeSettings()" style="width:100%; border-radius:50px; margin-top:10px;">Save & Close</button>
+
+            <button class="icon-btn" onclick="closeSettings()" style="width:100%; border-radius:50px; margin-top:10px; background:var(--accent); border:none; color:white; font-weight:800;">SAVE CHANGES</button>
         </div>
     </div>
 
     <header>
         <div class="header-left">
-            <button class="icon-btn" onclick="toggleNav()"><i class="fa-solid fa-bars"></i></button>
+            <button class="icon-btn" onclick="toggleNav()"><i class="fa-solid fa-bars-staggered"></i></button>
             <a href="#" class="logo">IJMB<span>PRO</span></a>
         </div>
         <div class="timer-box" id="timerUI">
             <i class="fa-regular fa-clock"></i> <span id="clock">60:00</span>
         </div>
-        <button class="icon-btn" onclick="openSettings()"><i class="fa-solid fa-gear"></i></button>
+        <button class="icon-btn" onclick="openSettings()"><i class="fa-solid fa-user-gear"></i></button>
     </header>
 
     <main>
         <div id="resultView" style="display:none; position:fixed; inset:0; background:var(--bg); z-index:2000; flex-direction:column; align-items:center; justify-content:center;">
              <h1 id="resScore" style="font-size:4rem; color:var(--accent);">0</h1>
-             <p>Exam Finished</p>
-             <button onclick="location.reload()" style="padding:15px 40px; border-radius:50px; border:none; background:var(--accent); color:white; margin-top:20px;">Exit Hall</button>
+             <p style="font-weight:800;">EXAM FINISHED</p>
+             <button onclick="location.reload()" style="padding:15px 40px; border-radius:50px; border:none; background:var(--accent); color:white; margin-top:20px; font-weight:800;">EXIT HALL</button>
         </div>
 
         <div id="view-selection" class="view-step active">
             <h2 style="margin-bottom:20px;">Exam Hall</h2>
             <div style="display:grid; gap:15px; max-width:500px; margin:0 auto;">
-                <div style="background:var(--card); padding:30px; border-radius:20px; border:1px solid var(--border); cursor:pointer;" onclick="showView('standard')">
+                <div style="background:var(--card); padding:30px; border-radius:24px; border:1px solid var(--border); cursor:pointer;" onclick="showView('standard')">
                     <i class="fa-solid fa-graduation-cap" style="color:var(--accent); font-size:1.5rem; margin-bottom:10px; display:block;"></i>
                     <h3>Standard Exam</h3>
-                    <p style="font-size:0.8rem; color:var(--text-dim);">Practice with full combinations.</p>
+                    <p style="font-size:0.8rem; color:var(--text-dim);">Full Combination & Year Selection.</p>
                 </div>
-                <div style="background:var(--card); padding:30px; border-radius:20px; border:1px solid var(--border); cursor:pointer;" onclick="startExam()">
-                    <i class="fa-solid fa-bolt" style="color:var(--warning); font-size:1.5rem; margin-bottom:10px; display:block;"></i>
-                    <h3>Quick CBT Mock</h3>
-                    <p style="font-size:0.8rem; color:var(--text-dim);">Directly start simulation.</p>
+                <div style="background:var(--card); padding:30px; border-radius:24px; border:1px solid var(--border); cursor:pointer;" onclick="startExam()">
+                    <i class="fa-solid fa-bolt-lightning" style="color:var(--warning); font-size:1.5rem; margin-bottom:10px; display:block;"></i>
+                    <h3>CBT Simulator</h3>
+                    <p style="font-size:0.8rem; color:var(--text-dim);">Quick single subject mock.</p>
                 </div>
             </div>
         </div>
 
         <div id="view-standard" class="view-step">
-            <div style="background:var(--card); padding:30px; border-radius:20px; border:1px solid var(--border); max-width:500px; margin:0 auto;">
+            <div style="background:var(--card); padding:35px; border-radius:24px; border:1px solid var(--border); max-width:500px; margin:0 auto;">
                 <label style="font-size:0.7rem; font-weight:800; color:var(--accent);">COMBINATION</label>
-                <select style="width:100%; padding:15px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:12px; margin:10px 0 20px 0;">
+                <select style="width:100%; padding:15px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:14px; margin:10px 0 20px 0;">
                     <option>Physics, Chemistry, Mathematics (PCM)</option>
-                    <option>Economics, Government, Literature (EGL)</option>
+                    <option>Biology, Chemistry, Physics (PCB)</option>
                 </select>
-                <button onclick="startExam()" style="width:100%; padding:18px; border-radius:50px; background:var(--accent); border:none; color:white; font-weight:800;">START EXAM</button>
+                <button onclick="startExam()" style="width:100%; padding:18px; border-radius:50px; background:var(--accent); border:none; color:white; font-weight:800;">LAUNCH EXAM</button>
             </div>
         </div>
 
         <div id="examWorkspace">
             <section class="question-area">
                 <span style="font-weight:800; color:var(--accent); font-size:0.8rem;" id="qIdx">Question 1</span>
-                <div style="font-size:1.3rem; font-weight:700; margin:20px 0;" id="qText">Sample Question Text</div>
+                <div style="font-size:1.3rem; font-weight:700; margin:20px 0;" id="qText">Loading question...</div>
                 <div id="options">
-                    <div class="option" onclick="pick('A')"><div style="font-weight:800; margin-right:15px;">A</div><span id="optA">Option A</span></div>
-                    <div class="option" onclick="pick('B')"><div style="font-weight:800; margin-right:15px;">B</div><span id="optB">Option B</span></div>
+                    <div class="option" onclick="pick('A')"><div style="font-weight:800; margin-right:15px;">A</div><span id="optA">...</span></div>
+                    <div class="option" onclick="pick('B')"><div style="font-weight:800; margin-right:15px;">B</div><span id="optB">...</span></div>
                 </div>
             </section>
             <aside class="sidebar" id="sidebar">
-                <h4 style="font-size:0.75rem; color:var(--text-dim); margin-bottom:20px;">NAVIGATOR</h4>
+                <h4 style="font-size:0.75rem; color:var(--text-dim); margin-bottom:20px; letter-spacing:1px;">NAVIGATOR</h4>
                 <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:10px;" id="qGrid"></div>
-                <button onclick="finishExam()" style="margin-top:auto; padding:15px; border-radius:12px; border:none; background:var(--accent); color:white; font-weight:800;">FINISH</button>
+                <button onclick="finishExam()" style="margin-top:auto; padding:15px; border-radius:12px; border:none; background:var(--accent); color:white; font-weight:800;">FINISH EXAM</button>
             </aside>
         </div>
 
         <div class="mobile-nav-bar" id="mobileBottomNav">
-            <button class="m-btn" onclick="prev()"><i class="fa-solid fa-chevron-left"></i></button>
-            <button class="m-btn" style="background:var(--accent); color:white; border:none;" onclick="toggleSidebar()">Navigator</button>
-            <button class="m-btn" onclick="next()"><i class="fa-solid fa-chevron-right"></i></button>
+            <button style="background:var(--bg); border:1px solid var(--border); color:var(--text); padding:12px; border-radius:12px;" onclick="prev()"><i class="fa-solid fa-chevron-left"></i></button>
+            <button style="background:var(--accent); color:white; border:none; padding:12px; border-radius:12px; font-weight:800;" onclick="toggleSidebar()">NAVIGATOR</button>
+            <button style="background:var(--bg); border:1px solid var(--border); color:var(--text); padding:12px; border-radius:12px;" onclick="next()"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
     </main>
 
     <script>
-        let userAnswers = {}; let current = 0;
+        let userAnswers = {}; let current = 0; let timer;
         const questions = [
-            { t: "Physics: Unit of force?", A: "Newton", B: "Joule", c: "A" },
-            { t: "Chemistry: Symbol for Gold?", A: "Ag", B: "Au", c: "B" }
+            { t: "Which particle is found in the nucleus?", A: "Electron", B: "Proton", c: "B" },
+            { t: "Unit of electrical resistance?", A: "Ohm", B: "Volt", c: "A" }
         ];
 
         function toggleNav() { document.getElementById('sideNav').classList.toggle('open'); }
-        
-        function openSettings() { 
-            document.getElementById('settingsModal').classList.add('open');
-            toggleNav(); // Close nav if opening from there
-        }
-        
-        function closeSettings(e) { document.getElementById('settingsModal').classList.remove('open'); }
+        function openSettings() { document.getElementById('settingsModal').classList.add('open'); }
+        function closeSettings() { document.getElementById('settingsModal').classList.remove('open'); }
 
-        function toggleTheme() { 
-            document.body.classList.toggle('light-mode');
+        function setAvatar(el, name) {
+            document.querySelectorAll('.avatar-opt').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('displayAvatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`;
         }
+
+        function toggleTheme() { document.body.classList.toggle('light-mode'); }
 
         function showView(id) {
             document.querySelectorAll('.view-step').forEach(v => v.classList.remove('active'));
@@ -249,6 +268,7 @@
             document.querySelectorAll('.view-step').forEach(v => v.classList.remove('active'));
             document.getElementById('examWorkspace').style.display = 'grid';
             loadQ(0);
+            startTimer();
         }
 
         function loadQ(i) {
@@ -257,6 +277,11 @@
             document.getElementById('qText').innerText = questions[i].t;
             document.getElementById('optA').innerText = questions[i].A;
             document.getElementById('optB').innerText = questions[i].B;
+            
+            document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            if(userAnswers[i]) {
+                // Simplified selection visual logic
+            }
             renderGrid();
         }
 
@@ -266,10 +291,19 @@
             const g = document.getElementById('qGrid'); g.innerHTML = '';
             questions.forEach((_, i) => {
                 const d = document.createElement('div');
-                d.style.cssText = `aspect-ratio:1; display:flex; align-items:center; justify-content:center; border-radius:8px; font-weight:700; cursor:pointer; border:1px solid var(--border); ${i===current ? 'border-color:var(--accent); color:var(--accent);' : ''} ${userAnswers[i] ? 'background:var(--accent); color:white; border:none;' : ''}`;
+                d.style.cssText = `aspect-ratio:1; display:flex; align-items:center; justify-content:center; border-radius:10px; font-weight:700; cursor:pointer; border:1px solid var(--border); ${i===current ? 'border:2px solid var(--accent); color:var(--accent);' : ''} ${userAnswers[i] ? 'background:var(--accent); color:white; border:none;' : ''}`;
                 d.innerText = i+1; d.onclick = () => loadQ(i);
                 g.appendChild(d);
             });
+        }
+
+        function startTimer() {
+            let s = 3600;
+            timer = setInterval(() => {
+                s--;
+                let m = Math.floor(s/60), sec = s%60;
+                document.getElementById('clock').innerText = `${m}:${sec.toString().padStart(2,'0')}`;
+            }, 1000);
         }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
