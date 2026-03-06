@@ -1,102 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study | IJMB PRO</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #020617; --card: #0f172a; --glass: rgba(30, 41, 59, 0.8);
+            --border: rgba(99, 102, 241, 0.2); --accent: #6366f1; --text: #f8fafc;
+            --text-dim: #94a3b8; --success: #10b981; --warning: #f59e0b;
+            --btn-red: #b91c1c; /* Replicating the red 'Proceed' from your image */
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; }
 
-<style>
-:root{
-    --bg:#020617;
-    --card:#0f172a;
-    --glass:rgba(30,41,59,0.8);
-    --border:rgba(99,102,241,0.2);
-    --accent:#6366f1;
-    --text:#f8fafc;
-    --text-dim:#94a3b8;
-}
+        /* --- UNIFIED HEADER & NAV --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--glass);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        
+        .hamburger { display: none; flex-direction: column; justify-content: space-around; width: 28px; height: 22px; cursor: pointer; z-index: 1100; }
+        .hamburger div { height: 3px; background: var(--text); border-radius: 2px; transition: 0.4s; }
 
-*{margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans',sans-serif;}
+        @media(max-width: 768px) {
+            .nav-links { 
+                display: none; flex-direction: column; position: absolute; top: 60px; right: 5%; 
+                background: var(--bg); padding: 20px; border-radius: 10px; 
+                box-shadow: 0 8px 20px rgba(0,0,0,0.4); gap: 15px; z-index: 1001; 
+            }
+            .nav-links.active { display: flex; animation: fadeIn 0.3s ease forwards; }
+            .hamburger { display: flex; }
+            .hamburger.open div:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .hamburger.open div:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+            .hamburger.open div:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        }
 
-body{background:var(--bg); color:var(--text);}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* HEADER */
-header{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:15px 5%; background:var(--glass); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border); position:sticky; top:0; z-index:1000;
-}
-.logo{font-weight:800; font-size:1.2rem; color:var(--text); text-decoration:none;}
-.logo span{color:var(--accent);}
-.nav-links{display:flex; gap:20px;}
-.nav-links a{color:var(--text-dim); text-decoration:none; font-weight:600;}
-.nav-links a:hover{color:var(--accent);}
-.hamburger{display:none; flex-direction:column; width:28px; cursor:pointer;}
-.hamburger div{height:3px; background:var(--text); margin:4px 0; transition:0.3s;}
-.hamburger.open div:nth-child(1){transform: rotate(45deg) translate(5px,5px);}
-.hamburger.open div:nth-child(2){opacity:0; transform: translateX(-20px);}
-.hamburger.open div:nth-child(3){transform: rotate(-45deg) translate(5px,-5px);}
-.nav-links.active{
-    display:flex; position:absolute; top:60px; right:5%; background:var(--bg);
-    padding:20px; border-radius:10px; flex-direction:column; box-shadow:0 8px 20px rgba(0,0,0,0.4);
-}
+        main { max-width: 1200px; margin: 0 auto; padding: 20px 5%; }
 
-/* MAIN */
-main{max-width:1200px; margin:40px auto; padding:0 5%;}
-.back-btn{display:inline-block; margin-bottom:20px; background:var(--glass); color:var(--accent);
-    padding:10px 18px; border-radius:10px; text-decoration:none; font-weight:700;}
-.subjects-list{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px;}
-.subject-card{background:var(--card); padding:20px; border-radius:15px; cursor:pointer; transition:0.3s;}
-.subject-card:hover{background:#1e293b;}
-.progress-bar{background:#1e293b; height:8px; border-radius:5px; overflow:hidden; margin-top:10px;}
-.progress-fill{height:100%; width:0%; background:var(--accent); transition:0.8s;}
-small{color:var(--text-dim);}
+        /* --- UNIFIED COMPACT BACK BUTTON --- */
+        .global-back-btn {
+            margin-bottom: 25px; padding: 8px 14px; border: none; border-radius: 8px; 
+            background: var(--accent); color: white; font-weight: 700; font-size: 0.75rem; 
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; 
+            transition: 0.3s; text-transform: uppercase;
+        }
+        .global-back-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(99,102,241,0.3); }
 
-@media(max-width:768px){
-    .nav-links{display:none;}
-    .hamburger{display:flex;}
-}
-</style>
+        /* --- STUDY CATEGORY GRID (Screenshot 3 Replicated) --- */
+        .study-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .study-card { 
+            background: var(--card); border: 1px solid var(--border); padding: 30px; 
+            border-radius: 20px; text-align: center; cursor: pointer; transition: 0.3s;
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+        }
+        .study-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .study-card i { font-size: 2rem; color: var(--accent); background: rgba(99,102,241,0.1); padding: 20px; border-radius: 50%; }
+
+        /* --- CBT CONFIGURATION STYLES (Screenshots 1 & 2 Replicated) --- */
+        .config-section { display: none; max-width: 600px; margin: 0 auto; }
+        .info-box { 
+            background: #fffbeb10; border: 1px solid #fef3c720; padding: 20px; 
+            border-radius: 20px; margin-bottom: 30px; display: flex; gap: 15px; 
+        }
+        .info-box i { font-size: 2.5rem; color: #f59e0b; }
+        
+        .search-box { position: relative; margin-bottom: 20px; }
+        .search-box input { 
+            width: 100%; background: var(--card); border: 1px solid var(--border); 
+            padding: 15px 15px 15px 45px; border-radius: 12px; color: white; outline: none;
+        }
+        .search-box i { position: absolute; left: 15px; top: 18px; color: var(--text-dim); }
+
+        .subject-item { 
+            background: var(--card); padding: 18px; border-radius: 12px; 
+            margin-bottom: 10px; display: flex; align-items: center; gap: 15px;
+            border: 1px solid var(--border); cursor: pointer;
+        }
+        .subject-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); }
+
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 10px; font-size: 0.9rem; color: var(--text-dim); }
+        
+        .split-input { 
+            display: flex; background: var(--card); border: 1px solid var(--border); 
+            border-radius: 12px; overflow: hidden; 
+        }
+        .split-input .label-side { flex: 1; padding: 15px; border-right: 1px solid var(--border); font-weight: 600; }
+        .split-input select { flex: 1; background: transparent; border: none; color: white; padding: 15px; outline: none; cursor: pointer; }
+
+        /* UNIFIED PROCEED BUTTON */
+        .btn-proceed-full {
+            width: 100%; padding: 18px; background: var(--btn-red); color: white; 
+            border: none; border-radius: 50px; font-weight: 800; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 30px;
+        }
+        .btn-proceed-full:hover { opacity: 0.9; transform: scale(1.02); }
+
+    </style>
 </head>
-
 <body>
 
 <header>
     <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
-
     <nav class="nav-links">
         <a href="ijmbpq.html">Dashboard</a>
         <a href="study.html">Study</a>
         <a href="exam.html">Exam Mode</a>
         <a href="pricing.html">Upgrade</a>
-        <a href="#" onclick="logout()">Logout</a>
     </nav>
-
     <div class="hamburger" id="hamburger">
-        <div></div>
-        <div></div>
-        <div></div>
+        <div></div><div></div><div></div>
     </div>
 </header>
 
 <main>
-    <a href="ijmbpq.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
-    <h1 class="subject-title">Select a Subject to Learn</h1>
+    <button class="global-back-btn" onclick="handleBack()">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
 
-    <div class="subjects-list">
-        <!-- Subjects will be loaded here dynamically -->
+    <div id="step-categories">
+        <h1 style="font-size: 2rem; margin-bottom: 5px;">Study</h1>
+        <p style="color: var(--text-dim); margin-bottom: 30px;">Get all resources you need to ace your exams</p>
+        
+        <div class="study-grid">
+            <div class="study-card" onclick="showCBT()">
+                <i class="fa-solid fa-laptop-code"></i>
+                <h3>CBT Simulator</h3>
+            </div>
+            <div class="study-card">
+                <i class="fa-solid fa-book"></i>
+                <h3>Novels</h3>
+            </div>
+            <div class="study-card">
+                <i class="fa-solid fa-video"></i>
+                <h3>Video Lessons</h3>
+            </div>
+            <div class="study-card">
+                <i class="fa-solid fa-file-lines"></i>
+                <h3>Lesson Notes</h3>
+            </div>
+        </div>
     </div>
+
+    <div id="step-subjects" class="config-section">
+        <div class="info-box">
+            <i class="fa-solid fa-display"></i>
+            <div>
+                <h3 style="margin-bottom:5px">CBT Simulator</h3>
+                <p style="font-size:0.85rem; color:var(--text-dim); line-height:1.4">Create and practice in a real computer-based testing environment. Customize subjects, set timing, and take unlimited mock tests.</p>
+            </div>
+        </div>
+
+        <h3 style="margin-bottom:15px">Customize your CBT</h3>
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search Subject">
+        </div>
+
+        <div class="subject-item">
+            <input type="checkbox" checked>
+            <span>Mathematics</span>
+        </div>
+        <div class="subject-item">
+            <input type="checkbox">
+            <span>English Language</span>
+        </div>
+        <div class="subject-item">
+            <input type="checkbox">
+            <span>Chemistry</span>
+        </div>
+        <div class="subject-item">
+            <input type="checkbox">
+            <span>Physics</span>
+        </div>
+
+        <button class="btn-proceed-full" onclick="showConfig()">Proceed</button>
+    </div>
+
+    <div id="step-config" class="config-section">
+        <h2 style="margin-bottom:25px">Configure Test</h2>
+        
+        <div class="form-group">
+            <label>Select Number of Questions</label>
+            <div class="split-input">
+                <div class="label-side">Mathematics</div>
+                <select>
+                    <option>5</option><option>10</option><option>20</option><option>40</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Question Type</label>
+            <select style="width:100%; background:var(--card); border:1px solid var(--border); color:white; padding:15px; border-radius:12px;">
+                <option>All</option>
+                <option>Theory Only</option>
+                <option>Objectives Only</option>
+            </select>
+        </div>
+
+        <h3 style="margin-bottom:15px">Test Duration</h3>
+        <div class="form-group">
+            <label>Hours</label>
+            <select style="width:100%; background:var(--card); border:1px solid var(--border); color:white; padding:15px; border-radius:12px;">
+                <option>0</option><option>1</option><option>2</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Minutes</label>
+            <select style="width:100%; background:var(--card); border:1px solid var(--border); color:white; padding:15px; border-radius:12px;">
+                <option>35</option><option>45</option><option>60</option>
+            </select>
+        </div>
+
+        <button class="btn-proceed-full" onclick="startTest()">Proceed</button>
+    </div>
+
 </main>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<script>
+    // Navigation Logic
+    let currentStep = 'categories';
 
-<script src="common.js"></script>
-<script src="study.js"></script>
+    function showCBT() {
+        document.getElementById('step-categories').style.display = 'none';
+        document.getElementById('step-subjects').style.display = 'block';
+        currentStep = 'subjects';
+    }
+
+    function showConfig() {
+        document.getElementById('step-subjects').style.display = 'none';
+        document.getElementById('step-config').style.display = 'block';
+        currentStep = 'config';
+    }
+
+    function handleBack() {
+        if(currentStep === 'config') {
+            document.getElementById('step-config').style.display = 'none';
+            document.getElementById('step-subjects').style.display = 'block';
+            currentStep = 'subjects';
+        } else if(currentStep === 'subjects') {
+            document.getElementById('step-subjects').style.display = 'none';
+            document.getElementById('step-categories').style.display = 'block';
+            currentStep = 'categories';
+        } else {
+            window.location.href = 'ijmbpq.html';
+        }
+    }
+
+    function startTest() {
+        alert("Preparing your CBT session...");
+        window.location.href = 'exam.html';
+    }
+
+    // Hamburger Logic
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        hamburger.classList.toggle('open');
+    });
+</script>
+
 </body>
 </html>
