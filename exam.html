@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #020617; --card: #0f172a; --glass: rgba(30, 41, 59, 0.8);
+            --bg: #020617; --card: #0f172a; --glass: rgba(30, 41, 59, 0.95);
             --border: rgba(99, 102, 241, 0.2); --accent: #6366f1; --text: #f8fafc;
             --text-dim: #94a3b8; --success: #10b981; --warning: #f59e0b;
             --btn-red: #cc1d1d; --review: #eab308;
@@ -17,79 +17,97 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
 
-        /* --- TOP BAR --- */
+        /* --- HEADER --- */
         .exam-header {
             height: 70px; background: var(--card); border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
             position: sticky; top: 0; z-index: 100;
         }
-        .status-pill { background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; transition: 0.3s; }
         .timer-box { font-size: 1.4rem; font-weight: 800; color: var(--warning); display: flex; align-items: center; gap: 8px; }
+        
+        .utility-btn {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            color: white; padding: 8px 15px; border-radius: 8px; cursor: pointer;
+            font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 8px;
+        }
 
-        /* --- MAIN LAYOUT --- */
+        /* --- FORMULA MODAL --- */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px); z-index: 2000; align-items: center; justify-content: center;
+        }
+        .formula-card {
+            background: var(--card); border: 1px solid var(--accent); width: 90%; max-width: 500px;
+            border-radius: 20px; padding: 30px; max-height: 80vh; overflow-y: auto;
+        }
+        .formula-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .formula-table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .formula-table tr:last-child td { border: none; }
+
+        /* --- WORKSPACE --- */
         .workspace { display: grid; grid-template-columns: 1fr 320px; height: calc(100vh - 70px); }
-
-        /* --- QUESTION SECTION --- */
-        .question-area { padding: 40px 10%; overflow-y: auto; position: relative; }
-        .q-meta { font-weight: 800; color: var(--accent); margin-bottom: 10px; display: block; letter-spacing: 1px; }
-        .q-text { font-size: 1.25rem; line-height: 1.6; margin-bottom: 35px; font-weight: 500; }
+        .question-area { padding: 40px 10%; overflow-y: auto; }
+        .q-meta { font-weight: 800; color: var(--accent); margin-bottom: 10px; display: block; }
+        .q-text { font-size: 1.25rem; line-height: 1.6; margin-bottom: 35px; }
 
         .options-list { display: grid; gap: 14px; }
         .option {
             background: var(--card); border: 1px solid var(--border); padding: 20px;
             border-radius: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 15px;
         }
-        .option:hover { border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
-        .option.selected { border-color: var(--accent); background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
-        .opt-letter { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; }
-        .option.selected .opt-letter { border-color: white; }
+        .option.selected { border-color: var(--accent); background: var(--accent); color: white; }
 
-        /* --- SIDEBAR --- */
-        .sidebar { background: var(--card); border-left: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; gap: 25px; }
-        .sidebar-title { font-size: 0.75rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
-        
-        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 350px; overflow-y: auto; padding-right: 5px; }
+        /* --- SIDEBAR & GRID --- */
+        .sidebar { background: var(--card); border-left: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; gap: 20px; }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; overflow-y: auto; }
         .q-dot { 
             aspect-ratio: 1; background: #1e293b; border: 1px solid var(--border);
             border-radius: 10px; display: flex; align-items: center; justify-content: center;
-            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.2s;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer;
         }
-        .q-dot.current { border: 2.5px solid var(--accent); color: var(--accent); }
-        .q-dot.answered { background: var(--accent); color: white; border: none; }
-        .q-dot.review { background: var(--review); color: var(--bg); border: none; }
-        .q-dot.answered.review { background: var(--review); color: var(--bg); border: 3px solid var(--accent); }
+        .q-dot.current { border: 2px solid var(--accent); color: var(--accent); }
+        .q-dot.answered { background: var(--accent); color: white; }
+        .q-dot.review { background: var(--review); color: var(--bg); }
 
-        /* --- FOOTER NAV --- */
+        /* --- BUTTONS --- */
         .action-btns { margin-top: auto; display: grid; gap: 12px; }
-        .btn-nav { padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-nav { padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-prev { background: #1e293b; color: white; }
         .btn-next { background: var(--accent); color: white; }
-        .btn-review { background: transparent; border: 2px solid var(--review); color: var(--review); }
-        .btn-review.active { background: var(--review); color: var(--bg); }
-        .btn-submit { background: var(--btn-red); color: white; margin-top: 10px; font-size: 1rem; }
-
-        /* --- SCROLLBAR --- */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-
-        @media (max-width: 900px) {
-            .workspace { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
-        }
+        .btn-submit { background: var(--btn-red); color: white; margin-top: 10px; }
     </style>
 </head>
 <body>
 
+    <div class="modal-overlay" id="formulaModal">
+        <div class="formula-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="font-size: 1.2rem;">Constants & Formulas</h2>
+                <i class="fa-solid fa-xmark" onclick="toggleModal()" style="cursor: pointer; font-size: 1.2rem;"></i>
+            </div>
+            <table class="formula-table">
+                <tr><td>Acceleration due to gravity ($g$)</td><td>$9.8 \text{ m/s}^2$</td></tr>
+                <tr><td>Gas Constant ($R$)</td><td>$8.314 \text{ J/mol}\cdot\text{K}$</td></tr>
+                <tr><td>Avogadro's Number ($N_A$)</td><td>$6.02 \times 10^{23}$</td></tr>
+                <tr><td>Planck's Constant ($h$)</td><td>$6.63 \times 10^{-34} \text{ Js}$</td></tr>
+                <tr><td>Speed of Light ($c$)</td><td>$3.0 \times 10^8 \text{ m/s}$</td></tr>
+                <tr><td>Kinetic Energy</td><td>$\frac{1}{2}mv^2$</td></tr>
+                <tr><td>Ideal Gas Law</td><td>$PV = nRT$</td></tr>
+            </table>
+        </div>
+    </div>
+
     <div class="exam-header">
         <div style="display: flex; align-items: center; gap: 15px;">
-            <span class="logo" style="font-weight: 800; font-size: 1.1rem;">IJMB<span style="color:var(--accent)">PRO</span></span>
-            <div class="status-pill" id="saveStatus"><i class="fa-solid fa-cloud-check"></i> Auto-saved</div>
+            <span class="logo" style="font-weight: 800;">IJMB<span style="color:var(--accent)">PRO</span></span>
+            <button class="utility-btn" onclick="toggleModal()">
+                <i class="fa-solid fa-calculator"></i> Formula Sheet
+            </button>
         </div>
         
         <div class="timer-box">
             <i class="fa-regular fa-clock"></i>
-            <span id="timer">01:45:00</span>
+            <span id="timer">01:30:00</span>
         </div>
     </div>
 
@@ -97,49 +115,34 @@
         <section class="question-area">
             <span class="q-meta" id="qNumber">QUESTION 1</span>
             <div class="q-text" id="qText">
-                A sample of gas occupies 2.0dm³ at 300K and 100kPa. What would be its volume at 400K and 200kPa?
+                Calculate the energy of a photon with a frequency of $5.0 \times 10^{14} \text{ Hz}$.
             </div>
 
-            <div class="options-list" id="optionsContainer">
+            <div class="options-list">
                 <div class="option" onclick="selectOption(this, 'A')">
-                    <div class="opt-letter">A</div>
-                    <span class="opt-val">1.33 dm³</span>
+                    <div class="opt-letter" style="margin-right:10px; font-weight:800">A</div>
+                    <span class="opt-val">$3.31 \times 10^{-19} \text{ J}$</span>
                 </div>
                 <div class="option" onclick="selectOption(this, 'B')">
-                    <div class="opt-letter">B</div>
-                    <span class="opt-val">2.67 dm³</span>
-                </div>
-                <div class="option" onclick="selectOption(this, 'C')">
-                    <div class="opt-letter">C</div>
-                    <span class="opt-val">0.75 dm³</span>
-                </div>
-                <div class="option" onclick="selectOption(this, 'D')">
-                    <div class="opt-letter">D</div>
-                    <span class="opt-val">4.00 dm³</span>
+                    <div class="opt-letter" style="margin-right:10px; font-weight:800">B</div>
+                    <span class="opt-val">$6.63 \times 10^{-19} \text{ J}$</span>
                 </div>
             </div>
         </section>
 
         <aside class="sidebar">
-            <div>
-                <h3 class="sidebar-title">Subject Summary</h3>
-                <p style="font-size: 0.95rem; font-weight: 700; margin-top: 6px;" id="examSubject">Chemistry (Standard PCB)</p>
-            </div>
-
-            <div>
-                <h3 class="sidebar-title">Question Navigator</h3>
-                <div class="question-grid" id="qGrid"></div>
-            </div>
+            <h3 style="font-size: 0.8rem; color: var(--text-dim);">NAVIGATOR</h3>
+            <div class="question-grid" id="qGrid"></div>
 
             <div class="action-btns">
-                <button class="btn-nav btn-review" id="reviewBtn" onclick="toggleReview()">
+                <button class="btn-nav" style="border: 2px solid var(--review); background:transparent; color: var(--review);" onclick="toggleReview()">
                     <i class="fa-solid fa-thumbtack"></i> Mark for Review
                 </button>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <button class="btn-nav btn-prev" onclick="prevQ()"><i class="fa-solid fa-chevron-left"></i> Prev</button>
-                    <button class="btn-nav btn-next" onclick="nextQ()">Next <i class="fa-solid fa-chevron-right"></i></button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn-nav btn-prev" onclick="prevQ()"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="btn-nav btn-next" onclick="nextQ()"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
-                <button class="btn-nav btn-submit" onclick="confirmSubmit()">SUBMIT EXAM</button>
+                <button class="btn-nav btn-submit" onclick="confirmSubmit()">FINISH EXAM</button>
             </div>
         </aside>
     </main>
@@ -147,22 +150,20 @@
     <script>
         let currentIdx = 1;
         const totalQuestions = 50;
-        
-        // Persistent States
-        let answers = JSON.parse(localStorage.getItem('current_exam_answers')) || {};
-        let reviews = JSON.parse(localStorage.getItem('current_exam_reviews')) || {};
+        let answers = {};
+        let reviews = {};
+
+        function toggleModal() {
+            const m = document.getElementById('formulaModal');
+            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+        }
 
         function renderGrid() {
             const qGrid = document.getElementById('qGrid');
             qGrid.innerHTML = '';
             for (let i = 1; i <= totalQuestions; i++) {
                 const dot = document.createElement('div');
-                let classes = ['q-dot'];
-                if (i === currentIdx) classes.push('current');
-                if (answers[i]) classes.push('answered');
-                if (reviews[i]) classes.push('review');
-                
-                dot.className = classes.join(' ');
+                dot.className = `q-dot ${i === currentIdx ? 'current' : ''} ${answers[i] ? 'answered' : ''} ${reviews[i] ? 'review' : ''}`;
                 dot.innerText = i;
                 dot.onclick = () => jumpTo(i);
                 qGrid.appendChild(dot);
@@ -170,80 +171,23 @@
         }
 
         function selectOption(el, val) {
-            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
             el.classList.add('selected');
             answers[currentIdx] = val;
-            
-            localStorage.setItem('current_exam_answers', JSON.stringify(answers));
-            showSaveStatus();
             renderGrid();
         }
 
         function toggleReview() {
-            if (reviews[currentIdx]) {
-                delete reviews[currentIdx];
-                document.getElementById('reviewBtn').classList.remove('active');
-            } else {
-                reviews[currentIdx] = true;
-                document.getElementById('reviewBtn').classList.add('active');
-            }
-            localStorage.setItem('current_exam_reviews', JSON.stringify(reviews));
+            reviews[currentIdx] = !reviews[currentIdx];
             renderGrid();
         }
 
-        function jumpTo(n) {
-            currentIdx = n;
-            document.getElementById('qNumber').innerText = `QUESTION ${currentIdx}`;
-            
-            // Highlight saved answer if exists
-            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-            const currentAns = answers[currentIdx];
-            if(currentAns) {
-                const options = document.querySelectorAll('.opt-letter');
-                options.forEach(opt => {
-                    if(opt.innerText === currentAns) opt.parentElement.classList.add('selected');
-                });
-            }
-
-            // Set Review button state
-            if(reviews[currentIdx]) document.getElementById('reviewBtn').classList.add('active');
-            else document.getElementById('reviewBtn').classList.remove('active');
-
-            renderGrid();
-        }
-
+        function jumpTo(n) { currentIdx = n; document.getElementById('qNumber').innerText = `QUESTION ${currentIdx}`; renderGrid(); }
         function nextQ() { if(currentIdx < totalQuestions) jumpTo(currentIdx + 1); }
         function prevQ() { if(currentIdx > 1) jumpTo(currentIdx - 1); }
 
-        function showSaveStatus() {
-            const status = document.getElementById('saveStatus');
-            status.style.opacity = '1';
-            setTimeout(() => { status.style.opacity = '0.4'; }, 800);
-        }
-
-        // Timer
-        let seconds = 5400; // 1.5 Hours
-        setInterval(() => {
-            if(seconds <= 0) return;
-            seconds--;
-            let h = Math.floor(seconds / 3600);
-            let m = Math.floor((seconds % 3600) / 60);
-            let s = seconds % 60;
-            document.getElementById('timer').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-        }, 1000);
-
         function confirmSubmit() {
-            const unanswered = totalQuestions - Object.keys(answers).length;
-            const msg = unanswered > 0 
-                ? `You have ${unanswered} unanswered questions. Are you sure you want to submit?`
-                : "Are you sure you want to submit your exam?";
-            
-            if(confirm(msg)) {
-                localStorage.removeItem('current_exam_answers');
-                localStorage.removeItem('current_exam_reviews');
-                localStorage.removeItem('ijmb_exam_session');
-                window.location.href = 'ijmbpq.html';
-            }
+            if(confirm("Submit exam?")) window.location.href = 'ijmbpq.html';
         }
 
         renderGrid();
