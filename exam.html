@@ -8,29 +8,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
+            /* Dark Mode (Default) */
             --bg: #020617; --card: #0f172a; --border: rgba(99, 102, 241, 0.2); 
             --accent: #6366f1; --text: #f8fafc; --text-dim: #94a3b8; 
             --success: #10b981; --warning: #f59e0b; --btn-red: #ef4444;
+            --input-bg: rgba(15, 23, 42, 0.8);
+            --header-bg: #0f172a;
+        }
+
+        /* Light Mode Overrides */
+        body.light-mode {
+            --bg: #f1f5f9; --card: #ffffff; --border: #e2e8f0; 
+            --accent: #4f46e5; --text: #0f172a; --text-dim: #64748b; 
+            --input-bg: #f8fafc; --header-bg: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
 
-        /* --- MAIN HEADER --- */
+        /* --- NAVIGATION & HEADERS --- */
         header {
-            height: 65px; background: var(--card); border-bottom: 1px solid var(--border);
+            height: 65px; background: var(--header-bg); border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; padding: 0 4%;
             position: fixed; top: 0; width: 100%; z-index: 2000;
         }
         
-        /* --- SUB NAVIGATION --- */
         .sub-nav {
             height: 50px; background: var(--bg); border-bottom: 1px solid var(--border);
             display: flex; align-items: center; padding: 0 4%;
             position: fixed; top: 65px; width: 100%; z-index: 1900;
         }
-
-        .header-left, .header-right { display: flex; align-items: center; gap: 12px; }
 
         .icon-btn {
             background: var(--card); border: 1px solid var(--border); color: var(--text);
@@ -49,17 +56,6 @@
         }
         .profile-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- CALCULATOR --- */
-        #calcBox {
-            position: fixed; top: 125px; right: 4%; width: 260px; background: var(--card);
-            border: 1px solid var(--border); border-radius: 20px; padding: 15px; z-index: 3000;
-            display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-        .calc-screen { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 12px; color: white; text-align: right; font-size: 1.2rem; border-radius: 10px; margin-bottom: 10px; outline: none; }
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .calc-grid button { padding: 12px; border-radius: 8px; border: none; background: #1e293b; color: white; font-weight: 700; cursor: pointer; transition: 0.1s; }
-        .calc-grid button:active { background: var(--accent); }
-
         /* --- SIDE NAV --- */
         #sideNav {
             position: fixed; top: 0; left: -300px; width: 280px; height: 100%;
@@ -70,32 +66,46 @@
         .nav-item {
             color: var(--text-dim); text-decoration: none; display: flex; 
             align-items: center; gap: 15px; padding: 15px 0; font-weight: 600;
-            transition: 0.3s; border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s; border-bottom: 1px solid var(--border);
         }
         .nav-item:hover { color: var(--accent); }
-        .nav-item i { width: 20px; text-align: center; }
 
-        /* --- CONTENT AREA --- */
+        /* --- CONTENT AREAS --- */
         main { padding-top: 130px; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
         .container { max-width: 700px; margin: 0 auto; padding: 0 5%; }
+        .card { background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
 
-        .theory-field { 
-            width: 100%; min-height: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
-            border-radius: 20px; color: var(--text); padding: 20px; font-size: 1.1rem; line-height: 1.6;
-            resize: none; outline: none; margin-top: 20px;
+        /* --- SETTINGS SPECIFIC --- */
+        .setting-group { margin-bottom: 20px; }
+        .setting-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; }
+        .setting-input { 
+            width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid var(--border); 
+            border-radius: 12px; color: var(--text); outline: none; transition: 0.3s;
         }
-        .theory-field:focus { border-color: var(--accent); }
-
-        .card { background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid var(--border); cursor: pointer; margin-bottom: 15px; transition: 0.3s; }
-        .card:hover { border-color: var(--accent); transform: translateY(-2px); }
-
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card); padding: 15px 5%; border-top: 1px solid var(--border); display: none; justify-content: space-between; z-index: 1000; }
+        .setting-input:focus { border-color: var(--accent); }
         
-        select {
-            width: 100%; padding: 15px; background: var(--bg); color: white; 
-            border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px;
-            appearance: none; outline: none; font-size: 0.9rem;
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+
+        /* Switch Toggle Styling */
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(20px); }
+        
+        /* --- CALCULATOR & EXAM --- */
+        #calcBox {
+            position: fixed; top: 125px; right: 4%; width: 260px; background: var(--card);
+            border: 1px solid var(--border); border-radius: 20px; padding: 15px; z-index: 3000; display: none; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
         }
+        .calc-screen { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 12px; color: var(--text); text-align: right; font-size: 1.2rem; border-radius: 10px; margin-bottom: 10px; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .calc-grid button { padding: 12px; border-radius: 8px; border: none; background: #1e293b; color: white; font-weight: 700; cursor: pointer; }
+        body.light-mode .calc-grid button { background: #e2e8f0; color: #0f172a; }
+        
+        .theory-field { width: 100%; min-height: 300px; background: rgba(0,0,0,0.05); border: 1px solid var(--border); border-radius: 20px; color: var(--text); padding: 20px; font-size: 1.1rem; resize: none; outline: none; margin-top: 20px; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card); padding: 15px 5%; border-top: 1px solid var(--border); display: none; justify-content: space-between; }
     </style>
 </head>
 <body>
@@ -105,9 +115,8 @@
             <button class="icon-btn" onclick="toggleNav()"><i class="fa-solid fa-bars-staggered"></i></button>
             <div style="font-weight: 800; font-size: 1rem;">IJMB<span style="color:var(--accent)">PRO</span></div>
         </div>
-
         <div class="header-right">
-            <div id="examTimer" style="display:none; font-weight: 800; color: var(--warning); margin-right: 10px; font-variant-numeric: tabular-nums;">60:00</div>
+            <div id="examTimer" style="display:none; font-weight: 800; color: var(--warning); margin-right: 10px;">60:00</div>
             <div id="userProfile" class="profile-circle">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
             </div>
@@ -127,45 +136,74 @@
             <h2 style="font-size: 1.2rem;">MENU</h2>
             <i class="fa-solid fa-xmark" onclick="toggleNav()" style="cursor:pointer; color: var(--text-dim);"></i>
         </div>
-        
         <a href="ijmbpq.html" class="nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
         <a href="study.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Study Mode</a>
         <a href="pricing.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Upgrade Plan</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
+        <a href="#" class="nav-item" onclick="openSettings(); toggleNav();"><i class="fa-solid fa-gear"></i> Settings</a>
         <a href="#" onclick="handleLogout()" class="nav-item" style="color: var(--btn-red); border: none; margin-top: 20px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </nav>
-
-    <div id="calcBox">
-        <input type="text" id="calcDisplay" class="calc-screen" readonly placeholder="0">
-        <div class="calc-grid">
-            <button onclick="calcIn('7')">7</button><button onclick="calcIn('8')">8</button><button onclick="calcIn('9')">9</button><button onclick="calcIn('/')">/</button>
-            <button onclick="calcIn('4')">4</button><button onclick="calcIn('5')">5</button><button onclick="calcIn('6')">6</button><button onclick="calcIn('*')">*</button>
-            <button onclick="calcIn('1')">1</button><button onclick="calcIn('2')">2</button><button onclick="calcIn('3')">3</button><button onclick="calcIn('-')">-</button>
-            <button onclick="calcClr()" style="color:var(--btn-red)">C</button><button onclick="calcIn('0')">0</button><button onclick="calcRes()" style="background:var(--accent)">=</button><button onclick="calcIn('+')">+</button>
-        </div>
-    </div>
 
     <main>
         <div class="container" id="homeView">
             <h1 style="margin-bottom:20px;">Exam Hall</h1>
-            <div class="card" onclick="openSetup()">
+            <div class="card" onclick="openSetup()" style="cursor:pointer;">
                 <i class="fa-solid fa-graduation-cap" style="color:var(--accent); font-size:1.5rem; margin-bottom:10px; display:block;"></i>
                 <h3>Standard IJMB Exam</h3>
                 <p style="color:var(--text-dim); font-size:0.8rem;">Official timing and theory practice mode.</p>
             </div>
         </div>
 
+        <div class="container" id="settingsView" style="display:none;">
+            <h1 style="margin-bottom:20px;">Settings</h1>
+            
+            <div class="card">
+                <div class="setting-group">
+                    <label class="setting-label">Display Name</label>
+                    <input type="text" class="setting-input" value="Felix" id="setName">
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label">Email Address</label>
+                    <input type="email" class="setting-input" value="felix@ijmbpro.com" id="setEmail">
+                </div>
+                <button onclick="saveSettings()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:12px; font-weight:700; cursor:pointer;">SAVE PROFILE</button>
+            </div>
+
+            <div class="card">
+                <h4 style="margin-bottom:15px; font-size:0.9rem;">Preferences</h4>
+                <div class="toggle-row">
+                    <span>Light Theme</span>
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-row" style="border-top:1px solid var(--border); padding-top:15px; margin-top:10px;">
+                    <span>Auto-save Answers</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="card" onclick="alert('Redirecting to Security...')">
+                <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+                    <span>Change Password</span>
+                    <i class="fa-solid fa-chevron-right" style="color:var(--text-dim)"></i>
+                </div>
+            </div>
+        </div>
+
         <div class="container" id="setupView" style="display:none;">
             <h2>Configure Exam</h2>
-            <div class="card" style="cursor:default; margin-top:20px;">
+            <div class="card" style="margin-top:20px;">
                 <label style="display:block; margin-bottom:10px; font-size:0.8rem; color:var(--text-dim);">SELECT SUBJECT COMBINATION</label>
-                <select id="subject">
+                <select id="subject" style="width:100%; padding:15px; background:var(--input-bg); color:var(--text); border:1px solid var(--border); border-radius:12px; margin-bottom:20px; outline:none;">
                     <option disabled selected>Choose your combination...</option>
                     <option>Physics / Chemistry / Mathematics (PCM)</option>
                     <option>Physics / Chemistry / Biology (PCB)</option>
                     <option>Government / Literature / Christian Religious Studies (GLC)</option>
                     <option>Economics / Government / Mathematics (EGM)</option>
-                    <option>Accounting / Business Management / Economics (ABE)</option>
                 </select>
                 <button onclick="startExam()" style="width:100%; padding:18px; border-radius:50px; background:var(--accent); color:white; border:none; font-weight:800; cursor:pointer;">START EXAM</button>
             </div>
@@ -186,78 +224,88 @@
         <button class="icon-btn" style="width:48%; height:50px; background: var(--accent);">NEXT</button>
     </div>
 
+    <div id="calcBox">
+        <input type="text" id="calcDisplay" class="calc-screen" readonly placeholder="0">
+        <div class="calc-grid">
+            <button onclick="calcIn('7')">7</button><button onclick="calcIn('8')">8</button><button onclick="calcIn('9')">9</button><button onclick="calcIn('/')">/</button>
+            <button onclick="calcIn('4')">4</button><button onclick="calcIn('5')">5</button><button onclick="calcIn('6')">6</button><button onclick="calcIn('*')">*</button>
+            <button onclick="calcIn('1')">1</button><button onclick="calcIn('2')">2</button><button onclick="calcIn('3')">3</button><button onclick="calcIn('-')">-</button>
+            <button onclick="calcClr()" style="color:var(--btn-red)">C</button><button onclick="calcIn('0')">0</button><button onclick="calcRes()" style="background:var(--accent)">=</button><button onclick="calcIn('+')">+</button>
+        </div>
+    </div>
+
     <script>
         let inExam = false;
         let timerId;
 
         function toggleNav() { document.getElementById('sideNav').classList.toggle('open'); }
-        
         function toggleCalc() { 
             const calc = document.getElementById('calcBox');
             calc.style.display = calc.style.display === 'block' ? 'none' : 'block';
         }
 
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+
         function handleBack() {
             if (inExam) {
                 if (confirm("Quit exam? Progress will be lost.")) location.reload();
-            } else if (document.getElementById('setupView').style.display === 'block') {
-                document.getElementById('setupView').style.display = 'none';
+            } else if (document.getElementById('setupView').style.display === 'block' || document.getElementById('settingsView').style.display === 'block') {
+                hideAllViews();
                 document.getElementById('homeView').style.display = 'block';
             } else {
                 window.location.href = 'ijmbpq.html';
             }
         }
 
+        function hideAllViews() {
+            const views = ['homeView', 'setupView', 'examWorkspace', 'settingsView'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+        }
+
+        function openSettings() {
+            hideAllViews();
+            document.getElementById('settingsView').style.display = 'block';
+        }
+
+        function saveSettings() {
+            const name = document.getElementById('setName').value;
+            alert('Settings saved for ' + name);
+            handleBack();
+        }
+
         function handleLogout() {
-            if(confirm("Are you sure you want to logout?")) {
-                window.location.href = 'Landing.html'; 
-            }
+            if(confirm("Are you sure you want to logout?")) window.location.href = 'Landing.html'; 
         }
 
         function openSetup() {
-            document.getElementById('homeView').style.display = 'none';
+            hideAllViews();
             document.getElementById('setupView').style.display = 'block';
         }
 
         function startExam() {
             const sub = document.getElementById('subject').value;
             if(sub.includes("Choose")) return alert("Please select a combination");
-
             inExam = true;
-            document.getElementById('setupView').style.display = 'none';
+            hideAllViews();
             document.getElementById('examWorkspace').style.display = 'block';
             document.getElementById('examFooter').style.display = 'flex';
             document.getElementById('examTimer').style.display = 'block';
-            
             document.getElementById('userProfile').style.display = 'none';
             document.getElementById('calcTool').style.display = 'flex';
-            
             document.getElementById('backLabel').innerText = "EXIT EXAM";
             document.getElementById('backBtn').style.color = "var(--btn-red)";
-
-            startTimer(60 * 60); // 60 Minutes
+            startTimer(3600);
         }
 
         function startTimer(duration) {
-            let timer = duration, minutes, seconds;
-            const display = document.getElementById('examTimer');
-            
+            let timer = duration;
             timerId = setInterval(() => {
-                minutes = parseInt(timer / 60, 10);
-                seconds = parseInt(timer % 60, 10);
-
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                display.textContent = minutes + ":" + seconds;
-
-                if (timer <= 300) display.style.color = "var(--btn-red)"; // Turn red at 5 mins
-
-                if (--timer < 0) {
-                    clearInterval(timerId);
-                    alert("Time is up! Your exam has been submitted.");
-                    location.reload();
-                }
+                let mins = parseInt(timer / 60, 10);
+                let secs = parseInt(timer % 60, 10);
+                document.getElementById('examTimer').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                if (--timer < 0) { clearInterval(timerId); location.reload(); }
             }, 1000);
         }
 
