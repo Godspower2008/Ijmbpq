@@ -3,194 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Hall | IJMB PRO</title>
+    <title>Exam Mode | IJMB PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #020617; --card: #0f172a; --glass: rgba(30, 41, 59, 0.95);
+            --bg: #020617; --card: #0f172a; --glass: rgba(30, 41, 59, 0.8);
             --border: rgba(99, 102, 241, 0.2); --accent: #6366f1; --text: #f8fafc;
             --text-dim: #94a3b8; --success: #10b981; --warning: #f59e0b;
-            --btn-red: #cc1d1d; --review: #eab308;
+            --btn-red: #cc1d1d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
         /* --- HEADER --- */
-        .exam-header {
-            height: 70px; background: var(--card); border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
-            position: sticky; top: 0; z-index: 100;
+        header {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--glass);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
         }
-        .timer-box { font-size: 1.4rem; font-weight: 800; color: var(--warning); display: flex; align-items: center; gap: 8px; }
+        .logo { font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
         
-        .utility-btn {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
-            color: white; padding: 8px 15px; border-radius: 8px; cursor: pointer;
-            font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 8px;
+        .hamburger { display: none; flex-direction: column; justify-content: space-around; width: 28px; height: 22px; cursor: pointer; z-index: 1100; }
+        .hamburger div { height: 3px; background: var(--text); border-radius: 2px; transition: 0.4s; }
+
+        @media(max-width: 768px) {
+            .nav-links { 
+                display: none; flex-direction: column; position: absolute; top: 60px; right: 5%; 
+                background: var(--bg); padding: 20px; border-radius: 10px; 
+                box-shadow: 0 8px 20px rgba(0,0,0,0.4); gap: 15px; z-index: 1001; 
+            }
+            .nav-links.active { display: flex; animation: fadeIn 0.3s ease forwards; }
+            .hamburger { display: flex; }
+            .hamburger.open div:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .hamburger.open div:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+            .hamburger.open div:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
         }
 
-        /* --- FORMULA MODAL --- */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px); z-index: 2000; align-items: center; justify-content: center;
-        }
-        .formula-card {
-            background: var(--card); border: 1px solid var(--accent); width: 90%; max-width: 500px;
-            border-radius: 20px; padding: 30px; max-height: 80vh; overflow-y: auto;
-        }
-        .formula-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .formula-table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        .formula-table tr:last-child td { border: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- WORKSPACE --- */
-        .workspace { display: grid; grid-template-columns: 1fr 320px; height: calc(100vh - 70px); }
-        .question-area { padding: 40px 10%; overflow-y: auto; }
-        .q-meta { font-weight: 800; color: var(--accent); margin-bottom: 10px; display: block; }
-        .q-text { font-size: 1.25rem; line-height: 1.6; margin-bottom: 35px; }
+        main { max-width: 1000px; margin: 0 auto; padding: 20px 5%; }
 
-        .options-list { display: grid; gap: 14px; }
-        .option {
-            background: var(--card); border: 1px solid var(--border); padding: 20px;
-            border-radius: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 15px;
+        /* --- UNIFIED BACK BUTTON --- */
+        .global-back-btn {
+            margin-bottom: 25px; padding: 8px 14px; border: none; border-radius: 8px; 
+            background: var(--accent); color: white; font-weight: 700; font-size: 0.75rem; 
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; 
+            transition: 0.3s; text-transform: uppercase;
         }
-        .option.selected { border-color: var(--accent); background: var(--accent); color: white; }
+        .global-back-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(99,102,241,0.3); }
 
-        /* --- SIDEBAR & GRID --- */
-        .sidebar { background: var(--card); border-left: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; gap: 20px; }
-        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; overflow-y: auto; }
-        .q-dot { 
-            aspect-ratio: 1; background: #1e293b; border: 1px solid var(--border);
-            border-radius: 10px; display: flex; align-items: center; justify-content: center;
-            font-size: 0.85rem; font-weight: 700; cursor: pointer;
+        /* --- RESUME BANNER --- */
+        #resumeBanner {
+            display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success);
+            padding: 15px 20px; border-radius: 15px; margin-bottom: 25px;
+            justify-content: space-between; align-items: center;
         }
-        .q-dot.current { border: 2px solid var(--accent); color: var(--accent); }
-        .q-dot.answered { background: var(--accent); color: white; }
-        .q-dot.review { background: var(--review); color: var(--bg); }
 
-        /* --- BUTTONS --- */
-        .action-btns { margin-top: auto; display: grid; gap: 12px; }
-        .btn-nav { padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-prev { background: #1e293b; color: white; }
-        .btn-next { background: var(--accent); color: white; }
-        .btn-submit { background: var(--btn-red); color: white; margin-top: 10px; }
+        /* --- MODE SELECTION --- */
+        .mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .mode-card { 
+            background: var(--card); border: 1px solid var(--border); padding: 40px 25px; 
+            border-radius: 24px; text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .mode-card:hover { transform: translateY(-5px); border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
+        .mode-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; display: block; }
+
+        /* --- SETUP FORMS --- */
+        .setup-view { display: none; animation: slideIn 0.4s ease-out; max-width: 600px; margin: 0 auto; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        .setup-card { background: var(--card); border: 1px solid var(--border); padding: 35px; border-radius: 25px; }
+        
+        .input-group label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        select, input { width: 100%; background: #1e293b; border: 1px solid var(--border); color: white; padding: 15px; border-radius: 12px; font-weight: 600; outline: none; margin-bottom: 20px; }
+
+        .btn-red-action { 
+            width: 100%; padding: 18px; background: var(--btn-red); color: white; 
+            border: none; border-radius: 50px; font-weight: 800; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-red-action:hover { opacity: 0.9; transform: scale(1.02); }
+
     </style>
 </head>
 <body>
 
-    <div class="modal-overlay" id="formulaModal">
-        <div class="formula-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="font-size: 1.2rem;">Constants & Formulas</h2>
-                <i class="fa-solid fa-xmark" onclick="toggleModal()" style="cursor: pointer; font-size: 1.2rem;"></i>
-            </div>
-            <table class="formula-table">
-                <tr><td>Acceleration due to gravity ($g$)</td><td>$9.8 \text{ m/s}^2$</td></tr>
-                <tr><td>Gas Constant ($R$)</td><td>$8.314 \text{ J/mol}\cdot\text{K}$</td></tr>
-                <tr><td>Avogadro's Number ($N_A$)</td><td>$6.02 \times 10^{23}$</td></tr>
-                <tr><td>Planck's Constant ($h$)</td><td>$6.63 \times 10^{-34} \text{ Js}$</td></tr>
-                <tr><td>Speed of Light ($c$)</td><td>$3.0 \times 10^8 \text{ m/s}$</td></tr>
-                <tr><td>Kinetic Energy</td><td>$\frac{1}{2}mv^2$</td></tr>
-                <tr><td>Ideal Gas Law</td><td>$PV = nRT$</td></tr>
-            </table>
-        </div>
+<header>
+    <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+    <nav class="nav-links">
+        <a href="ijmbpq.html">Dashboard</a>
+        <a href="study.html">Study</a>
+        <a href="exam.html">Exam Mode</a>
+        <a href="pricing.html">Upgrade</a>
+    </nav>
+    <div class="hamburger" id="hamburger">
+        <div></div><div></div><div></div>
+    </div>
+</header>
+
+<main>
+    <button class="global-back-btn" onclick="handleBack()">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+
+    <div id="resumeBanner">
+        <span style="font-size: 0.9rem; font-weight: 600; color: var(--success);">
+            <i class="fa-solid fa-clock-rotate-left"></i> You have an unfinished PCM 2024 session.
+        </span>
+        <button class="global-back-btn" style="margin-bottom:0; background: var(--success);" onclick="startSession()">Resume</button>
     </div>
 
-    <div class="exam-header">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <span class="logo" style="font-weight: 800;">IJMB<span style="color:var(--accent)">PRO</span></span>
-            <button class="utility-btn" onclick="toggleModal()">
-                <i class="fa-solid fa-calculator"></i> Formula Sheet
-            </button>
-        </div>
+    <div id="selectionView">
+        <h1 style="margin-bottom: 10px; font-size: 2.2rem;">Exam Mode</h1>
+        <p style="color: var(--text-dim); margin-bottom: 35px;">Select your preferred examination environment.</p>
         
-        <div class="timer-box">
-            <i class="fa-regular fa-clock"></i>
-            <span id="timer">01:30:00</span>
+        <div class="mode-grid">
+            <div class="mode-card" onclick="openSetup('standard')">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h3>Standard Exam</h3>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 10px;">Full combination practice modeled after the official IJMB exam structure.</p>
+            </div>
+            <div class="mode-card" onclick="openSetup('cbt')">
+                <i class="fa-solid fa-laptop-code"></i>
+                <h3>CBT Simulator</h3>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 10px;">Quick simulation for specific subjects with custom timing.</p>
+            </div>
         </div>
     </div>
 
-    <main class="workspace">
-        <section class="question-area">
-            <span class="q-meta" id="qNumber">QUESTION 1</span>
-            <div class="q-text" id="qText">
-                Calculate the energy of a photon with a frequency of $5.0 \times 10^{14} \text{ Hz}$.
+    <div id="standardSetup" class="setup-view">
+        <h2 style="margin-bottom: 25px; text-align: center;">Standard Exam Setup</h2>
+        <div class="setup-card">
+            <div class="input-group">
+                <label>Select Combination</label>
+                <select id="combination">
+                    <option value="PCM">Physics, Chemistry, Mathematics (PCM)</option>
+                    <option value="PCB">Physics, Chemistry, Biology (PCB)</option>
+                    <option value="ART">Government, Literature, C.R.S (ART)</option>
+                    <option value="SMS">Economics, Government, Mathematics (SMS)</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label>Examination Year</label>
+                <select id="examYear"></select>
             </div>
 
-            <div class="options-list">
-                <div class="option" onclick="selectOption(this, 'A')">
-                    <div class="opt-letter" style="margin-right:10px; font-weight:800">A</div>
-                    <span class="opt-val">$3.31 \times 10^{-19} \text{ J}$</span>
-                </div>
-                <div class="option" onclick="selectOption(this, 'B')">
-                    <div class="opt-letter" style="margin-right:10px; font-weight:800">B</div>
-                    <span class="opt-val">$6.63 \times 10^{-19} \text{ J}$</span>
-                </div>
+            <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 20px; text-align: center;">
+                <i class="fa-solid fa-circle-info"></i> All papers (I & II) and official question counts are pre-configured for this mode.
+            </p>
+
+            <button class="btn-red-action" onclick="startSession()">Proceed to Exam</button>
+        </div>
+    </div>
+
+    <div id="cbtSetup" class="setup-view">
+        <h2 style="margin-bottom: 25px; text-align: center;">CBT Simulator</h2>
+        <div class="setup-card">
+            <div class="input-group">
+                <label>Subject</label>
+                <select><option>Mathematics</option><option>Physics</option><option>Chemistry</option></select>
             </div>
-        </section>
-
-        <aside class="sidebar">
-            <h3 style="font-size: 0.8rem; color: var(--text-dim);">NAVIGATOR</h3>
-            <div class="question-grid" id="qGrid"></div>
-
-            <div class="action-btns">
-                <button class="btn-nav" style="border: 2px solid var(--review); background:transparent; color: var(--review);" onclick="toggleReview()">
-                    <i class="fa-solid fa-thumbtack"></i> Mark for Review
-                </button>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="btn-nav btn-prev" onclick="prevQ()"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button class="btn-nav btn-next" onclick="nextQ()"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-                <button class="btn-nav btn-submit" onclick="confirmSubmit()">FINISH EXAM</button>
+            <div class="input-group">
+                <label>Number of Questions</label>
+                <input type="number" value="50">
             </div>
-        </aside>
-    </main>
+            <button class="btn-red-action" onclick="startSession()">Start Simulation</button>
+        </div>
+    </div>
 
-    <script>
-        let currentIdx = 1;
-        const totalQuestions = 50;
-        let answers = {};
-        let reviews = {};
+</main>
 
-        function toggleModal() {
-            const m = document.getElementById('formulaModal');
-            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+<script>
+    let activeStep = 'selection';
+
+    // Populate Year Select
+    const yearDropdown = document.getElementById('examYear');
+    for(let y=2026; y>=2009; y--) {
+        let opt = document.createElement('option');
+        opt.value = y; opt.innerText = y;
+        yearDropdown.appendChild(opt);
+    }
+
+    // Mock check for unfinished session
+    window.onload = () => {
+        const hasSession = true; // In real use, check localStorage or Firebase
+        if(hasSession) document.getElementById('resumeBanner').style.display = 'flex';
+    }
+
+    function openSetup(mode) {
+        document.getElementById('selectionView').style.display = 'none';
+        document.getElementById('resumeBanner').style.display = 'none';
+        if(mode === 'standard') {
+            document.getElementById('standardSetup').style.display = 'block';
+        } else {
+            document.getElementById('cbtSetup').style.display = 'block';
         }
+        activeStep = 'setup';
+    }
 
-        function renderGrid() {
-            const qGrid = document.getElementById('qGrid');
-            qGrid.innerHTML = '';
-            for (let i = 1; i <= totalQuestions; i++) {
-                const dot = document.createElement('div');
-                dot.className = `q-dot ${i === currentIdx ? 'current' : ''} ${answers[i] ? 'answered' : ''} ${reviews[i] ? 'review' : ''}`;
-                dot.innerText = i;
-                dot.onclick = () => jumpTo(i);
-                qGrid.appendChild(dot);
-            }
+    function handleBack() {
+        if(activeStep === 'setup') {
+            document.getElementById('standardSetup').style.display = 'none';
+            document.getElementById('cbtSetup').style.display = 'none';
+            document.getElementById('selectionView').style.display = 'block';
+            activeStep = 'selection';
+        } else {
+            window.location.href = 'ijmbpq.html';
         }
+    }
 
-        function selectOption(el, val) {
-            document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-            el.classList.add('selected');
-            answers[currentIdx] = val;
-            renderGrid();
-        }
+    function startSession() {
+        alert("Entering Examination Hall. Good luck!");
+        // Redirection to the actual exam workspace
+    }
 
-        function toggleReview() {
-            reviews[currentIdx] = !reviews[currentIdx];
-            renderGrid();
-        }
+    // Hamburger Logic
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        hamburger.classList.toggle('open');
+    });
+</script>
 
-        function jumpTo(n) { currentIdx = n; document.getElementById('qNumber').innerText = `QUESTION ${currentIdx}`; renderGrid(); }
-        function nextQ() { if(currentIdx < totalQuestions) jumpTo(currentIdx + 1); }
-        function prevQ() { if(currentIdx > 1) jumpTo(currentIdx - 1); }
-
-        function confirmSubmit() {
-            if(confirm("Submit exam?")) window.location.href = 'ijmbpq.html';
-        }
-
-        renderGrid();
-    </script>
 </body>
 </html>
