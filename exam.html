@@ -24,7 +24,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; transition: background 0.3s ease; }
 
-        /* --- PRINT STYLES --- */
+        /* --- PULSE ANIMATION --- */
+        @keyframes timerPulse {
+            0% { transform: scale(1); text-shadow: 0 0 0px var(--btn-red); }
+            50% { transform: scale(1.1); text-shadow: 0 0 10px var(--btn-red); }
+            100% { transform: scale(1); text-shadow: 0 0 0px var(--btn-red); }
+        }
+        .timer-critical { color: var(--btn-red) !important; animation: timerPulse 1s infinite; }
+
         @media print {
             header, .sub-nav, #sideNav, .bottom-nav, #calcBox, #calcTool, #reviewBtn, .no-print { display: none !important; }
             main { padding: 0 !important; margin: 0 !important; height: auto !important; overflow: visible !important; }
@@ -33,7 +40,6 @@
             #resultView, #reviewSection { display: block !important; }
         }
 
-        /* --- HEADER --- */
         header {
             height: 65px; background: var(--header-bg); border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; padding: 0 4%;
@@ -63,7 +69,6 @@
         .profile-circle { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--accent); overflow: hidden; background: #1e293b; transition: 0.3s; }
         .profile-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- SIDE NAV --- */
         #sideNav {
             position: fixed; top: 0; left: -300px; width: 280px; height: 100%;
             background: var(--card); z-index: 3000; transition: 0.4s; padding: 30px 20px;
@@ -72,23 +77,17 @@
         #sideNav.open { left: 0; }
         .nav-item { color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 15px; padding: 15px 0; font-weight: 600; border-bottom: 1px solid var(--border); }
 
-        /* --- LAYOUT --- */
         main { padding-top: 130px; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
         .container { max-width: 700px; margin: 0 auto; padding: 0 5%; }
         .card { background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 15px; }
 
         .setting-input { width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); outline: none; margin-bottom: 15px; }
         
-        /* --- AVATAR SELECTOR --- */
         .avatar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
-        .avatar-option { 
-            width: 100%; aspect-ratio: 1; border-radius: 15px; border: 2px solid transparent; 
-            cursor: pointer; overflow: hidden; background: var(--input-bg); transition: 0.2s;
-        }
+        .avatar-option { width: 100%; aspect-ratio: 1; border-radius: 15px; border: 2px solid transparent; cursor: pointer; overflow: hidden; background: var(--input-bg); transition: 0.2s; }
         .avatar-option img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-option.active { border-color: var(--accent); transform: scale(1.05); }
 
-        /* --- TOGGLES & BUTTONS --- */
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 24px; }
@@ -99,7 +98,6 @@
         .btn-primary { width:100%; padding:18px; border-radius:12px; background:var(--accent); color:white; border:none; font-weight:800; cursor:pointer; margin-top: 10px; }
         .btn-outline { width:100%; padding:15px; border-radius:12px; background:transparent; color:var(--text); border:1px solid var(--border); font-weight:700; cursor:pointer; margin-top: 10px; }
 
-        /* --- EXAM UI --- */
         .theory-field { width: 100%; min-height: 300px; background: rgba(0,0,0,0.05); border: 1px solid var(--border); border-radius: 20px; color: var(--text); padding: 20px; font-size: 1.1rem; resize: none; outline: none; margin-top: 20px; }
         #calcBox { position: fixed; top: 125px; right: 4%; width: 260px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 15px; z-index: 3000; display: none; }
         .calc-screen { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 12px; color: var(--text); text-align: right; font-size: 1.2rem; border-radius: 10px; margin-bottom: 10px; }
@@ -152,7 +150,6 @@
 
         <div class="container" id="settingsView" style="display:none;">
             <h1 style="margin-bottom:20px;">Settings</h1>
-            
             <div class="card">
                 <h4 style="font-size: 0.75rem; color: var(--accent); text-transform: uppercase; margin-bottom: 15px;">Profile Picture</h4>
                 <div class="avatar-grid">
@@ -164,9 +161,7 @@
                     <div class="avatar-option" onclick="setAvatar(this, 'Sasha')"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sasha"></div>
                 </div>
             </div>
-
             <div class="card">
-                <h4 style="font-size: 0.75rem; color: var(--accent); text-transform: uppercase; margin-bottom: 15px;">Preferences</h4>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span>Light Mode</span>
                     <label class="switch">
@@ -234,16 +229,13 @@
                 document.getElementById('themeToggle').checked = true;
             }
             const savedAvatar = localStorage.getItem('userAvatar');
-            if (savedAvatar) {
-                document.getElementById('mainAvatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${savedAvatar}`;
-            }
+            if (savedAvatar) document.getElementById('mainAvatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${savedAvatar}`;
         }
 
         function setAvatar(el, seed) {
             document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('active'));
             el.classList.add('active');
-            const newUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
-            document.getElementById('mainAvatar').src = newUrl;
+            document.getElementById('mainAvatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
             localStorage.setItem('userAvatar', seed);
         }
 
@@ -283,10 +275,18 @@
 
         function startTimer(duration) {
             let timer = duration;
+            let timerEl = document.getElementById('examTimer');
             timerId = setInterval(() => {
                 let mins = Math.floor(timer / 60);
                 let secs = timer % 60;
-                document.getElementById('examTimer').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                timerEl.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+                // Critical Alert (5 minutes left)
+                if (timer === 300) {
+                    timerEl.classList.add('timer-critical');
+                    if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
+                }
+
                 if (--timer < 0) submitExam(true);
             }, 1000);
         }
@@ -297,6 +297,7 @@
             clearInterval(timerId);
             inExam = false;
             hideAllViews();
+            document.getElementById('examTimer').classList.remove('timer-critical');
             document.getElementById('examTimer').style.display = 'none';
             document.getElementById('calcTool').style.display = 'none';
             document.getElementById('resSubject').innerText = selectedSubject;
