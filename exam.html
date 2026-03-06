@@ -8,90 +8,104 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #020617; --card: #0f172a; --glass: rgba(15, 23, 42, 0.95);
-            --border: rgba(99, 102, 241, 0.2); --accent: #6366f1; --text: #f8fafc;
-            --text-dim: #94a3b8; --success: #10b981; --warning: #f59e0b;
-            --btn-red: #cc1d1d; --review: #eab308;
+            /* Midnight Dark (Default) */
+            --bg: #020617; --card: #0f172a; --border: rgba(99, 102, 241, 0.2); 
+            --accent: #6366f1; --text: #f8fafc; --text-dim: #94a3b8; 
+            --success: #10b981; --warning: #f59e0b; --btn-red: #cc1d1d; --review: #eab308;
+        }
+
+        body.light-mode {
+            --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; 
+            --text: #0f172a; --text-dim: #64748b; --accent: #4f46e5;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
 
         /* --- HEADER --- */
         header {
-            height: 60px; background: var(--card); border-bottom: 1px solid var(--border);
+            height: 65px; background: var(--card); border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
             position: sticky; top: 0; z-index: 1000;
         }
-        .logo { font-weight: 800; font-size: 1rem; color: var(--text); text-decoration: none; }
+        .logo { font-weight: 800; font-size: 1.1rem; color: var(--text); text-decoration: none; }
         .logo span { color: var(--accent); }
 
+        /* --- THEME TOGGLE --- */
+        .theme-toggle {
+            background: var(--border); border: none; width: 45px; height: 25px; 
+            border-radius: 20px; position: relative; cursor: pointer; display: flex; align-items: center; padding: 0 5px;
+        }
+        .toggle-ball {
+            width: 18px; height: 18px; background: var(--accent); border-radius: 50%;
+            transition: 0.3s; position: absolute; left: 4px;
+        }
+        .light-mode .toggle-ball { left: 23px; }
+
         /* --- VIEWS --- */
-        .view-step { display: none; height: calc(100vh - 60px); overflow-y: auto; padding: 20px 5%; animation: fadeIn 0.3s ease; }
+        .view-step { display: none; height: calc(100vh - 65px); overflow-y: auto; padding: 20px 5%; animation: fadeIn 0.3s ease; }
         .view-step.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- SETUP CARDS (RESPONSIVE) --- */
-        .setup-card { background: var(--card); border: 1px solid var(--border); padding: 25px; border-radius: 20px; max-width: 500px; margin: 0 auto; }
-        .input-group label { display: block; font-size: 0.65rem; font-weight: 800; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; }
-        select, input { width: 100%; background: #1e293b; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 10px; font-weight: 600; margin-bottom: 15px; font-size: 0.9rem; }
-        .btn-red-action { width: 100%; padding: 16px; background: var(--btn-red); color: white; border: none; border-radius: 50px; font-weight: 800; font-size: 0.9rem; cursor: pointer; text-transform: uppercase; }
-
-        /* --- EXAM WORKSPACE LAYOUT --- */
-        #examWorkspace { display: none; grid-template-columns: 1fr 300px; height: calc(100vh - 60px); }
-        .question-area { padding: 30px 5%; overflow-y: auto; padding-bottom: 100px; }
-        .sidebar { background: var(--card); border-left: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+        /* --- WORKSPACE LAYOUT --- */
+        #examWorkspace { display: none; grid-template-columns: 1fr 320px; height: calc(100vh - 65px); }
+        .question-area { padding: 30px 8%; overflow-y: auto; padding-bottom: 120px; }
+        .sidebar { background: var(--card); border-left: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; gap: 20px; }
         
-        .q-meta { font-weight: 800; color: var(--accent); font-size: 0.8rem; margin-bottom: 8px; display: block; }
-        .q-text { font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px; font-weight: 500; }
+        .q-meta { font-weight: 800; color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .q-text { font-size: 1.2rem; line-height: 1.6; margin-bottom: 30px; font-weight: 600; }
         
         .option {
-            background: var(--card); border: 1px solid var(--border); padding: 15px;
-            border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+            background: var(--card); border: 1px solid var(--border); padding: 18px;
+            border-radius: 15px; cursor: pointer; display: flex; align-items: center; gap: 15px; margin-bottom: 12px; transition: 0.2s;
         }
-        .option.selected { border-color: var(--accent); background: var(--accent); color: white; }
-        .opt-letter { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem; flex-shrink: 0; }
+        .option.selected { border-color: var(--accent); background: var(--accent); color: white; box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3); }
+        .opt-letter { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
+        .option.selected .opt-letter { border-color: white; }
 
         /* --- NAVIGATOR GRID --- */
-        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-        .q-dot { aspect-ratio: 1; background: #1e293b; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
-        .q-dot.current { border: 2px solid var(--accent); color: var(--accent); }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .q-dot { aspect-ratio: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+        .q-dot.current { border: 2.5px solid var(--accent); color: var(--accent); }
         .q-dot.answered { background: var(--accent); color: white; border: none; }
-        .q-dot.review { background: var(--review); color: var(--bg); border: none; }
 
         /* --- MOBILE BOTTOM NAV --- */
         .mobile-nav {
             display: none; position: fixed; bottom: 0; left: 0; width: 100%; 
             background: var(--card); border-top: 1px solid var(--border);
-            padding: 12px 5%; grid-template-columns: 1fr 1fr 1fr; gap: 10px; z-index: 1500;
+            padding: 15px 5%; grid-template-columns: 1fr 1fr 1fr; gap: 10px; z-index: 1500;
         }
-        .m-btn { background: #1e293b; border: none; color: white; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .m-btn { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 14px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        /* --- MOBILE SIDEBAR OVERLAY --- */
-        @media (max-width: 850px) {
+        /* --- RESPONSIVE BREAKPOINTS --- */
+        @media (max-width: 900px) {
             #examWorkspace { grid-template-columns: 1fr; }
             .sidebar { 
-                position: fixed; top: 60px; right: -100%; width: 280px; height: calc(100vh - 140px);
-                z-index: 1400; transition: 0.3s; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+                position: fixed; top: 65px; right: -100%; width: 300px; height: calc(100vh - 65px);
+                z-index: 1400; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                background: var(--card);
             }
             .sidebar.active { right: 0; }
             .mobile-nav { display: grid; }
-            .question-area { padding-bottom: 80px; }
+            .question-area { padding: 25px 5% 100px 5%; }
+            .q-text { font-size: 1.1rem; }
         }
 
-        /* --- MODALS & RESULTS --- */
-        #resultView { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
-        .score-circle { width: 120px; height: 120px; border-radius: 50%; border: 6px solid var(--accent); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; }
+        /* --- RESULTS VIEW --- */
+        #resultView { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; }
+        .btn-red-action { width: 100%; max-width: 300px; padding: 18px; background: var(--btn-red); color: white; border: none; border-radius: 50px; font-weight: 800; cursor: pointer; margin-top: 15px; }
 
         /* --- UTILITY --- */
-        .timer-box { font-size: 1.1rem; font-weight: 800; color: var(--warning); display: flex; align-items: center; gap: 6px; }
-        .explanation-box { display: none; background: rgba(99, 102, 241, 0.1); border-left: 3px solid var(--accent); padding: 15px; margin-top: 15px; border-radius: 8px; font-size: 0.9rem; }
+        .timer-box { font-size: 1.2rem; font-weight: 800; color: var(--warning); display: flex; align-items: center; gap: 8px; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo" onclick="location.reload()">IJMB<span>PRO</span></a>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <a href="#" class="logo" onclick="location.reload()">IJMB<span>PRO</span></a>
+            <button class="theme-toggle" onclick="toggleTheme()"><div class="toggle-ball"></div></button>
+        </div>
         <div class="timer-box" id="timerDisplay" style="display: none;">
             <i class="fa-regular fa-clock"></i> <span id="clock">00:00:00</span>
         </div>
@@ -99,175 +113,144 @@
 
     <main>
         <div id="resultView">
-            <div class="score-circle">
-                <h1 id="finalScore" style="font-size: 2rem;">0</h1>
-                <p style="font-size:0.6rem; font-weight:800;">SCORE</p>
-            </div>
-            <h2 id="scoreMsg">Great Job!</h2>
-            <div style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:300px; margin-top:25px;">
-                <button class="btn-red-action" onclick="startReviewMode()">Review Answers</button>
-                <button class="btn-red-action" style="background:#1e293b;" onclick="location.reload()">Exit Exam Hall</button>
+            <h1 style="font-size: 3rem; margin-bottom: 5px;" id="finalScore">0</h1>
+            <p style="font-weight: 800; color: var(--accent); letter-spacing: 2px;">SCORE ACHIEVED</p>
+            <div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 30px;">
+                <button class="btn-red-action" onclick="startReview()">Review Questions</button>
+                <button class="btn-red-action" style="background:var(--border); color:var(--text);" onclick="location.reload()">Exit Hall</button>
             </div>
         </div>
 
         <div id="view-selection" class="view-step active">
-            <h1 style="margin-bottom: 10px;">Exam Hall</h1>
-            <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:20px;">Take a practice exam to test your knowledge.</p>
-            <div style="display:grid; gap:15px;">
-                <div class="setup-card" style="cursor:pointer; text-align:center;" onclick="showView('standard')">
-                    <i class="fa-solid fa-graduation-cap" style="font-size:2rem; color:var(--accent); margin-bottom:10px; display:block;"></i>
-                    <h3>Standard Exam</h3>
-                    <p style="font-size:0.8rem; color:var(--text-dim);">Full Combination (PCM/PCB)</p>
+            <h1 style="margin-bottom: 25px;">Exam Hall</h1>
+            <div style="display:grid; gap:20px; max-width: 500px; margin: 0 auto;">
+                <div class="option" style="padding: 30px;" onclick="showView('standard')">
+                    <i class="fa-solid fa-graduation-cap" style="font-size: 1.5rem; color: var(--accent);"></i>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Standard Exam</h4>
+                        <p style="font-size: 0.75rem; color: var(--text-dim);">Full Combination & Year Selection</p>
+                    </div>
                 </div>
-                <div class="setup-card" style="cursor:pointer; text-align:center;" onclick="showView('cbt')">
-                    <i class="fa-solid fa-laptop-code" style="font-size:2rem; color:var(--accent); margin-bottom:10px; display:block;"></i>
-                    <h3>CBT Simulator</h3>
-                    <p style="font-size:0.8rem; color:var(--text-dim);">Quick Subject Practice</p>
+                <div class="option" style="padding: 30px;" onclick="initExam()">
+                    <i class="fa-solid fa-laptop-code" style="font-size: 1.5rem; color: var(--accent);"></i>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Quick Simulator</h4>
+                        <p style="font-size: 0.75rem; color: var(--text-dim);">Random Subject Mock</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div id="view-standard" class="view-step">
-            <div class="setup-card">
-                <div class="input-group"><label>Combination</label><select id="stdCombo"><option>PCM</option><option>PCB</option><option>ART</option></select></div>
-                <div class="input-group"><label>Exam Year</label><select id="stdYear"></select></div>
-                <button class="btn-red-action" onclick="initExam('standard')">Enter Exam Hall</button>
             </div>
         </div>
 
         <div id="examWorkspace">
             <section class="question-area">
-                <span class="q-meta" id="qNum">QUESTION 1</span>
-                <div class="q-text" id="qText">Question content...</div>
+                <span class="q-meta" id="qNum">Question 1</span>
+                <div class="q-text" id="qText">Physics: A ball is thrown vertically upwards. At the highest point, its velocity is?</div>
                 <div id="options">
-                    <div class="option" id="optA" onclick="ans(this,'A')"><div class="opt-letter">A</div><span class="opt-val">Option A</span></div>
-                    <div class="option" id="optB" onclick="ans(this,'B')"><div class="opt-letter">B</div><span class="opt-val">Option B</span></div>
-                    <div class="option" id="optC" onclick="ans(this,'C')"><div class="opt-letter">C</div><span class="opt-val">Option C</span></div>
-                    <div class="option" id="optD" onclick="ans(this,'D')"><div class="opt-letter">D</div><span class="opt-val">Option D</span></div>
-                </div>
-                <div class="explanation-box" id="explainBox">
-                    <h4 style="color:var(--accent); margin-bottom:5px;">Explanation</h4>
-                    <p id="explainText" style="line-height:1.4;"></p>
+                    <div class="option" id="optA" onclick="ans(this,'A')"><div class="opt-letter">A</div><span class="opt-val">Zero</span></div>
+                    <div class="option" id="optB" onclick="ans(this,'B')"><div class="opt-letter">B</div><span class="opt-val">Maximum</span></div>
+                    <div class="option" id="optC" onclick="ans(this,'C')"><div class="opt-letter">C</div><span class="opt-val">9.8 m/s</span></div>
+                    <div class="option" id="optD" onclick="ans(this,'D')"><div class="opt-letter">D</div><span class="opt-val">Infinite</span></div>
                 </div>
             </section>
 
             <aside class="sidebar" id="sidebar">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h3 style="font-size:0.7rem; color:var(--text-dim);">QUESTION NAVIGATOR</h3>
-                    <i class="fa-solid fa-xmark" id="closeSidebar" style="display:none;" onclick="toggleSidebar()"></i>
-                </div>
+                <h3 style="font-size: 0.7rem; color: var(--text-dim); letter-spacing: 1px;">QUESTION NAVIGATOR</h3>
                 <div class="question-grid" id="qGrid"></div>
-                <div style="margin-top:auto; display:grid; gap:10px;">
-                    <button class="btn-red-action" id="finishBtn" onclick="finish()" style="padding:12px;">Finish Exam</button>
-                </div>
+                <button class="btn-red-action" onclick="finish()" style="margin-top: auto; padding: 15px;">Submit Exam</button>
             </aside>
         </div>
 
         <div class="mobile-nav" id="mobileNav">
-            <button class="m-btn" onclick="prev()"><i class="fa-solid fa-chevron-left"></i> Prev</button>
-            <button class="m-btn" style="background:var(--accent);" onclick="toggleSidebar()"><i class="fa-solid fa-list"></i> Navigator</button>
-            <button class="m-btn" onclick="next()">Next <i class="fa-solid fa-chevron-right"></i></button>
+            <button class="m-btn" onclick="prev()"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="m-btn" style="background:var(--accent); color:white; border:none;" onclick="toggleSidebar()">Navigator</button>
+            <button class="m-btn" onclick="next()"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
     </main>
 
     <script>
-        const mockQuestions = [
-            { id: 1, text: "A force of 10N acts on a 2kg mass. Find acceleration.", options: {A: "5 m/s²", B: "20 m/s²", C: "2 m/s²", D: "0.2 m/s²"}, correct: "A", explain: "F=ma, so a = F/m = 10/2 = 5 m/s²." },
-            { id: 2, text: "Which of the following is a scalar quantity?", options: {A: "Velocity", B: "Force", C: "Speed", D: "Weight"}, correct: "C", explain: "Speed has magnitude only, making it a scalar quantity." }
+        const questions = [
+            { text: "At the highest point of a vertical throw, velocity is?", options: {A:"Zero", B:"9.8", C:"Max", D:"1"}, correct: "A" },
+            { text: "Which of these is a vector quantity?", options: {A:"Mass", B:"Time", C:"Displacement", D:"Temp"}, correct: "C" }
         ];
 
-        let currentQ = 1; let totalQ = 2; let userAnswers = {}; let isReview = false; let timer;
+        let current = 0; let userAnswers = {}; let timer; let isReview = false;
 
-        // Init Year Select
-        const ys = document.getElementById('stdYear');
-        for(let y=2026; y>=2018; y--) { let o=document.createElement('option'); o.innerText=y; ys.appendChild(o); }
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        // Apply saved theme
+        if(localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
 
         function showView(id) {
             document.querySelectorAll('.view-step').forEach(v => v.classList.remove('active'));
             document.getElementById('view-' + id).classList.add('active');
         }
 
-        function initExam(mode) {
-            document.querySelectorAll('.view-step').forEach(v => v.style.display = 'none');
+        function initExam() {
+            document.getElementById('view-selection').style.display = 'none';
             document.getElementById('examWorkspace').style.display = 'grid';
             document.getElementById('timerDisplay').style.display = 'flex';
-            loadQuestion(1);
-            startTimer();
+            loadQ(0);
+            startClock();
         }
 
-        function loadQuestion(n) {
-            currentQ = n;
-            const q = mockQuestions[n-1] || mockQuestions[0];
-            document.getElementById('qNum').innerText = `QUESTION ${n}`;
+        function loadQ(index) {
+            current = index;
+            const q = questions[index];
+            document.getElementById('qNum').innerText = `Question ${index + 1}`;
             document.getElementById('qText').innerText = q.text;
-            ['A','B','C','D'].forEach(l => {
-                const opt = document.getElementById('opt'+l);
-                opt.querySelector('.opt-val').innerText = q.options[l];
-                opt.className = 'option';
-            });
+            document.getElementById('optA').querySelector('.opt-val').innerText = q.options.A;
+            document.getElementById('optB').querySelector('.opt-val').innerText = q.options.B;
+            document.getElementById('optC').querySelector('.opt-val').innerText = q.options.C;
+            document.getElementById('optD').querySelector('.opt-val').innerText = q.options.D;
 
-            if(isReview) {
-                const ua = userAnswers[n], ca = q.correct;
-                document.getElementById('opt'+ca).classList.add('selected', 'res-correct');
-                if(ua && ua !== ca) document.getElementById('opt'+ua).style.borderColor = 'var(--btn-red)';
-                document.getElementById('explainBox').style.display = 'block';
-                document.getElementById('explainText').innerText = q.explain;
-            } else if(userAnswers[n]) {
-                document.getElementById('opt'+userAnswers[n]).classList.add('selected');
-            }
+            document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            if(userAnswers[index]) document.getElementById('opt' + userAnswers[index]).classList.add('selected');
+            
             renderGrid();
-            if(window.innerWidth < 850) document.getElementById('sidebar').classList.remove('active');
+            if(window.innerWidth < 900) document.getElementById('sidebar').classList.remove('active');
         }
 
         function ans(el, val) {
             if(isReview) return;
-            userAnswers[currentQ] = val;
-            loadQuestion(currentQ);
+            userAnswers[current] = val;
+            loadQ(current);
         }
 
         function renderGrid() {
             const grid = document.getElementById('qGrid');
             grid.innerHTML = '';
-            for(let i=1; i<=totalQ; i++) {
-                const d = document.createElement('div');
-                let st = (i === currentQ) ? 'current' : '';
-                if(userAnswers[i]) st += ' answered';
-                d.className = `q-dot ${st}`;
-                d.innerText = i;
-                d.onclick = () => loadQuestion(i);
-                grid.appendChild(d);
-            }
+            questions.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `q-dot ${i === current ? 'current' : ''} ${userAnswers[i] ? 'answered' : ''}`;
+                dot.innerText = i + 1;
+                dot.onclick = () => loadQ(i);
+                grid.appendChild(dot);
+            });
         }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
 
-        function startTimer() {
+        function startClock() {
             let sec = 3600;
             timer = setInterval(() => {
                 sec--;
                 let m = Math.floor(sec/60), s = sec%60;
-                document.getElementById('clock').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                document.getElementById('clock').innerText = `${m}:${s.toString().padStart(2,'0')}`;
             }, 1000);
         }
 
-        function next() { if(currentQ < totalQ) loadQuestion(currentQ + 1); }
-        function prev() { if(currentQ > 1) loadQuestion(currentQ - 1); }
+        function next() { if(current < questions.length - 1) loadQ(current + 1); }
+        function prev() { if(current > 0) loadQ(current - 1); }
 
         function finish() {
             clearInterval(timer);
             let score = 0;
-            mockQuestions.forEach((q, i) => { if(userAnswers[i+1] === q.correct) score++; });
-            document.getElementById('finalScore').innerText = `${score}/${totalQ}`;
+            questions.forEach((q, i) => { if(userAnswers[i] === q.correct) score++; });
+            document.getElementById('finalScore').innerText = score;
             document.getElementById('resultView').style.display = 'flex';
-        }
-
-        function startReviewMode() {
-            isReview = true;
-            document.getElementById('resultView').style.display = 'none';
-            document.getElementById('finishBtn').style.display = 'none';
-            loadQuestion(1);
         }
     </script>
 </body>
