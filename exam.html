@@ -25,7 +25,7 @@
         .nav-links { display: flex; gap: 20px; }
         .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
         
-        /* --- HAMBURGER ANIMATION --- */
+        /* --- HAMBURGER --- */
         .hamburger { display: none; flex-direction: column; justify-content: space-around; width: 28px; height: 22px; cursor: pointer; z-index: 1100; }
         .hamburger div { height: 3px; background: var(--text); border-radius: 2px; transition: 0.4s; }
 
@@ -46,14 +46,22 @@
 
         main { max-width: 1200px; margin: 0 auto; padding: 20px 5%; }
 
-        /* --- COMPACT BOX BACK BUTTON --- */
-        .global-back-btn {
-            margin-bottom: 20px; padding: 8px 14px; border: none; border-radius: 8px; 
-            background: var(--accent); color: white; font-weight: 700; font-size: 0.75rem; 
-            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; 
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
+        /* --- THE UNIFIED BOX BUTTON STYLE --- */
+        .btn-box, .global-back-btn, .btn-proceed, .btn-nav, .dot {
+            border: none; border-radius: 8px; background: var(--accent); color: white; 
+            font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; 
+            justify-content: center; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
         }
-        .global-back-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(99,102,241,0.3); }
+        
+        /* Specific Button Size Overrides */
+        .global-back-btn { margin-bottom: 20px; padding: 8px 14px; font-size: 0.75rem; gap: 6px; }
+        .btn-proceed { width: 100%; padding: 18px; font-size: 1rem; border-radius: 12px; }
+        .btn-nav { flex: 1; padding: 12px; font-size: 0.85rem; }
+        
+        /* Hover Elevation Effect for all */
+        .global-back-btn:hover, .btn-proceed:hover, .btn-nav:hover, .dot:hover { 
+            transform: translateY(-2px); box-shadow: 0 8px 15px rgba(99,102,241,0.3); 
+        }
 
         /* --- SETUP VIEW --- */
         .setup-container { max-width: 850px; margin: 20px auto; text-align: center; }
@@ -61,28 +69,28 @@
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .input-box label { display: block; font-size: 0.65rem; font-weight: 800; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; }
         select, input { width: 100%; background: #1e293b; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 10px; font-weight: 600; outline: none; }
-        
-        .btn-proceed { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
 
         /* --- EXAM WORKSPACE --- */
         .exam-workspace { display: none; grid-template-columns: 1fr 300px; gap: 25px; margin-top: 10px; }
         .question-panel { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 35px; min-height: 500px; }
         .sidebar { background: var(--glass); border: 1px solid var(--border); padding: 20px; border-radius: 20px; position: sticky; top: 100px; height: fit-content; }
-        .timer-box { font-size: 2.2rem; font-weight: 800; text-align: center; margin-bottom: 20px; font-family: monospace; color: var(--text); }
+        .timer-box { font-size: 2.2rem; font-weight: 800; text-align: center; margin-bottom: 20px; font-family: monospace; }
         
-        /* --- SMALLER COMPACT DOTS --- */
+        /* --- COMPACT UNIFIED DOTS --- */
         .q-map { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
         .dot { 
-            height: 34px; width: 100%; background: #1e293b; border: 1px solid var(--border); 
-            border-radius: 8px; display: flex; align-items: center; justify-content: center; 
-            font-weight: 700; cursor: pointer; font-size: 0.75rem; transition: 0.2s; 
+            height: 34px; width: 100%; background: #1e293b; /* Start dark, turn accent when active */
+            border: 1px solid var(--border); border-radius: 8px; font-size: 0.75rem; 
         }
-        .dot.active { background: var(--accent); border-color: var(--accent); transform: scale(1.05); }
-        .dot.flagged { border: 2px solid var(--warning); color: var(--warning); }
+        .dot.active { background: var(--accent); box-shadow: 0 0 12px rgba(99,102,241,0.4); }
+        .dot.flagged { border: 2px solid var(--warning); color: var(--warning); background: transparent; }
 
         .nav-btns { display: flex; gap: 12px; margin-top: 30px; padding-top: 25px; border-top: 1px solid var(--border); }
-        .btn-nav { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: white; cursor: pointer; font-weight: 700; font-size: 0.85rem; }
-        .btn-next { flex: 2; background: var(--accent); border: none; }
+        
+        /* Color Overrides for Logic */
+        .btn-nav-prev { background: #1e293b; border: 1px solid var(--border); }
+        .btn-nav-flag { background: transparent; border: 1px solid var(--warning); color: var(--warning); }
+        .btn-nav-next { background: var(--accent); }
 
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
@@ -92,7 +100,6 @@
         @media(max-width: 1024px) { 
             .exam-workspace { grid-template-columns: 1fr; } 
             .sidebar { position: static; margin-top: 20px; } 
-            .q-map { grid-template-columns: repeat(auto-fill, minmax(34px, 1fr)); }
         }
     </style>
 </head>
@@ -129,7 +136,7 @@
                 <div class="input-box"><label>Questions</label><input type="number" id="qAmount" value="15"></div>
                 <div class="input-box"><label>Timer (Mins)</label><input type="number" id="examTime" value="45"></div>
             </div>
-            <button class="btn-proceed" onclick="proceedToExam()">Start Session <i class="fa-solid fa-chevron-right"></i></button>
+            <button class="btn-proceed" onclick="proceedToExam()">Start Exam <i class="fa-solid fa-chevron-right"></i></button>
         </div>
     </div>
 
@@ -141,9 +148,9 @@
             </div>
             <div id="questions-container" style="font-size:1.2rem; line-height:1.7; min-height:300px;"></div>
             <div class="nav-btns">
-                <button class="btn-nav" onclick="changeQ(-1)">← Prev</button>
-                <button class="btn-nav" style="border-color:var(--warning); color:var(--warning);" onclick="toggleFlag()">Flag</button>
-                <button class="btn-nav btn-next" onclick="changeQ(1)">Next →</button>
+                <button class="btn-nav btn-nav-prev" onclick="changeQ(-1)">← Previous</button>
+                <button class="btn-nav btn-nav-flag" onclick="toggleFlag()">Flag</button>
+                <button class="btn-nav btn-nav-next" onclick="changeQ(1)">Next →</button>
             </div>
         </div>
         <aside class="sidebar">
