@@ -21,7 +21,11 @@
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif;}
 body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-header{display:flex;justify-content:space-between;align-items:center;padding:15px 5%;background:var(--glass);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1000;}
+
+header{
+    display:flex;justify-content:space-between;align-items:center;padding:15px 5%;background:var(--glass);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1000;
+}
 .logo{font-weight:800;font-size:1.2rem;color:var(--text);text-decoration:none;}
 .logo span{color:var(--accent);}
 .nav-links{display:flex;gap:20px;}
@@ -29,7 +33,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
 .nav-links a:hover{color:var(--accent);}
 .hamburger{display:none;flex-direction:column;justify-content:space-around;width:28px;height:22px;cursor:pointer;z-index:1100;}
 .hamburger div{height:3px;background:var(--text);border-radius:2px;transition:0.4s;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+
 @media(max-width:768px){
     .nav-links{display:none;flex-direction:column;position:absolute;top:60px;right:5%;background:var(--bg);padding:20px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.4);gap:15px;z-index:1001;}
     .nav-links.active{display:flex;animation:fadeIn 0.3s ease forwards;}
@@ -39,9 +43,11 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
     .hamburger.open div:nth-child(2){opacity:0;transform:translateX(-20px);}
     .hamburger.open div:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
 }
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
 
 main{max-width:1000px;margin:0 auto;padding:20px 5%;padding-top:90px;}
 .global-back-btn{margin-bottom:20px;padding:12px 18px;border:none;border-radius:12px;background:var(--accent);color:white;font-weight:700;cursor:pointer;display:inline-block;}
+
 .setup-container{max-width:850px;margin:0 auto;text-align:center;}
 .setup-card{background:var(--card);border:1px solid var(--border);padding:40px;border-radius:30px;text-align:left;}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:25px;}
@@ -49,6 +55,17 @@ main{max-width:1000px;margin:0 auto;padding:20px 5%;padding-top:90px;}
 select,input{width:100%;background:#1e293b;border:1px solid var(--border);color:white;padding:14px;border-radius:12px;font-weight:600;outline:none;}
 .btn-proceed{width:100%;padding:20px;background:var(--accent);color:white;border:none;border-radius:15px;font-weight:800;font-size:1.1rem;cursor:pointer;transition:0.3s;text-transform:uppercase;}
 .btn-proceed:hover{transform:translateY(-3px);box-shadow:0 15px 30px rgba(99,102,241,0.3);}
+
+.loading-overlay{
+    position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);
+    display:flex;align-items:center;justify-content:center;z-index:2000;display:none;
+}
+.loader{
+    border:6px solid #f3f3f3;border-top:6px solid var(--accent);border-radius:50%;
+    width:50px;height:50px;animation:spin 1s linear infinite;
+}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
 .exam-workspace{display:none;display:grid;grid-template-columns:1fr 340px;gap:30px;max-width:1400px;margin:0 auto;}
 .question-panel{background:var(--card);border:1px solid var(--border);border-radius:28px;padding:45px;min-height:550px;}
 .sidebar{background:var(--glass);border:1px solid var(--border);padding:25px;border-radius:24px;position:sticky;top:20px;}
@@ -60,17 +77,9 @@ select,input{width:100%;background:#1e293b;border:1px solid var(--border);color:
 .nav-btns{display:flex;gap:15px;margin-top:40px;padding-top:30px;border-top:1px solid var(--border);}
 .btn-nav{flex:1;padding:15px;border-radius:12px;border:1px solid var(--border);background:transparent;color:white;cursor:pointer;font-weight:700;}
 .btn-next{flex:2;background:var(--accent);border:none;}
-@media(max-width:1024px){
-    .exam-workspace{display:grid;grid-template-columns:1fr;gap:20px;}
-    .sidebar{position:relative;top:auto;}
-}
-@media(max-width:600px){
-    .exam-workspace{display:flex;flex-direction:column;}
-    .question-panel{padding:25px;}
-    .sidebar{padding:15px;margin-top:20px;}
-    .timer-box{font-size:2rem;}
-    .q-map{grid-template-columns:repeat(auto-fit,minmax(40px,1fr));gap:8px;}
-}
+
+@media(max-width:1024px){.exam-workspace{display:grid;grid-template-columns:1fr;gap:20px;}.sidebar{position:relative;top:auto;}}
+@media(max-width:600px){.exam-workspace{display:flex;flex-direction:column;}.question-panel{padding:25px;}.sidebar{padding:15px;margin-top:20px;}.timer-box{font-size:2rem;}.q-map{grid-template-columns:repeat(auto-fit,minmax(40px,1fr));gap:8px;}}
 </style>
 </head>
 <body>
@@ -94,7 +103,6 @@ select,input{width:100%;background:#1e293b;border:1px solid var(--border);color:
 
     <div id="setupView" class="setup-container">
         <h1>Exam Parameters</h1>
-        <p style="color:var(--text-dim); margin-bottom:30px;">Set up your workspace before proceeding.</p>
         <div class="setup-card">
             <div class="grid">
                 <div class="input-box">
@@ -134,7 +142,7 @@ select,input{width:100%;background:#1e293b;border:1px solid var(--border);color:
                     <input type="number" id="examTime" value="45" min="1">
                 </div>
             </div>
-            <button class="btn-proceed" onclick="proceedToExam()" style="margin-top:25px;">Proceed <i class="fa-solid fa-chevron-right"></i></button>
+            <button class="btn-proceed" onclick="proceedToExam()">Proceed <i class="fa-solid fa-chevron-right"></i></button>
         </div>
     </div>
 
@@ -161,10 +169,13 @@ select,input{width:100%;background:#1e293b;border:1px solid var(--border);color:
     </div>
 </main>
 
+<div class="loading-overlay" id="loading">
+    <div class="loader"></div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 <script>
 firebase.initializeApp({
     apiKey: "AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
@@ -172,7 +183,6 @@ firebase.initializeApp({
 });
 const db=firebase.database();
 
-// Populate years
 const ys=document.getElementById('yearSelect');
 for(let y=2026;y>=2009;y--){let o=document.createElement('option');o.value=y;o.innerText=y;ys.appendChild(o);}
 
@@ -201,13 +211,16 @@ async function proceedToExam(){
     const sec=document.getElementById('section').value;
     const limit=parseInt(document.getElementById('qAmount').value);
 
+    document.getElementById('loading').style.display='flex';
+
     const snap=await db.ref(`questions/${sub}/${yr}/${pap}/${sec}`).once('value');
-    if(!snap.exists()) return alert("No data found for this selection.");
+    if(!snap.exists()){document.getElementById('loading').style.display='none'; return alert("No data found for this selection.");}
 
     questions=[];
     snap.forEach(c=>questions.push(c.val()));
     questions=questions.slice(0,limit);
 
+    document.getElementById('loading').style.display='none';
     document.getElementById('setupView').style.display='none';
     document.getElementById('examView').style.display='grid';
     document.getElementById('displaySub').innerText=sub+" "+yr;
@@ -234,6 +247,5 @@ function toggleFlag(){const dot=document.getElementById(`dot-${currentIndex}`);i
 function startTimer(mins){let sec=mins*60;timerInterval=setInterval(()=>{let h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;document.getElementById('timer').innerText=`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;if(--sec<0){clearInterval(timerInterval);submitExam();}},1000);}
 function submitExam(){clearInterval(timerInterval);alert("Exam Submitted Successfully!");location.href='ijmbpq.html';}
 </script>
-
 </body>
 </html>
