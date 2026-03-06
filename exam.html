@@ -55,9 +55,10 @@
             border: 1px solid var(--border); border-radius: 20px; padding: 15px; z-index: 3000;
             display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
-        .calc-screen { width: 100%; background: var(--bg); border: none; padding: 12px; color: white; text-align: right; font-size: 1.2rem; border-radius: 10px; margin-bottom: 10px; }
+        .calc-screen { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 12px; color: white; text-align: right; font-size: 1.2rem; border-radius: 10px; margin-bottom: 10px; outline: none; }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .calc-grid button { padding: 12px; border-radius: 8px; border: none; background: #1e293b; color: white; font-weight: 700; cursor: pointer; }
+        .calc-grid button { padding: 12px; border-radius: 8px; border: none; background: #1e293b; color: white; font-weight: 700; cursor: pointer; transition: 0.1s; }
+        .calc-grid button:active { background: var(--accent); }
 
         /* --- SIDE NAV --- */
         #sideNav {
@@ -75,24 +76,25 @@
         .nav-item i { width: 20px; text-align: center; }
 
         /* --- CONTENT AREA --- */
-        main { padding-top: 130px; height: 100vh; overflow-y: auto; padding-bottom: 80px; }
+        main { padding-top: 130px; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
         .container { max-width: 700px; margin: 0 auto; padding: 0 5%; }
 
         .theory-field { 
-            width: 100%; min-height: 380px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            width: 100%; min-height: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
             border-radius: 20px; color: var(--text); padding: 20px; font-size: 1.1rem; line-height: 1.6;
             resize: none; outline: none; margin-top: 20px;
         }
+        .theory-field:focus { border-color: var(--accent); }
 
         .card { background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid var(--border); cursor: pointer; margin-bottom: 15px; transition: 0.3s; }
-        .card:hover { border-color: var(--accent); }
+        .card:hover { border-color: var(--accent); transform: translateY(-2px); }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card); padding: 15px 5%; border-top: 1px solid var(--border); display: none; justify-content: space-between; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card); padding: 15px 5%; border-top: 1px solid var(--border); display: none; justify-content: space-between; z-index: 1000; }
         
         select {
             width: 100%; padding: 15px; background: var(--bg); color: white; 
             border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px;
-            appearance: none; outline: none;
+            appearance: none; outline: none; font-size: 0.9rem;
         }
     </style>
 </head>
@@ -105,7 +107,7 @@
         </div>
 
         <div class="header-right">
-            <div id="examTimer" style="display:none; font-weight: 800; color: var(--warning); margin-right: 10px;">60:00</div>
+            <div id="examTimer" style="display:none; font-weight: 800; color: var(--warning); margin-right: 10px; font-variant-numeric: tabular-nums;">60:00</div>
             <div id="userProfile" class="profile-circle">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
             </div>
@@ -181,11 +183,12 @@
 
     <div class="bottom-nav" id="examFooter">
         <button class="icon-btn" style="width:48%; height:50px;">PREVIOUS</button>
-        <button class="icon-btn" style="width:48%; height:50px;">NEXT</button>
+        <button class="icon-btn" style="width:48%; height:50px; background: var(--accent);">NEXT</button>
     </div>
 
     <script>
         let inExam = false;
+        let timerId;
 
         function toggleNav() { document.getElementById('sideNav').classList.toggle('open'); }
         
@@ -207,8 +210,7 @@
 
         function handleLogout() {
             if(confirm("Are you sure you want to logout?")) {
-                // Redirect to a login page if you have one, e.g., login.html
-                window.location.href = 'login.html'; 
+                window.location.href = 'Landing.html'; 
             }
         }
 
@@ -232,6 +234,31 @@
             
             document.getElementById('backLabel').innerText = "EXIT EXAM";
             document.getElementById('backBtn').style.color = "var(--btn-red)";
+
+            startTimer(60 * 60); // 60 Minutes
+        }
+
+        function startTimer(duration) {
+            let timer = duration, minutes, seconds;
+            const display = document.getElementById('examTimer');
+            
+            timerId = setInterval(() => {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (timer <= 300) display.style.color = "var(--btn-red)"; // Turn red at 5 mins
+
+                if (--timer < 0) {
+                    clearInterval(timerId);
+                    alert("Time is up! Your exam has been submitted.");
+                    location.reload();
+                }
+            }, 1000);
         }
 
         function calcIn(v) { document.getElementById('calcDisplay').value += v; }
