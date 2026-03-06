@@ -3,267 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exam Mode | IJMB PRO</title>
-
+<title>Exam | IJMB PRO</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <style>
 :root{
-  --bg:#020617;
-  --card:#0f172a;
-  --glass:rgba(30,41,59,0.8);
-  --border:rgba(99,102,241,0.2);
-  --accent:#6366f1;
-  --text:#f8fafc;
-  --text-dim:#94a3b8;
-  --success:#10b981;
+    --bg:#020617;
+    --card:#0f172a;
+    --glass:rgba(30,41,59,0.8);
+    --border:rgba(99,102,241,0.2);
+    --accent:#6366f1;
+    --text:#f8fafc;
+    --text-dim:#94a3b8;
+    --success:#10b981;
+    --warning:#f59e0b;
 }
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Plus Jakarta Sans',sans-serif;
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-}
-
-/* HEADER */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 5%;
-  background:var(--glass);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-
-.logo{
-  font-weight:800;
-  font-size:1.2rem;
-  color:var(--text);
-  text-decoration:none;
-}
-.logo span{ color:var(--accent); }
-
-.nav-links{
-  display:flex;
-  gap:20px;
-}
-.nav-links a{
-  color:var(--text-dim);
-  text-decoration:none;
-  font-weight:600;
-}
-.nav-links a:hover{ color:var(--accent); }
-
-.hamburger{
-  display:none;
-  flex-direction:column;
-  justify-content:space-around;
-  width:28px;
-  height:22px;
-  cursor:pointer;
-}
-.hamburger div{
-  height:3px;
-  background:white;
-  border-radius:2px;
-  transition:0.4s;
-}
-
-/* MOBILE NAV */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif;}
+body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px 5%;background:var(--glass);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1000;}
+.logo{font-weight:800;font-size:1.2rem;color:var(--text);text-decoration:none;}
+.logo span{color:var(--accent);}
+.nav-links{display:flex;gap:20px;}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-weight:600;}
+.nav-links a:hover{color:var(--accent);}
+.hamburger{display:none;flex-direction:column;justify-content:space-around;width:28px;height:22px;cursor:pointer;z-index:1100;}
+.hamburger div{height:3px;background:var(--text);border-radius:2px;transition:0.4s;}
+main{max-width:1200px;margin:40px auto;padding:0 5%;}
+.back-btn{position:fixed;top:15px;left:15px;padding:12px 18px;border:none;border-radius:12px;background:var(--accent);color:white;font-weight:700;cursor:pointer;z-index:2000;}
+.setup-container{max-width:850px;margin:80px auto 60px;text-align:center;}
+.setup-card{background:var(--card);border:1px solid var(--border);padding:40px;border-radius:30px;text-align:left;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:25px;}
+.input-box label{display:block;font-size:0.7rem;font-weight:800;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
+select,input{width:100%;background:#1e293b;border:1px solid var(--border);color:white;padding:14px;border-radius:12px;font-weight:600;outline:none;}
+.btn-proceed{width:100%;padding:20px;background:var(--accent);color:white;border:none;border-radius:15px;font-weight:800;font-size:1.1rem;cursor:pointer;transition:0.3s;text-transform:uppercase;}
+.btn-proceed:hover{transform:translateY(-3px);box-shadow:0 15px 30px rgba(99,102,241,0.3);}
+.exam-workspace{display:grid;grid-template-columns:1fr 340px;gap:30px;max-width:1400px;margin:30px auto;padding:0 5%;animation:fadeIn 0.5s ease;}
+.question-panel{background:var(--card);border:1px solid var(--border);border-radius:28px;padding:45px;min-height:550px;}
+.sidebar{background:var(--glass);border:1px solid var(--border);padding:25px;border-radius:24px;position:sticky;top:100px;}
+.timer-box{font-size:2.8rem;font-weight:800;text-align:center;margin-bottom:25px;font-family:monospace;color:var(--text);}
+.q-map{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.dot{height:45px;background:#1e293b;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;transition:0.2s;}
+.dot.active{background:var(--accent);border-color:var(--accent);box-shadow:0 0 15px rgba(99,102,241,0.4);}
+.dot.flagged{border:2px solid var(--warning);color:var(--warning);}
+.nav-btns{display:flex;gap:15px;margin-top:40px;padding-top:30px;border-top:1px solid var(--border);}
+.btn-nav{flex:1;padding:15px;border-radius:12px;border:1px solid var(--border);background:transparent;color:white;cursor:pointer;font-weight:700;}
+.btn-next{flex:2;background:var(--accent);border:none;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:1024px){.exam-workspace{grid-template-columns:1fr;}}
 @media(max-width:768px){
-  .nav-links{
-    display:none;
-    flex-direction:column;
-    position:absolute;
-    top:60px;
-    right:5%;
-    background:var(--bg);
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.4);
-    gap:15px;
-  }
-  .nav-links.active{ display:flex; animation:fadeIn 0.3s ease forwards; }
-  .hamburger{ display:flex; }
-  .hamburger.open div:nth-child(1){ transform:rotate(45deg) translate(5px,5px); }
-  .hamburger.open div:nth-child(2){ opacity:0; }
-  .hamburger.open div:nth-child(3){ transform:rotate(-45deg) translate(5px,-5px); }
+    .nav-links{display:none;flex-direction:column;position:absolute;top:60px;right:5%;background:var(--glass);padding:15px;border-radius:12px;gap:15px;z-index:1001;}
+    .nav-links.active{display:flex;animation:fadeIn 0.3s ease forwards;}
+    .nav-links a{font-size:1rem;padding:8px 12px;}
+    .hamburger{display:flex;}
+    .hamburger.open div:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+    .hamburger.open div:nth-child(2){opacity:0;transform:translateX(-20px);}
+    .hamburger.open div:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
 }
-@keyframes fadeIn{ from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
-
-/* SETUP */
-.setup{ max-width:800px; margin:60px auto; padding:0 5%; }
-.card{ background:var(--card); padding:30px; border-radius:20px; }
-.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-bottom:20px; }
-select,input{ width:100%; padding:12px; background:#1e293b; border:1px solid var(--border); color:white; border-radius:10px; }
-button{ padding:15px; background:var(--accent); border:none; border-radius:10px; color:white; font-weight:700; cursor:pointer; width:100%; }
-
-/* EXAM */
-.exam{ display:none; max-width:1200px; margin:30px auto; padding:0 5%; gap:20px; }
-.exam.active{ display:grid; grid-template-columns:1fr 320px; }
-@media(max-width:900px){ .exam.active{ grid-template-columns:1fr; } }
-
-.question-panel{ background:var(--card); padding:30px; border-radius:20px; position:relative; }
-.backbtn{ position:absolute; top:15px; left:15px; background:#334155; border:none; border-radius:8px; padding:10px 15px; cursor:pointer; }
-#qtitle{ margin-top:50px; color:var(--accent); font-size:1.1rem; }
-#questionBox{ margin-top:15px; font-size:1.2rem; line-height:1.6; min-height:200px; }
-.navbtns{ display:flex; gap:10px; margin-top:20px; }
-.navbtns button{ flex:1; padding:10px; border-radius:8px; cursor:pointer; border:none; background:var(--accent); font-weight:700; color:white; }
-
-.sidebar{ background:var(--glass); padding:20px; border-radius:20px; margin-top:20px; }
-.timer{ font-size:2rem; font-weight:800; text-align:center; margin-bottom:15px; }
-.qmap{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:15px; }
-.dot{ background:#1e293b; padding:10px; border-radius:8px; text-align:center; cursor:pointer; }
-.dot.active{ background:var(--accent); }
-.dot.flagged{ border:2px solid #f59e0b; }
-
 </style>
 </head>
 <body>
 
+<button class="back-btn" onclick="goBack()">← Back</button>
+
 <header>
-  <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
-
-  <nav class="nav-links" id="navLinks">
-    <a href="ijmbpq.html">Dashboard</a>
-    <a href="study.html">Study</a>
-    <a href="exam.html">Exam</a>
-  </nav>
-
-  <div class="hamburger" id="hamburger">
-    <div></div><div></div><div></div>
-  </div>
+    <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+    <nav class="nav-links">
+        <a href="ijmbpq.html">Dashboard</a>
+        <a href="study.html">Study</a>
+        <a href="exam.html">Exam Mode</a>
+        <a href="pricing.html">Upgrade</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+    <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
 </header>
 
-<!-- SETUP -->
-<div class="setup" id="setup">
-  <div class="card">
-    <div class="grid">
-      <select id="subject">
-        <option value="Physics">Physics</option>
-        <option value="Chemistry">Chemistry</option>
-        <option value="Economics">Economics</option>
-      </select>
-      <select id="year"></select>
-      <select id="paper">
-        <option value="I">Paper I</option>
-        <option value="II">Paper II</option>
-      </select>
-      <select id="section">
-        <option value="A">Section A</option>
-        <option value="B">Section B</option>
-      </select>
+<main>
+<div id="setupView" class="setup-container">
+    <h1>Exam Parameters</h1>
+    <div class="setup-card">
+        <div class="grid">
+            <div class="input-box"><label>Subject</label>
+                <select id="subject"><option>Physics</option><option>Chemistry</option><option>Economics</option></select>
+            </div>
+            <div class="input-box"><label>Year</label><select id="yearSelect"></select></div>
+            <div class="input-box"><label>Paper</label><select id="paper"><option>I</option><option>II</option></select></div>
+            <div class="input-box"><label>Section</label><select id="section"><option>A</option><option>B</option></select></div>
+        </div>
+        <div class="grid" style="border-top:1px solid var(--border);padding-top:25px;">
+            <div class="input-box"><label>No. of Questions</label><input type="number" id="qAmount" value="15" min="1"></div>
+            <div class="input-box"><label>Timer (mins)</label><input type="number" id="examTime" value="45" min="1"></div>
+        </div>
+        <button class="btn-proceed" onclick="proceedToExam()">Proceed <i class="fa-solid fa-chevron-right"></i></button>
     </div>
-    <div class="grid">
-      <input id="qAmount" type="number" min="1" value="10">
-      <input id="examTime" type="number" min="1" value="45">
-    </div>
-    <button onclick="startExam()">Start Exam</button>
-  </div>
 </div>
 
-<!-- EXAM -->
-<div class="exam" id="exam">
-  <div class="question-panel">
-    <button class="backbtn" onclick="goBack()">← Back</button>
-    <h3 id="qtitle"></h3>
-    <div id="questionBox"></div>
-    <div class="navbtns">
-      <button onclick="prevQ()">Previous</button>
-      <button onclick="nextQ()">Next</button>
+<div id="examView" class="exam-workspace hidden">
+    <div class="question-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;">
+            <h2 id="displaySub" style="color:var(--accent);text-transform:uppercase;font-size:1rem;">SUBJECT</h2>
+            <span id="qCount" style="font-weight:700;color:var(--text-dim);">Question 1 of --</span>
+        </div>
+        <div id="questions-container" style="font-size:1.4rem;line-height:1.8;min-height:300px;"></div>
+        <div class="nav-btns">
+            <button class="btn-nav" onclick="changeQ(-1)">← Previous</button>
+            <button class="btn-nav" style="border-color:var(--warning);color:var(--warning);" onclick="toggleFlag()">Flag Question</button>
+            <button class="btn-nav btn-next" onclick="changeQ(1)">Next Question →</button>
+        </div>
     </div>
-  </div>
-  <div class="sidebar">
-    <div class="timer" id="timer">00:00</div>
-    <div class="qmap" id="qmap"></div>
-    <button style="background:var(--success)" onclick="submitExam()">Submit</button>
-  </div>
-</div>
 
-<!-- FIREBASE -->
+    <aside class="sidebar">
+        <p style="text-align:center;font-size:0.7rem;font-weight:800;color:var(--text-dim);margin-bottom:10px;">REMAINING TIME</p>
+        <div class="timer-box" id="timer">00:00:00</div>
+        <p style="font-weight:800;font-size:0.85rem;margin-bottom:15px;">Question Map</p>
+        <div class="q-map" id="qMap"></div>
+        <button class="btn-proceed" style="background:var(--success);margin-top:40px;" onclick="submitExam()">Finish & Submit</button>
+    </aside>
+</div>
+</main>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 <script>
 firebase.initializeApp({
-  apiKey:"AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
-  databaseURL:"https://ijmb-portal-default-rtdb.firebaseio.com"
+    apiKey:"AIzaSyARvoLEDGHPLCOkvxf60Vt4_nd4x_y_ZZU",
+    databaseURL:"https://ijmb-portal-default-rtdb.firebaseio.com"
 });
 
 const db=firebase.database();
-const yearSelect=document.getElementById("year");
-for(let y=2026;y>=2009;y--){
-  let o=document.createElement("option"); o.value=y; o.innerText=y; yearSelect.appendChild(o);
-}
+const ys=document.getElementById('yearSelect');
+for(let y=2026;y>=2009;y--){let o=document.createElement('option');o.value=y;o.innerText=y;ys.appendChild(o);}
+let questions=[],currentIndex=0,timerInterval,flagged=new Set();
 
-let questions=[]; let index=0; let timerInterval;
-const hamburger=document.getElementById("hamburger");
-const navLinks=document.getElementById("navLinks");
-hamburger.onclick=()=>{ hamburger.classList.toggle("open"); navLinks.classList.toggle("active"); };
+// NAVBAR ANIMATION
+const hamburger=document.getElementById('hamburger');
+const navLinks=document.querySelector('.nav-links');
+hamburger.addEventListener('click',()=>{navLinks.classList.toggle('active');hamburger.classList.toggle('open');});
+document.querySelectorAll('.nav-links a').forEach(link=>{link.addEventListener('click',()=>{navLinks.classList.remove('active');hamburger.classList.remove('open');});});
 
-async function startExam(){
-  const sub=document.getElementById("subject").value;
-  const yr=document.getElementById("year").value;
-  const paper=document.getElementById("paper").value;
-  const sec=document.getElementById("section").value;
-  const limit=parseInt(document.getElementById("qAmount").value);
+// BACK BUTTON
+function goBack(){if(history.length>1){history.back();}else{window.location.href='ijmbpq.html';}}
 
-  const snap=await db.ref(`questions/${sub}/${yr}/${paper}/${sec}`).once("value");
-  if(!snap.exists()){ alert("No questions found"); return; }
+// EXAM LOGIC
+async function proceedToExam(){
+    const sub=document.getElementById('subject').value;
+    const yr=document.getElementById('yearSelect').value;
+    const pap=document.getElementById('paper').value;
+    const sec=document.getElementById('section').value;
+    const limit=Math.max(1,parseInt(document.getElementById('qAmount').value));
 
-  questions=[]; snap.forEach(c=>questions.push(c.val()));
-  questions=questions.slice(0,limit);
+    const snap=await db.ref(`questions/${sub}/${yr}/${pap}/${sec}`).once('value');
+    if(!snap.exists()){alert("No questions found");return;}
 
-  document.getElementById("setup").style.display="none";
-  document.getElementById("exam").classList.add("active");
+    const data=snap.val();
+    questions=Array.isArray(data)?data:Object.values(data);
+    questions=questions.slice(0,limit);
 
-  buildMap(); render(); startTimer(parseInt(document.getElementById("examTime").value));
-}
+    document.getElementById('setupView').classList.add('hidden');
+    document.getElementById('examView').classList.remove('hidden');
+    document.getElementById('displaySub').innerText=sub+" "+yr;
 
-function buildMap(){
-  const map=document.getElementById("qmap"); map.innerHTML="";
-  questions.forEach((q,i)=>{ map.innerHTML+=`<div class="dot" id="dot${i}" onclick="jump(${i})">${i+1}</div>`; });
+    const map=document.getElementById('qMap'); map.innerHTML='';
+    questions.forEach((_,i)=>{map.innerHTML+=`<div class="dot" id="dot-${i}" onclick="jumpTo(${i})">${i+1}</div>`;});
+
+    startTimer(Math.max(1,parseInt(document.getElementById('examTime').value)));
+    render();
 }
 
 function render(){
-  const q=questions[index];
-  document.getElementById("qtitle").innerText=`Question ${index+1}`;
-  document.getElementById("questionBox").innerHTML=q.text;
-  document.querySelectorAll(".dot").forEach(d=>d.classList.remove("active"));
-  document.getElementById("dot"+index).classList.add("active");
-  MathJax.typesetPromise();
+    const q=questions[currentIndex];
+    document.getElementById('questions-container').innerHTML=q.text||"";
+    document.getElementById('qCount').innerText=`Question ${currentIndex+1} of ${questions.length}`;
+    document.querySelectorAll('.dot').forEach(d=>d.classList.remove('active'));
+    document.getElementById(`dot-${currentIndex}`).classList.add('active');
+    MathJax.typesetPromise();
 }
 
-function nextQ(){ if(index<questions.length-1){ index++; render(); } }
-function prevQ(){ if(index>0){ index--; render(); } }
-function jump(i){ index=i; render(); }
+function changeQ(dir){let next=currentIndex+dir;if(next>=0&&next<questions.length){currentIndex=next;render();}}
+function jumpTo(i){currentIndex=i;render();}
+function toggleFlag(){const dot=document.getElementById(`dot-${currentIndex}`);if(flagged.has(currentIndex)){flagged.delete(currentIndex);dot.classList.remove('flagged');}else{flagged.add(currentIndex);dot.classList.add('flagged');}}
 
-function startTimer(min){
-  let sec=min*60;
-  timerInterval=setInterval(()=>{
-    let m=Math.floor(sec/60), s=sec%60;
-    document.getElementById("timer").innerText=`${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
-    sec--; if(sec<0){ clearInterval(timerInterval); submitExam(); }
-  },1000);
+function startTimer(mins){
+    let sec=mins*60;
+    timerInterval=setInterval(()=>{
+        let h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;
+        document.getElementById('timer').innerText=`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        if(--sec<0){clearInterval(timerInterval);submitExam();}
+    },1000);
 }
 
-function goBack(){ location.reload(); }
-
-function submitExam(){ clearInterval(timerInterval); alert("Exam submitted"); location.href="ijmbpq.html"; }
-
+function submitExam(){clearInterval(timerInterval);alert("Exam Submitted Successfully!");location.href='ijmbpq.html';}
 </script>
-
 </body>
 </html>
