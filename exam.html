@@ -11,7 +11,7 @@
             --bg: #020617; --card: #0f172a; --glass: rgba(30, 41, 59, 0.8);
             --border: rgba(99, 102, 241, 0.2); --accent: #6366f1; --text: #f8fafc;
             --text-dim: #94a3b8; --success: #10b981; --warning: #f59e0b;
-            --btn-red: #cc1d1d;
+            --btn-red: #cc1d1d; --review: #eab308;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -23,7 +23,7 @@
             display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
             position: sticky; top: 0; z-index: 100;
         }
-        .status-pill { background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .status-pill { background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; transition: 0.3s; }
         .timer-box { font-size: 1.4rem; font-weight: 800; color: var(--warning); display: flex; align-items: center; gap: 8px; }
 
         /* --- MAIN LAYOUT --- */
@@ -31,45 +31,51 @@
 
         /* --- QUESTION SECTION --- */
         .question-area { padding: 40px 10%; overflow-y: auto; position: relative; }
-        .q-meta { font-weight: 800; color: var(--accent); margin-bottom: 10px; display: block; }
-        .q-text { font-size: 1.2rem; line-height: 1.6; margin-bottom: 30px; }
+        .q-meta { font-weight: 800; color: var(--accent); margin-bottom: 10px; display: block; letter-spacing: 1px; }
+        .q-text { font-size: 1.25rem; line-height: 1.6; margin-bottom: 35px; font-weight: 500; }
 
-        .options-list { display: grid; gap: 12px; }
+        .options-list { display: grid; gap: 14px; }
         .option {
-            background: var(--card); border: 1px solid var(--border); padding: 18px;
-            border-radius: 12px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 15px;
+            background: var(--card); border: 1px solid var(--border); padding: 20px;
+            border-radius: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 15px;
         }
         .option:hover { border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
-        .option.selected { border-color: var(--accent); background: var(--accent); color: white; }
-        .opt-letter { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
+        .option.selected { border-color: var(--accent); background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
+        .opt-letter { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; }
         .option.selected .opt-letter { border-color: white; }
 
         /* --- SIDEBAR --- */
-        .sidebar { 
-            background: var(--card); border-left: 1px solid var(--border); 
-            padding: 25px; display: flex; flex-direction: column; gap: 25px;
-        }
-        .sidebar-title { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; }
+        .sidebar { background: var(--card); border-left: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; gap: 25px; }
+        .sidebar-title { font-size: 0.75rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
         
-        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 350px; overflow-y: auto; padding-right: 5px; }
         .q-dot { 
             aspect-ratio: 1; background: #1e293b; border: 1px solid var(--border);
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.2s;
         }
-        .q-dot.current { border: 2px solid var(--accent); color: var(--accent); }
+        .q-dot.current { border: 2.5px solid var(--accent); color: var(--accent); }
         .q-dot.answered { background: var(--accent); color: white; border: none; }
+        .q-dot.review { background: var(--review); color: var(--bg); border: none; }
+        .q-dot.answered.review { background: var(--review); color: var(--bg); border: 3px solid var(--accent); }
 
         /* --- FOOTER NAV --- */
-        .action-btns { margin-top: auto; display: grid; gap: 10px; }
-        .btn-nav { padding: 15px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .action-btns { margin-top: auto; display: grid; gap: 12px; }
+        .btn-nav { padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-prev { background: #1e293b; color: white; }
         .btn-next { background: var(--accent); color: white; }
-        .btn-submit { background: var(--btn-red); color: white; margin-top: 10px; }
+        .btn-review { background: transparent; border: 2px solid var(--review); color: var(--review); }
+        .btn-review.active { background: var(--review); color: var(--bg); }
+        .btn-submit { background: var(--btn-red); color: white; margin-top: 10px; font-size: 1rem; }
+
+        /* --- SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
         @media (max-width: 900px) {
             .workspace { grid-template-columns: 1fr; }
-            .sidebar { display: none; } /* On mobile, we can use a drawer for the q-grid */
+            .sidebar { display: none; }
         }
     </style>
 </head>
@@ -91,25 +97,25 @@
         <section class="question-area">
             <span class="q-meta" id="qNumber">QUESTION 1</span>
             <div class="q-text" id="qText">
-                A body of mass 2kg is moving with a velocity of 10m/s. Calculate its kinetic energy.
+                A sample of gas occupies 2.0dm³ at 300K and 100kPa. What would be its volume at 400K and 200kPa?
             </div>
 
-            <div class="options-list">
+            <div class="options-list" id="optionsContainer">
                 <div class="option" onclick="selectOption(this, 'A')">
                     <div class="opt-letter">A</div>
-                    <span class="opt-val">50 Joules</span>
+                    <span class="opt-val">1.33 dm³</span>
                 </div>
                 <div class="option" onclick="selectOption(this, 'B')">
                     <div class="opt-letter">B</div>
-                    <span class="opt-val">100 Joules</span>
+                    <span class="opt-val">2.67 dm³</span>
                 </div>
                 <div class="option" onclick="selectOption(this, 'C')">
                     <div class="opt-letter">C</div>
-                    <span class="opt-val">200 Joules</span>
+                    <span class="opt-val">0.75 dm³</span>
                 </div>
                 <div class="option" onclick="selectOption(this, 'D')">
                     <div class="opt-letter">D</div>
-                    <span class="opt-val">400 Joules</span>
+                    <span class="opt-val">4.00 dm³</span>
                 </div>
             </div>
         </section>
@@ -117,17 +123,19 @@
         <aside class="sidebar">
             <div>
                 <h3 class="sidebar-title">Subject Summary</h3>
-                <p style="font-size: 0.9rem; font-weight: 700; margin-top: 5px;" id="examSubject">Physics (Standard PCM)</p>
+                <p style="font-size: 0.95rem; font-weight: 700; margin-top: 6px;" id="examSubject">Chemistry (Standard PCB)</p>
             </div>
 
             <div>
                 <h3 class="sidebar-title">Question Navigator</h3>
-                <div class="question-grid" id="qGrid">
-                    </div>
+                <div class="question-grid" id="qGrid"></div>
             </div>
 
             <div class="action-btns">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-nav btn-review" id="reviewBtn" onclick="toggleReview()">
+                    <i class="fa-solid fa-thumbtack"></i> Mark for Review
+                </button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <button class="btn-nav btn-prev" onclick="prevQ()"><i class="fa-solid fa-chevron-left"></i> Prev</button>
                     <button class="btn-nav btn-next" onclick="nextQ()">Next <i class="fa-solid fa-chevron-right"></i></button>
                 </div>
@@ -139,69 +147,101 @@
     <script>
         let currentIdx = 1;
         const totalQuestions = 50;
+        
+        // Persistent States
         let answers = JSON.parse(localStorage.getItem('current_exam_answers')) || {};
+        let reviews = JSON.parse(localStorage.getItem('current_exam_reviews')) || {};
 
-        // 1. GENERATE NAVIGATION DOTS
-        const qGrid = document.getElementById('qGrid');
         function renderGrid() {
+            const qGrid = document.getElementById('qGrid');
             qGrid.innerHTML = '';
             for (let i = 1; i <= totalQuestions; i++) {
                 const dot = document.createElement('div');
-                dot.className = `q-dot ${i === currentIdx ? 'current' : ''} ${answers[i] ? 'answered' : ''}`;
+                let classes = ['q-dot'];
+                if (i === currentIdx) classes.push('current');
+                if (answers[i]) classes.push('answered');
+                if (reviews[i]) classes.push('review');
+                
+                dot.className = classes.join(' ');
                 dot.innerText = i;
                 dot.onclick = () => jumpTo(i);
                 qGrid.appendChild(dot);
             }
         }
 
-        // 2. OPTION SELECTION
         function selectOption(el, val) {
             document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
             el.classList.add('selected');
             answers[currentIdx] = val;
             
-            // Auto-Save to LocalStorage
             localStorage.setItem('current_exam_answers', JSON.stringify(answers));
             showSaveStatus();
             renderGrid();
         }
 
-        function showSaveStatus() {
-            const status = document.getElementById('saveStatus');
-            status.style.opacity = '1';
-            setTimeout(() => { status.style.opacity = '0.5'; }, 1000);
+        function toggleReview() {
+            if (reviews[currentIdx]) {
+                delete reviews[currentIdx];
+                document.getElementById('reviewBtn').classList.remove('active');
+            } else {
+                reviews[currentIdx] = true;
+                document.getElementById('reviewBtn').classList.add('active');
+            }
+            localStorage.setItem('current_exam_reviews', JSON.stringify(reviews));
+            renderGrid();
         }
 
-        // 3. NAVIGATION LOGIC
         function jumpTo(n) {
             currentIdx = n;
             document.getElementById('qNumber').innerText = `QUESTION ${currentIdx}`;
-            // Here you would fetch the question text from your question array
+            
+            // Highlight saved answer if exists
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            const currentAns = answers[currentIdx];
+            if(currentAns) {
+                const options = document.querySelectorAll('.opt-letter');
+                options.forEach(opt => {
+                    if(opt.innerText === currentAns) opt.parentElement.classList.add('selected');
+                });
+            }
+
+            // Set Review button state
+            if(reviews[currentIdx]) document.getElementById('reviewBtn').classList.add('active');
+            else document.getElementById('reviewBtn').classList.remove('active');
+
             renderGrid();
         }
 
         function nextQ() { if(currentIdx < totalQuestions) jumpTo(currentIdx + 1); }
         function prevQ() { if(currentIdx > 1) jumpTo(currentIdx - 1); }
 
-        // 4. TIMER LOGIC
-        let seconds = 3600; // 1 Hour
-        const timerEl = document.getElementById('timer');
+        function showSaveStatus() {
+            const status = document.getElementById('saveStatus');
+            status.style.opacity = '1';
+            setTimeout(() => { status.style.opacity = '0.4'; }, 800);
+        }
+
+        // Timer
+        let seconds = 5400; // 1.5 Hours
         setInterval(() => {
             if(seconds <= 0) return;
             seconds--;
             let h = Math.floor(seconds / 3600);
             let m = Math.floor((seconds % 3600) / 60);
             let s = seconds % 60;
-            timerEl.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-            if(seconds < 300) timerEl.style.color = 'var(--btn-red)'; // Red timer at 5 mins
+            document.getElementById('timer').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         }, 1000);
 
-        // 5. SUBMIT
         function confirmSubmit() {
-            if(confirm("Are you sure you want to submit? This action cannot be undone.")) {
-                localStorage.removeItem('ijmb_exam_session');
+            const unanswered = totalQuestions - Object.keys(answers).length;
+            const msg = unanswered > 0 
+                ? `You have ${unanswered} unanswered questions. Are you sure you want to submit?`
+                : "Are you sure you want to submit your exam?";
+            
+            if(confirm(msg)) {
                 localStorage.removeItem('current_exam_answers');
-                alert("Exam Submitted Successfully!");
+                localStorage.removeItem('current_exam_reviews');
+                localStorage.removeItem('ijmb_exam_session');
                 window.location.href = 'ijmbpq.html';
             }
         }
