@@ -26,13 +26,30 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
 
-        /* --- NAVIGATION & HEADERS --- */
+        /* --- MAIN HEADER (Fixed Logo Position) --- */
         header {
             height: 65px; background: var(--header-bg); border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; padding: 0 4%;
             position: fixed; top: 0; width: 100%; z-index: 2000;
         }
+
+        .header-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; /* Spacing between Hamburger and Logo */
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-weight: 800; 
+            font-size: 1.1rem; 
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+        }
+
+        .header-right { display: flex; align-items: center; gap: 12px; }
         
+        /* --- SUB NAVIGATION --- */
         .sub-nav {
             height: 50px; background: var(--bg); border-bottom: 1px solid var(--border);
             display: flex; align-items: center; padding: 0 4%;
@@ -41,7 +58,7 @@
 
         .icon-btn {
             background: var(--card); border: 1px solid var(--border); color: var(--text);
-            width: 38px; height: 38px; border-radius: 10px; cursor: pointer;
+            width: 40px; height: 40px; border-radius: 10px; cursor: pointer;
             display: flex; align-items: center; justify-content: center; transition: 0.2s;
         }
 
@@ -86,7 +103,6 @@
         
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
 
-        /* Switch Toggle Styling */
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 24px; }
@@ -113,7 +129,7 @@
     <header>
         <div class="header-left">
             <button class="icon-btn" onclick="toggleNav()"><i class="fa-solid fa-bars-staggered"></i></button>
-            <div style="font-weight: 800; font-size: 1rem;">IJMB<span style="color:var(--accent)">PRO</span></div>
+            <div class="logo">IJMB<span style="color:var(--accent)">PRO</span></div>
         </div>
         <div class="header-right">
             <div id="examTimer" style="display:none; font-weight: 800; color: var(--warning); margin-right: 10px;">60:00</div>
@@ -176,20 +192,6 @@
                         <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
                         <span class="slider"></span>
                     </label>
-                </div>
-                <div class="toggle-row" style="border-top:1px solid var(--border); padding-top:15px; margin-top:10px;">
-                    <span>Auto-save Answers</span>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="card" onclick="alert('Redirecting to Security...')">
-                <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
-                    <span>Change Password</span>
-                    <i class="fa-solid fa-chevron-right" style="color:var(--text-dim)"></i>
                 </div>
             </div>
         </div>
@@ -254,6 +256,8 @@
             } else if (document.getElementById('setupView').style.display === 'block' || document.getElementById('settingsView').style.display === 'block') {
                 hideAllViews();
                 document.getElementById('homeView').style.display = 'block';
+                document.getElementById('backLabel').innerText = "GO BACK";
+                document.getElementById('backBtn').style.color = "var(--text-dim)";
             } else {
                 window.location.href = 'ijmbpq.html';
             }
@@ -267,6 +271,7 @@
         function openSettings() {
             hideAllViews();
             document.getElementById('settingsView').style.display = 'block';
+            document.getElementById('backLabel').innerText = "BACK TO HOME";
         }
 
         function saveSettings() {
@@ -282,6 +287,7 @@
         function openSetup() {
             hideAllViews();
             document.getElementById('setupView').style.display = 'block';
+            document.getElementById('backLabel').innerText = "CANCEL SETUP";
         }
 
         function startExam() {
