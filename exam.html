@@ -26,9 +26,6 @@
         .logo { font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
         .logo span { color: var(--accent); }
 
-        .hamburger { display: none; flex-direction: column; justify-content: space-around; width: 28px; height: 22px; cursor: pointer; }
-        .hamburger div { height: 3px; background: var(--text); border-radius: 2px; transition: 0.4s; }
-
         .global-back-btn {
             margin: 20px 0; padding: 8px 14px; border: none; border-radius: 8px; 
             background: var(--accent); color: white; font-weight: 700; font-size: 0.75rem; 
@@ -54,7 +51,6 @@
         .input-group label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
         select, input { width: 100%; background: #1e293b; border: 1px solid var(--border); color: white; padding: 15px; border-radius: 12px; font-weight: 600; outline: none; margin-bottom: 20px; }
         .btn-red-action { width: 100%; padding: 18px; background: var(--btn-red); color: white; border: none; border-radius: 50px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .btn-red-action:hover { transform: scale(1.02); opacity: 0.9; }
 
         /* --- RESUME BANNER --- */
         #resumeBanner {
@@ -75,6 +71,8 @@
             border-radius: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 15px; margin-bottom: 12px;
         }
         .option.selected { border-color: var(--accent); background: var(--accent); color: white; }
+        .option.correct { border-color: var(--success); background: rgba(16, 185, 129, 0.2); }
+        .option.wrong { border-color: var(--btn-red); background: rgba(204, 29, 29, 0.2); }
         .opt-letter { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 800; }
 
         .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; }
@@ -82,14 +80,21 @@
         .q-dot.current { border: 2.5px solid var(--accent); color: var(--accent); }
         .q-dot.answered { background: var(--accent); color: white; border: none; }
         .q-dot.review { background: var(--review); color: var(--bg); border: none; }
-
-        /* --- MODALS --- */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; align-items: center; justify-content: center; }
-        .formula-card { background: var(--card); border: 1px solid var(--accent); width: 90%; max-width: 500px; border-radius: 20px; padding: 30px; }
         
+        /* Review Colors */
+        .q-dot.res-correct { background: var(--success); color: white; border: none; }
+        .q-dot.res-wrong { background: var(--btn-red); color: white; border: none; }
+
+        /* --- EXPLANATION BOX --- */
+        .explanation-box { display: none; background: rgba(99, 102, 241, 0.1); border-left: 4px solid var(--accent); padding: 20px; margin-top: 20px; border-radius: 0 12px 12px 0; }
+
+        /* --- RESULT OVERLAY --- */
+        #resultView { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 3000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; border: 8px solid var(--accent); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; }
+
         /* --- UTILITY --- */
         .timer-box { font-size: 1.3rem; font-weight: 800; color: var(--warning); display: flex; align-items: center; gap: 8px; }
-        .status-pill { background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; opacity: 0.5; transition: 0.3s; }
+        .status-pill { background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -98,82 +103,59 @@
         <div style="display: flex; align-items: center; gap: 20px;">
             <a href="#" class="logo" onclick="location.reload()">IJMB<span>PRO</span></a>
             <div id="examControls" style="display: none; gap: 15px;">
-                <button class="status-pill" style="border:none; cursor:default;"><i class="fa-solid fa-cloud"></i> Auto-saved</button>
-                <button onclick="toggleFormula()" style="background:none; border:1px solid var(--border); color:white; border-radius:8px; padding:5px 10px; cursor:pointer; font-size:0.7rem; font-weight:700;">FORMULAS</button>
+                <button class="status-pill"><i class="fa-solid fa-cloud"></i> Auto-saved</button>
             </div>
         </div>
         <div class="timer-box" id="timerDisplay" style="display: none;">
             <i class="fa-regular fa-clock"></i> <span id="clock">00:00:00</span>
         </div>
-        <div class="hamburger" onclick="this.classList.toggle('open')"><div></div><div></div><div></div></div>
     </header>
 
-    <div class="modal-overlay" id="formulaModal">
-        <div class="formula-card">
-            <h2 style="margin-bottom: 20px;">Constants & Formulas</h2>
-            <div style="font-size: 0.9rem; line-height: 1.8; color: var(--text-dim);">
-                <p>• $g = 9.8 \text{ m/s}^2$</p>
-                <p>• $R = 8.314 \text{ J/mol}\cdot\text{K}$</p>
-                <p>• $PV = nRT$</p>
-                <p>• $E = hf$</p>
-            </div>
-            <button class="btn-red-action" style="margin-top:20px; padding: 12px;" onclick="toggleFormula()">Close</button>
-        </div>
-    </div>
-
     <main>
-        <div id="view-selection" class="view-step active">
-            <button class="global-back-btn" onclick="window.location.href='ijmbpq.html'"><i class="fa-solid fa-arrow-left"></i> Home</button>
-            <div id="resumeBanner">
-                <span id="resumeText" style="font-size: 0.85rem; font-weight: 600; color: var(--success);"></span>
-                <button onclick="resumeSession()" style="background:var(--success); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:700;">Resume</button>
+        <div id="resultView">
+            <div class="score-circle">
+                <h1 id="finalScore">0</h1>
+                <p style="font-size:0.8rem">SCORE</p>
             </div>
-            <h1>Exam Mode</h1>
-            <p style="color: var(--text-dim);">Select your preferred testing environment.</p>
+            <h2 id="scoreMsg">Good Effort!</h2>
+            <p style="color:var(--text-dim); margin: 15px 0 30px;">You can now review each question to see the correct solutions.</p>
+            <div style="display:flex; gap:15px;">
+                <button class="btn-red-action" style="padding: 12px 30px;" onclick="startReviewMode()">Review Answers</button>
+                <button class="btn-red-action" style="background:#1e293b; padding: 12px 30px;" onclick="location.reload()">Exit Hall</button>
+            </div>
+        </div>
+
+        <div id="view-selection" class="view-step active">
+            <div id="resumeBanner">
+                <span id="resumeText"></span>
+                <button onclick="resumeSession()" style="background:var(--success); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">Resume</button>
+            </div>
+            <h1>Exam Hall</h1>
             <div class="mode-grid">
                 <div class="mode-card" onclick="showView('standard')">
                     <i class="fa-solid fa-graduation-cap"></i>
                     <h3>Standard Exam</h3>
-                    <p style="font-size:0.8rem; color:var(--text-dim); margin-top:10px;">Full combination practice (PCM, PCB, etc.)</p>
+                    <p style="font-size:0.8rem; color:var(--text-dim);">Full Combination (PCM/PCB/SMS)</p>
                 </div>
                 <div class="mode-card" onclick="showView('cbt')">
                     <i class="fa-solid fa-laptop-code"></i>
                     <h3>CBT Simulator</h3>
-                    <p style="font-size:0.8rem; color:var(--text-dim); margin-top:10px;">Quick subject-based custom simulation.</p>
+                    <p style="font-size:0.8rem; color:var(--text-dim);">Quick Subject Simulation</p>
                 </div>
             </div>
         </div>
 
         <div id="view-standard" class="view-step">
-            <button class="global-back-btn" onclick="showView('selection')"><i class="fa-solid fa-arrow-left"></i> Back</button>
             <div class="setup-card">
-                <div class="input-group">
-                    <label>Subject Combination</label>
-                    <select id="stdCombo">
-                        <option value="PCM">Physics, Chemistry, Mathematics (PCM)</option>
-                        <option value="PCB">Physics, Chemistry, Biology (PCB)</option>
-                        <option value="SMS">Economics, Govt, Mathematics (SMS)</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Exam Year</label>
-                    <select id="stdYear"></select>
-                </div>
-                <button class="btn-red-action" onclick="initExam('standard')">Start Standard Exam</button>
+                <div class="input-group"><label>Combination</label><select id="stdCombo"><option>PCM</option><option>PCB</option><option>SMS</option></select></div>
+                <div class="input-group"><label>Year</label><select id="stdYear"></select></div>
+                <button class="btn-red-action" onclick="initExam('standard')">Start Exam</button>
             </div>
         </div>
 
         <div id="view-cbt" class="view-step">
-            <button class="global-back-btn" onclick="showView('selection')"><i class="fa-solid fa-arrow-left"></i> Back</button>
             <div class="setup-card">
-                <div class="input-group">
-                    <label>Subject</label>
-                    <select id="cbtSub"><option>Mathematics</option><option>Physics</option><option>Chemistry</option></select>
-                </div>
-                <div class="input-group">
-                    <label>Number of Questions</label>
-                    <input type="number" id="cbtQty" value="50">
-                </div>
+                <div class="input-group"><label>Subject</label><select id="cbtSub"><option>Mathematics</option><option>Physics</option></select></div>
                 <button class="btn-red-action" onclick="initExam('cbt')">Start Simulator</button>
             </div>
         </div>
@@ -181,65 +163,53 @@
         <div id="examWorkspace">
             <section class="question-area">
                 <span class="q-meta" id="qNum">QUESTION 1</span>
-                <div class="q-text" id="qText">Loading question content...</div>
+                <div class="q-text" id="qText">Loading...</div>
                 <div id="options">
-                    <div class="option" onclick="ans(this,'A')"><div class="opt-letter">A</div><span class="opt-val">Option A text</span></div>
-                    <div class="option" onclick="ans(this,'B')"><div class="opt-letter">B</div><span class="opt-val">Option B text</span></div>
-                    <div class="option" onclick="ans(this,'C')"><div class="opt-letter">C</div><span class="opt-val">Option C text</span></div>
-                    <div class="option" onclick="ans(this,'D')"><div class="opt-letter">D</div><span class="opt-val">Option D text</span></div>
+                    <div class="option" id="optA" onclick="ans(this,'A')"><div class="opt-letter">A</div><span class="opt-val">Option A</span></div>
+                    <div class="option" id="optB" onclick="ans(this,'B')"><div class="opt-letter">B</div><span class="opt-val">Option B</span></div>
+                    <div class="option" id="optC" onclick="ans(this,'C')"><div class="opt-letter">C</div><span class="opt-val">Option C</span></div>
+                    <div class="option" id="optD" onclick="ans(this,'D')"><div class="opt-letter">D</div><span class="opt-val">Option D</span></div>
+                </div>
+                <div class="explanation-box" id="explainBox">
+                    <h4 style="color:var(--accent); margin-bottom:10px;">Solution Explanation</h4>
+                    <p id="explainText"></p>
                 </div>
             </section>
             <aside class="sidebar">
-                <h3 style="font-size:0.7rem; color:var(--text-dim);">NAVIGATOR</h3>
                 <div class="question-grid" id="qGrid"></div>
                 <div style="margin-top:auto; display:grid; gap:10px;">
-                    <button class="btn-red-action" style="background:transparent; border:2px solid var(--review); color:var(--review); padding:12px;" onclick="toggleReview()">Mark for Review</button>
+                    <button class="btn-red-action" id="markReviewBtn" style="background:transparent; border:2px solid var(--review); color:var(--review); padding:12px;" onclick="toggleReview()">Mark for Review</button>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                        <button onclick="prev()" style="background:#1e293b; color:white; border:none; border-radius:12px; padding:15px; cursor:pointer;"><i class="fa-solid fa-chevron-left"></i></button>
-                        <button onclick="next()" style="background:var(--accent); color:white; border:none; border-radius:12px; padding:15px; cursor:pointer;"><i class="fa-solid fa-chevron-right"></i></button>
+                        <button onclick="prev()" class="btn-red-action" style="background:#1e293b;"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button onclick="next()" class="btn-red-action" style="background:var(--accent);"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
-                    <button class="btn-red-action" onclick="finish()">Submit Exam</button>
+                    <button class="btn-red-action" id="finishBtn" onclick="finish()">Submit Exam</button>
                 </div>
             </aside>
         </div>
     </main>
 
     <script>
-        let currentQ = 1; let totalQ = 50;
-        let userAnswers = {}; let markReview = {};
-        let timer; let seconds = 5400;
+        // MOCK DATABASE
+        const mockQuestions = [
+            { id: 1, text: "What is the unit of Force?", options: {A: "Newton", B: "Joule", C: "Watt", D: "Pascal"}, correct: "A", explain: "Force is measured in Newtons (N) according to the SI system." },
+            { id: 2, text: "Calculate Kinetic Energy if m=2kg, v=10m/s.", options: {A: "50J", B: "100J", C: "200J", D: "10J"}, correct: "B", explain: "KE = 0.5 * m * v^2 = 0.5 * 2 * 10^2 = 100 Joules." }
+        ];
+
+        let currentQ = 1; let totalQ = 2; let userAnswers = {}; let markReview = {}; 
+        let isReviewMode = false; let timer; let seconds = 3600;
 
         // Populate Years
         const ys = document.getElementById('stdYear');
-        for(let y=2026; y>=2010; y--) { let o=document.createElement('option'); o.innerText=y; ys.appendChild(o); }
-
-        // Session Resume Check
-        window.onload = () => {
-            const saved = JSON.parse(localStorage.getItem('ijmb_session'));
-            if(saved) {
-                document.getElementById('resumeBanner').style.display = 'flex';
-                document.getElementById('resumeText').innerText = `Unfinished ${saved.mode} session detected.`;
-            }
-        }
+        for(let y=2026; y>=2015; y--) { let o=document.createElement('option'); o.innerText=y; ys.appendChild(o); }
 
         function showView(id) {
             document.querySelectorAll('.view-step').forEach(v => v.classList.remove('active'));
             document.getElementById('view-' + id).classList.add('active');
         }
 
-        function toggleFormula() { 
-            const m = document.getElementById('formulaModal');
-            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
-        }
-
         function initExam(mode) {
-            const session = {
-                mode: mode,
-                combo: document.getElementById('stdCombo').value,
-                year: document.getElementById('stdYear').value,
-                answers: {}, reviews: {}
-            };
-            localStorage.setItem('ijmb_session', JSON.stringify(session));
+            localStorage.setItem('ijmb_session', JSON.stringify({mode, answers: {}, reviews: {}}));
             startWorkspace();
         }
 
@@ -248,43 +218,45 @@
         function startWorkspace() {
             document.querySelectorAll('.view-step').forEach(v => v.style.display = 'none');
             document.getElementById('examWorkspace').style.display = 'grid';
-            document.getElementById('examControls').style.display = 'flex';
             document.getElementById('timerDisplay').style.display = 'flex';
-            
-            // Load state
             const saved = JSON.parse(localStorage.getItem('ijmb_session'));
             userAnswers = saved.answers || {};
             markReview = saved.reviews || {};
-            
+            loadQuestion(1);
             renderGrid();
             startTimer();
         }
 
-        function renderGrid() {
-            const grid = document.getElementById('qGrid');
-            grid.innerHTML = '';
-            for(let i=1; i<=totalQ; i++) {
-                const d = document.createElement('div');
-                d.className = `q-dot ${i===currentQ?'current':''} ${userAnswers[i]?'answered':''} ${markReview[i]?'review':''}`;
-                d.innerText = i;
-                d.onclick = () => jumpTo(i);
-                grid.appendChild(d);
-            }
-        }
+        function loadQuestion(n) {
+            currentQ = n;
+            const q = mockQuestions[n-1] || mockQuestions[0];
+            document.getElementById('qNum').innerText = `QUESTION ${n}`;
+            document.getElementById('qText').innerText = q.text;
+            document.getElementById('optA').querySelector('.opt-val').innerText = q.options.A;
+            document.getElementById('optB').querySelector('.opt-val').innerText = q.options.B;
+            document.getElementById('optC').querySelector('.opt-val').innerText = q.options.C;
+            document.getElementById('optD').querySelector('.opt-val').innerText = q.options.D;
 
-        function jumpTo(n) { 
-            currentQ = n; 
-            document.getElementById('qNum').innerText = `QUESTION ${currentQ}`;
-            document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-            renderGrid(); 
+            document.querySelectorAll('.option').forEach(o => o.className = 'option');
+            
+            if (isReviewMode) {
+                const userAns = userAnswers[n];
+                const correctAns = q.correct;
+                document.getElementById('opt' + correctAns).classList.add('correct');
+                if (userAns && userAns !== correctAns) document.getElementById('opt' + userAns).classList.add('wrong');
+                document.getElementById('explainBox').style.display = 'block';
+                document.getElementById('explainText').innerText = q.explain;
+            } else if (userAnswers[n]) {
+                document.getElementById('opt' + userAnswers[n]).classList.add('selected');
+            }
+            renderGrid();
         }
 
         function ans(el, val) {
-            document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-            el.classList.add('selected');
+            if (isReviewMode) return;
             userAnswers[currentQ] = val;
+            loadQuestion(currentQ);
             saveProgress();
-            renderGrid();
         }
 
         function toggleReview() {
@@ -295,33 +267,57 @@
 
         function saveProgress() {
             const saved = JSON.parse(localStorage.getItem('ijmb_session'));
-            saved.answers = userAnswers;
-            saved.reviews = markReview;
+            saved.answers = userAnswers; saved.reviews = markReview;
             localStorage.setItem('ijmb_session', JSON.stringify(saved));
-            
-            const pill = document.querySelector('.status-pill');
-            pill.style.opacity = "1";
-            setTimeout(() => pill.style.opacity = "0.5", 800);
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('qGrid');
+            grid.innerHTML = '';
+            for(let i=1; i<=totalQ; i++) {
+                const d = document.createElement('div');
+                let status = (i === currentQ) ? 'current' : '';
+                if (isReviewMode) {
+                    const q = mockQuestions[i-1];
+                    status += (userAnswers[i] === q.correct) ? ' res-correct' : ' res-wrong';
+                } else {
+                    if (userAnswers[i]) status += ' answered';
+                    if (markReview[i]) status += ' review';
+                }
+                d.className = `q-dot ${status}`;
+                d.innerText = i;
+                d.onclick = () => loadQuestion(i);
+                grid.appendChild(d);
+            }
         }
 
         function startTimer() {
             timer = setInterval(() => {
                 seconds--;
-                let h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = seconds%60;
+                let h=Math.floor(seconds/3600), m=Math.floor((seconds%3600)/60), s=seconds%60;
                 document.getElementById('clock').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-                if(seconds <= 0) finish();
             }, 1000);
         }
 
-        function next() { if(currentQ < totalQ) jumpTo(currentQ + 1); }
-        function prev() { if(currentQ > 1) jumpTo(currentQ - 1); }
-
         function finish() {
-            if(confirm("Are you sure you want to submit?")) {
-                localStorage.removeItem('ijmb_session');
-                location.reload();
-            }
+            clearInterval(timer);
+            let score = 0;
+            mockQuestions.forEach((q, i) => { if(userAnswers[i+1] === q.correct) score++; });
+            document.getElementById('finalScore').innerText = `${score}/${totalQ}`;
+            document.getElementById('resultView').style.display = 'flex';
         }
+
+        function startReviewMode() {
+            isReviewMode = true;
+            document.getElementById('resultView').style.display = 'none';
+            document.getElementById('timerDisplay').style.display = 'none';
+            document.getElementById('finishBtn').style.display = 'none';
+            document.getElementById('markReviewBtn').style.display = 'none';
+            loadQuestion(1);
+        }
+
+        function next() { if(currentQ < totalQ) loadQuestion(currentQ + 1); }
+        function prev() { if(currentQ > 1) loadQuestion(currentQ - 1); }
     </script>
 </body>
 </html>
