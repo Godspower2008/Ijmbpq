@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Questions | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .subject-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px 20px;
+        }
+        .subject-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .subject-name { font-weight: 700; font-size: 1rem; flex-grow: 1; }
+        .question-count { font-size: 0.75rem; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 20px; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item">Home</a>
+            <a href="study.html" class="nav-item active">Study</a>
+            <a href="test.html" class="nav-item">Test</a>
+            <a href="more.html" class="nav-item">More</a>
+        </nav>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </header>
+
+    <main>
+        <div class="section-header">
+            <h1 class="section-title" style="font-size: 1.8rem;">Select Subject</h1>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr;">
+            <div class="card subject-item" onclick="location.href='exam.html?subject=maths'">
+                <div class="subject-icon"><i class="fa-solid fa-calculator"></i></div>
+                <span class="subject-name">Mathematics</span>
+                <span class="question-count">2,400 Qs</span>
+            </div>
+
+            <div class="card subject-item" onclick="location.href='exam.html?subject=physics'">
+                <div class="subject-icon"><i class="fa-solid fa-atom"></i></div>
+                <span class="subject-name">Physics</span>
+                <span class="question-count">1,850 Qs</span>
+            </div>
+
+            <div class="card subject-item" onclick="location.href='exam.html?subject=biology'">
+                <div class="subject-icon"><i class="fa-solid fa-dna"></i></div>
+                <span class="subject-name">Biology</span>
+                <span class="question-count">3,100 Qs</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
