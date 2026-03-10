@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marking Guide | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .marking-container { max-width: 900px; margin: 0 auto; }
+        
+        .split-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .guide-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            height: fit-content;
+        }
+
+        .badge-mark {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            float: right;
+        }
+
+        .rubric-item {
+            padding: 15px;
+            border-left: 3px solid var(--border);
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.02);
+            transition: 0.3s;
+        }
+
+        .rubric-item.hit {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .score-counter {
+            position: sticky;
+            bottom: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        @media (max-width: 800px) {
+            .split-view { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="results.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Back to Results</a>
+        <div style="font-weight: 800;">Self-Marking Tool</div>
+        <div style="width: 40px;"></div>
+    </header>
+
+    <main class="marking-container">
+        <div class="card" style="margin-bottom: 20px; border-left: 5px solid var(--accent);">
+            <p style="font-weight: 700; color: var(--text-dim); font-size: 0.8rem; margin-bottom: 5px;">QUESTION</p>
+            <p style="font-weight: 600;">Explain the laws of thermodynamics and their biological significance.</p>
+        </div>
+
+        <div class="split-view">
+            <div class="guide-card">
+                <h3 style="font-size: 1rem; margin-bottom: 15px;"><i class="fa-solid fa-user-pen"></i> Your Draft</h3>
+                <div style="line-height: 1.8; color: var(--text-dim);">
+                    The first law says energy cannot be created or destroyed, only transformed. In biology, plants transform light into chemical energy. The second law says entropy always increases. This means organisms need constant energy to stay organized...
+                </div>
+            </div>
+
+            <div class="guide-card">
+                <h3 style="font-size: 1rem; margin-bottom: 15px;"><i class="fa-solid fa-check-double"></i> Examiner's Rubric</h3>
+                
+                <div class="rubric-item hit" onclick="toggleHit(this, 2)">
+                    <span class="badge-mark">+2 Marks</span>
+                    <p style="font-weight: 700; font-size: 0.9rem;">Energy Conservation</p>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">Mentioned that energy is neither created nor destroyed.</p>
+                </div>
+
+                <div class="rubric-item" onclick="toggleHit(this, 3)">
+                    <span class="badge-mark">+3 Marks</span>
+                    <p style="font-weight: 700; font-size: 0.9rem;">Entropy & Order</p>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">Discussed the increase of disorder (entropy) in biological systems.</p>
+                </div>
+
+                <div class="rubric-item hit" onclick="toggleHit(this, 2)">
+                    <span class="badge-mark">+2 Marks</span>
+                    <p style="font-weight: 700; font-size: 0.9rem;">Energy Transformation</p>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">Linked laws to photosynthesis or respiration.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-counter">
+            <div>
+                <span style="font-size: 0.8rem; font-weight: 700; opacity: 0.8;">ESTIMATED SCORE</span>
+                <div id="totalScore" style="font-size: 1.8rem; font-weight: 900;">4 / 15</div>
+            </div>
+            <button onclick="saveGrade()" style="background: white; color: var(--accent); border: none; padding: 12px 25px; border-radius: 10px; font-weight: 800; cursor: pointer;">
+                Save Grade
+            </button>
+        </div>
+    </main>
+
+    <script>
+        let currentScore = 4; // Initialized based on 'hit' classes in HTML
+        const totalPossible = 15;
+
+        function toggleHit(el, points) {
+            if (el.classList.contains('hit')) {
+                el.classList.remove('hit');
+                currentScore -= points;
+            } else {
+                el.classList.add('hit');
+                currentScore += points;
+            }
+            document.getElementById('totalScore').innerText = `${currentScore} / ${totalPossible}`;
+        }
+
+        function saveGrade() {
+            alert("Self-assessment saved! Your streak has been updated.");
+            location.href = 'tracker.html';
+        }
+    </script>
+</body>
+</html>
