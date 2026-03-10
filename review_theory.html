@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Theory | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .review-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .content-area {
+            padding: 25px;
+            overflow-y: auto;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .marking-point {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .point-score {
+            float: right;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        .ai-commentary {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px dashed var(--accent);
+            border-radius: 15px;
+        }
+
+        @media (max-width: 900px) {
+            .review-grid { grid-template-columns: 1fr; }
+            .review-card { height: auto; max-height: 500px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <div style="font-weight: 700;">Review: Question 1</div>
+        <a href="results.html" class="nav-item">Back to Results</a>
+    </header>
+
+    <main>
+        <div class="section-header">
+            <h1 class="section-title">Performance Analysis</h1>
+            <p style="color: var(--text-dim);">Compare your response with the expected marking criteria.</p>
+        </div>
+
+        <div class="review-grid">
+            <div class="review-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-user-pen" style="color: var(--accent);"></i>
+                    Your Response
+                </div>
+                <div class="content-area">
+                    <p>Photosynthesis is the process where plants make food. It happens in the chloroplast. There are two parts: the light part and the dark part. The light part uses sunlight to split water and make oxygen. This happens in the thylakoid. The dark part (Calvin cycle) happens in the stroma and uses carbon dioxide to make glucose...</p>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-clipboard-check" style="color: #10b981;"></i>
+                    Marking Scheme
+                </div>
+                <div class="content-area">
+                    <div class="marking-point">
+                        <span class="point-score">+2</span>
+                        <strong>Definition:</strong> Conversion of light energy to chemical energy.
+                    </div>
+                    <div class="marking-point">
+                        <span class="point-score">+3</span>
+                        <strong>Light-Dependent:</strong> Occurs in thylakoid membranes; photolysis of water.
+                    </div>
+                    <div class="marking-point">
+                        <span class="point-score">+3</span>
+                        <strong>Light-Independent:</strong> Occurs in stroma; CO2 fixation (Calvin Cycle).
+                    </div>
+                    <div class="marking-point">
+                        <span class="point-score">+2</span>
+                        <strong>Product:</strong> Identification of Glucose ($C_6H_{12}O_6$) as primary product.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-commentary">
+            <h3 style="margin-bottom: 10px;"><i class="fa-solid fa-robot"></i> Tutor Feedback</h3>
+            <p>Your answer covers the basic locations correctly (Thylakoid and Stroma). However, you could improve your score by mentioning **ATP** and **NADPH** as products of the light-dependent phase that fuel the Calvin cycle. You correctly identified the reactants and products.</p>
+        </div>
+    </main>
+
+    <script>
+        // Use the same hamburger logic if needed, though this is a focused review page
+    </script>
+</body>
+</html>
