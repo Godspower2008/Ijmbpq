@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Results | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .results-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 8px solid var(--border);
+            border-top-color: var(--success);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 30px auto;
+            background: var(--card);
+        }
+
+        .score-val { font-size: 3rem; font-weight: 800; color: var(--success); }
+        .score-total { font-size: 1rem; color: var(--text-dim); }
+
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .perf-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        .perf-label { font-size: 0.8rem; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 5px; }
+        .perf-value { font-size: 1.2rem; font-weight: 700; }
+
+        .btn-group { display: flex; gap: 15px; margin-top: 20px; }
+        .btn-download { background: var(--accent); color: white; flex: 1; border: none; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .btn-home { background: rgba(255,255,255,0.05); color: var(--text); flex: 1; border: 1px solid var(--border); padding: 15px; border-radius: 12px; font-weight: 800; text-decoration: none; }
+
+        /* Hidden PDF Template */
+        #pdf-template { display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item">Home</a>
+            <a href="study.html" class="nav-item">Study</a>
+            <a href="test.html" class="nav-item">Test</a>
+            <a href="more.html" class="nav-item">More</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="results-container">
+            <h1 style="font-size: 2rem;">Exam Completed!</h1>
+            <p style="color: var(--text-dim);">You've successfully finished the Mathematics Mock Exam.</p>
+
+            <div class="score-circle">
+                <span class="score-val">38</span>
+                <span class="score-total">out of 50</span>
+            </div>
+
+            <div class="performance-grid">
+                <div class="perf-card">
+                    <span class="perf-label">Accuracy</span>
+                    <span class="perf-value" style="color: var(--success);">76%</span>
+                </div>
+                <div class="perf-card">
+                    <span class="perf-label">Time Spent</span>
+                    <span class="perf-value">42:15</span>
+                </div>
+                <div class="perf-card">
+                    <span class="perf-label">Correct</span>
+                    <span class="perf-value">38</span>
+                </div>
+                <div class="perf-card">
+                    <span class="perf-label">Wrong</span>
+                    <span class="perf-value" style="color: #ef4444;">12</span>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-download" onclick="downloadPDF()">
+                    <i class="fa-solid fa-file-pdf"></i> Download Report
+                </button>
+                <a href="ijmbpq.html" class="btn-home">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <div id="pdf-template" style="padding: 40px; color: #333; font-family: sans-serif;">
+        <h1 style="color: #6366f1; text-align: center;">IJMB PRO PERFORMANCE REPORT</h1>
+        <hr>
+        <div style="margin: 20px 0;">
+            <p><strong>Candidate:</strong> Student Account</p>
+            <p><strong>Subject:</strong> Mathematics Mock Exam</p>
+            <p><strong>Date:</strong> March 10, 2026</p>
+        </div>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 10px; text-align: center;">
+            <h2 style="margin: 0;">Score: 38 / 50 (76%)</h2>
+        </div>
+        <div style="margin-top: 30px;">
+            <h3>Breakdown:</h3>
+            <p>Correct Answers: 38</p>
+            <p>Incorrect Answers: 12</p>
+            <p>Time Taken: 42 minutes 15 seconds</p>
+        </div>
+    </div>
+
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('pdf-template');
+            element.style.display = 'block'; // Temporarily show for capture
+            
+            const opt = {
+                margin: 1,
+                filename: 'IJMB_PRO_Result.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none'; // Hide again
+            });
+        }
+    </script>
+</body>
+</html>
