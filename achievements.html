@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .badge-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .badge-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+            filter: grayscale(100%);
+            opacity: 0.3;
+        }
+
+        .badge-card.unlocked {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .badge-card.unlocked .badge-icon {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .badge-name { font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 5px; }
+        .badge-desc { font-size: 0.7rem; color: var(--text-dim); line-height: 1.3; }
+
+        .lock-overlay {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .unlocked .lock-overlay { display: none; }
+
+        .reward-banner {
+            background: linear-gradient(135deg, var(--accent), #4f46e5);
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="leaderboard.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Leaderboard</a>
+        <div style="font-weight: 800;">Your Rewards</div>
+        <div style="width: 40px;"></div>
+    </header>
+
+    <main>
+        <div class="reward-banner">
+            <div>
+                <h2 style="font-size: 1.4rem; margin-bottom: 10px;">Season 1 Prize</h2>
+                <p style="font-size: 0.85rem; opacity: 0.9;">Top 3 scholars get a "Master of Theory" Certificate and 5GB Study Data.</p>
+            </div>
+            <i class="fa-solid fa-gift" style="font-size: 3rem; opacity: 0.5;"></i>
+        </div>
+
+        <span class="settings-label">Unlocked Badges</span>
+        
+        <div class="achievements-grid">
+            <div class="badge-card unlocked">
+                <i class="fa-solid fa-fire badge-icon" style="color: #f97316;"></i>
+                <span class="badge-name">Early Starter</span>
+                <p class="badge-desc">Started your first theory exam session.</p>
+            </div>
+
+            <div class="badge-card unlocked">
+                <i class="fa-solid fa-bolt-lightning badge-icon" style="color: #fbbf24;"></i>
+                <span class="badge-name">Quick Learner</span>
+                <p class="badge-desc">Finished a custom exam in under 20 mins.</p>
+            </div>
+
+            <div class="badge-card">
+                <i class="fa-solid fa-lock lock-overlay"></i>
+                <i class="fa-solid fa-brain badge-icon" style="color: #ec4899;"></i>
+                <span class="badge-name">Theory King</span>
+                <p class="badge-desc">Score 15/15 in a Standard Exam.</p>
+            </div>
+
+            <div class="badge-card">
+                <i class="fa-solid fa-lock lock-overlay"></i>
+                <i class="fa-solid fa-calendar-check badge-icon" style="color: #10b981;"></i>
+                <span class="badge-name">7-Day Streak</span>
+                <p class="badge-desc">Practice for 7 consecutive days.</p>
+            </div>
+
+            <div class="badge-card">
+                <i class="fa-solid fa-lock lock-overlay"></i>
+                <i class="fa-solid fa-medal badge-icon" style="color: #fbbf24;"></i>
+                <span class="badge-name">Top 10 Scholar</span>
+                <p class="badge-desc">Reach the top 10 on the national leaderboard.</p>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
