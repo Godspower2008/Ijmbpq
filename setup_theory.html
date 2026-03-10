@@ -8,47 +8,91 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        .setup-container { max-width: 600px; margin: 0 auto; }
+        .setup-container { max-width: 650px; margin: 0 auto; }
         
-        .form-group { margin-bottom: 25px; }
+        .form-group { margin-bottom: 30px; }
         
         label { 
             display: block; 
             font-weight: 700; 
-            margin-bottom: 10px; 
-            font-size: 0.9rem; 
-            color: var(--text-dim);
+            margin-bottom: 12px; 
+            font-size: 0.95rem; 
+            color: var(--text);
         }
 
-        select, input {
-            width: 100%;
-            padding: 15px;
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .subject-card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 1rem;
-            outline: none;
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
         }
 
-        select:focus, input:focus { border-color: var(--accent); }
+        .subject-card.selected {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .subject-card i { color: var(--text-dim); }
+        .subject-card.selected i { color: var(--accent); }
+
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        input[type="range"] {
+            flex-grow: 1;
+            accent-color: var(--accent);
+        }
+
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .select-all-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
 
         .topic-pill-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 10px;
+            background: rgba(255,255,255,0.02);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
         }
 
         .topic-pill {
-            background: rgba(255,255,255,0.05);
+            background: var(--card);
             border: 1px solid var(--border);
             padding: 8px 15px;
             border-radius: 20px;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: 0.2s;
         }
 
         .topic-pill.selected {
@@ -61,14 +105,20 @@
             width: 100%;
             background: var(--accent);
             color: white;
-            padding: 18px;
+            padding: 20px;
             border: none;
             border-radius: 15px;
             font-weight: 800;
             font-size: 1.1rem;
             cursor: pointer;
             margin-top: 20px;
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .limit-notice {
+            font-size: 0.75rem;
+            color: #ef4444;
+            margin-top: 5px;
+            display: none;
         }
     </style>
 </head>
@@ -76,65 +126,110 @@
 
     <header>
         <a href="test.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Back</a>
-        <div style="font-weight: 800;">Custom Theory Setup</div>
-        <div style="width: 50px;"></div> </header>
+        <div style="font-weight: 800;">Custom Exam Builder</div>
+        <div style="width: 50px;"></div>
+    </header>
 
     <main>
         <div class="setup-container">
+            
             <div class="form-group">
-                <label>Select Subject</label>
-                <select id="subject">
-                    <option>Biology</option>
-                    <option>Chemistry</option>
-                    <option>Physics</option>
-                    <option>Mathematics</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Difficulty Level</label>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                    <button class="topic-pill selected">Beginner</button>
-                    <button class="topic-pill">Standard</button>
-                    <button class="topic-pill">Scholar</button>
+                <label>Select Subjects (Choose 1 to 3)</label>
+                <div class="subject-grid">
+                    <div class="subject-card" onclick="toggleSubject(this, 'Maths')">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span class="subject-name">Mathematics</span>
+                    </div>
+                    <div class="subject-card" onclick="toggleSubject(this, 'Bio')">
+                        <i class="fa-solid fa-dna"></i>
+                        <span class="subject-name">Biology</span>
+                    </div>
+                    <div class="subject-card" onclick="toggleSubject(this, 'Chem')">
+                        <i class="fa-solid fa-flask"></i>
+                        <span class="subject-name">Chemistry</span>
+                    </div>
+                    <div class="subject-card" onclick="toggleSubject(this, 'Phys')">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span class="subject-name">Physics</span>
+                    </div>
                 </div>
+                <p class="limit-notice" id="subjectLimit">You can only select up to 3 subjects.</p>
             </div>
 
             <div class="form-group">
-                <label>Focus Topics (Select Multiple)</label>
-                <div class="topic-pill-container">
-                    <div class="topic-pill selected">Cell Biology</div>
-                    <div class="topic-pill">Genetics</div>
-                    <div class="topic-pill">Ecology</div>
-                    <div class="topic-pill">Plant Anatomy</div>
-                    <div class="topic-pill">Evolution</div>
+                <label>Exam Duration: <span id="timeVal" style="color: var(--accent);">30</span> mins</label>
+                <div class="range-container">
+                    <span style="font-size: 0.8rem;">1m</span>
+                    <input type="range" id="timeRange" min="1" max="180" value="30" oninput="updateTime(this.value)">
+                    <span style="font-size: 0.8rem;">180m</span>
                 </div>
             </div>
 
             <div class="form-group">
                 <label>Number of Questions</label>
-                <input type="number" value="3" min="1" max="10">
+                <input type="number" id="qCount" value="5" min="1" max="20" style="width: 100px;">
             </div>
 
-            <div class="card" style="padding: 20px; background: rgba(16, 185, 129, 0.05); border-color: #10b981;">
-                <p style="font-size: 0.85rem; color: #10b981; font-weight: 600;">
-                    <i class="fa-solid fa-circle-check"></i> This configuration will provide a focused 45-minute practice session.
-                </p>
+            <div class="form-group">
+                <div class="topic-header">
+                    <label style="margin-bottom: 0;">Focus Topics</label>
+                    <button class="select-all-btn" onclick="selectAllTopics()">Select All Topics</button>
+                </div>
+                <div class="topic-pill-container" id="topicBox">
+                    <div class="topic-pill" onclick="toggleTopic(this)">Calculus</div>
+                    <div class="topic-pill" onclick="toggleTopic(this)">Organic Chemistry</div>
+                    <div class="topic-pill" onclick="toggleTopic(this)">Thermodynamics</div>
+                    <div class="topic-pill" onclick="toggleTopic(this)">Cell Division</div>
+                    <div class="topic-pill" onclick="toggleTopic(this)">Mechanics</div>
+                    <div class="topic-pill" onclick="toggleTopic(this)">Genetics</div>
+                </div>
             </div>
 
-            <button class="start-btn" onclick="location.href='exam_theory.html'">
-                Start Practice Session
+            <button class="start-btn" onclick="validateAndStart()">
+                Generate Theory Exam
             </button>
         </div>
     </main>
 
     <script>
-        // Simple toggle for topic pills
-        document.querySelectorAll('.topic-pill').forEach(pill => {
-            pill.addEventListener('click', () => {
-                pill.classList.toggle('selected');
-            });
-        });
+        let selectedSubjects = 0;
+
+        function toggleSubject(el, name) {
+            if (!el.classList.contains('selected')) {
+                if (selectedSubjects < 3) {
+                    el.classList.add('selected');
+                    selectedSubjects++;
+                    document.getElementById('subjectLimit').style.display = 'none';
+                } else {
+                    document.getElementById('subjectLimit').style.display = 'block';
+                }
+            } else {
+                el.classList.remove('selected');
+                selectedSubjects--;
+                document.getElementById('subjectLimit').style.display = 'none';
+            }
+        }
+
+        function updateTime(val) {
+            document.getElementById('timeVal').innerText = val;
+        }
+
+        function toggleTopic(el) {
+            el.classList.toggle('selected');
+        }
+
+        function selectAllTopics() {
+            const pills = document.querySelectorAll('.topic-pill');
+            pills.forEach(p => p.classList.add('selected'));
+        }
+
+        function validateAndStart() {
+            if (selectedSubjects === 0) {
+                alert("Please select at least one subject.");
+                return;
+            }
+            location.href = 'exam_theory.html';
+        }
     </script>
 </body>
 </html>
