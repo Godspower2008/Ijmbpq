@@ -3,20 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | IJMB PRO</title>
+    <title>Home | IJMB PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="ijmbpq.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo">IJMB<span>PRO</span></a>
-        <div class="header-icons">
-            <div class="header-icon-circle"><img src="icons/cart.svg" alt="Store"></div>
-            <div class="header-icon-circle">
-                <img src="icons/bell.svg" alt="Notifications">
-                <div class="notification-badge">1</div>
-            </div>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item active">Home</a>
+            <a href="study.html" class="nav-item">Study</a>
+            <a href="test.html" class="nav-item">Test</a>
+            <a href="more.html" class="nav-item">More</a>
+        </nav>
+
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </header>
 
@@ -26,41 +32,47 @@
         <div class="section-header">
             <h2 class="section-title">CBT Simulators</h2>
         </div>
-        <div class="cbt-simulators">
-            <div class="simulator-card" onclick="location.href='exam.html'">
-                <div class="simulator-content">
-                    <h3>CBT Simulator</h3>
-                    <p>Practice for any CBT exam environment.</p>
-                </div>
+        
+        <div class="grid-container">
+            <div class="card" onclick="location.href='test.html'">
+                <h3>CBT Simulator</h3>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 5px;">Practice in a real exam environment.</p>
+            </div>
+            <div class="card" onclick="location.href='test.html'">
+                <h3>IJMB Special Simulator</h3>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 5px;">Tailored questions for IJMB candidates.</p>
             </div>
         </div>
 
         <div class="section-header">
             <h2 class="section-title">Quick Links</h2>
         </div>
-        <div class="quick-links">
-            <div class="quick-link-card" onclick="location.href='study.html'">
-                <h3>Study Past Questions</h3>
+        
+        <div class="grid-container quick-links">
+            <div class="card" onclick="location.href='study.html'">
+                <h3 style="font-size: 0.9rem;">Past Questions</h3>
             </div>
-            <div class="quick-link-card">
-                <h3>IJMB PRO Store</h3>
+            <div class="card">
+                <h3 style="font-size: 0.9rem;">Video Lessons</h3>
             </div>
-            <div class="quick-link-card">
-                <h3>Video Lessons</h3>
+            <div class="card">
+                <h3 style="font-size: 0.9rem;">Online Store</h3>
             </div>
-            <div class="quick-link-card">
-                <h3>Novels</h3>
+            <div class="card">
+                <h3 style="font-size: 0.9rem;">Help Desk</h3>
             </div>
         </div>
     </main>
 
-    <nav class="mobile-nav">
-        <a href="#" class="mobile-nav-item active"><span>Home</span></a>
-        <a href="study.html" class="mobile-nav-item"><span>Study</span></a>
-        <a href="exam.html" class="mobile-nav-item"><span>Test</span></a>
-        <a href="#" class="mobile-nav-item"><span>More</span></a>
-    </nav>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
 
-    <script src="script.js"></script>
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            // Animate hamburger to X (optional)
+            hamburger.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
