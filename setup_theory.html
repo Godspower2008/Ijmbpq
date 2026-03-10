@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Custom Exam | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .setup-container { max-width: 600px; margin: 0 auto; }
+        
+        .form-group { margin-bottom: 25px; }
+        
+        label { 
+            display: block; 
+            font-weight: 700; 
+            margin-bottom: 10px; 
+            font-size: 0.9rem; 
+            color: var(--text-dim);
+        }
+
+        select, input {
+            width: 100%;
+            padding: 15px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        select:focus, input:focus { border-color: var(--accent); }
+
+        .topic-pill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .topic-pill {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .topic-pill.selected {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .start-btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="test.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <div style="font-weight: 800;">Custom Theory Setup</div>
+        <div style="width: 50px;"></div> </header>
+
+    <main>
+        <div class="setup-container">
+            <div class="form-group">
+                <label>Select Subject</label>
+                <select id="subject">
+                    <option>Biology</option>
+                    <option>Chemistry</option>
+                    <option>Physics</option>
+                    <option>Mathematics</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Difficulty Level</label>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                    <button class="topic-pill selected">Beginner</button>
+                    <button class="topic-pill">Standard</button>
+                    <button class="topic-pill">Scholar</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Focus Topics (Select Multiple)</label>
+                <div class="topic-pill-container">
+                    <div class="topic-pill selected">Cell Biology</div>
+                    <div class="topic-pill">Genetics</div>
+                    <div class="topic-pill">Ecology</div>
+                    <div class="topic-pill">Plant Anatomy</div>
+                    <div class="topic-pill">Evolution</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Number of Questions</label>
+                <input type="number" value="3" min="1" max="10">
+            </div>
+
+            <div class="card" style="padding: 20px; background: rgba(16, 185, 129, 0.05); border-color: #10b981;">
+                <p style="font-size: 0.85rem; color: #10b981; font-weight: 600;">
+                    <i class="fa-solid fa-circle-check"></i> This configuration will provide a focused 45-minute practice session.
+                </p>
+            </div>
+
+            <button class="start-btn" onclick="location.href='exam_theory.html'">
+                Start Practice Session
+            </button>
+        </div>
+    </main>
+
+    <script>
+        // Simple toggle for topic pills
+        document.querySelectorAll('.topic-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                pill.classList.toggle('selected');
+            });
+        });
+    </script>
+</body>
+</html>
