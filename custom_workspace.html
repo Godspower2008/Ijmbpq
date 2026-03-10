@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Workspace | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .exam-grid { display: grid; grid-template-columns: 1fr 300px; gap: 20px; height: calc(100vh - 80px); padding: 20px; }
+        .editor-container { background: var(--card); border: 1px solid var(--border); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; }
+        .question-box { padding: 25px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+        .subject-tag { background: var(--accent); color: white; padding: 4px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
+        
+        textarea { flex-grow: 1; background: transparent; border: none; color: white; padding: 25px; font-size: 1.05rem; line-height: 1.8; resize: none; outline: none; }
+        
+        .workspace-footer { padding: 15px 25px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .timer-circle { font-weight: 800; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+        
+        @media (max-width: 900px) { .exam-grid { grid-template-columns: 1fr; } .sidebar { display: none; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">IJMB<span>PRO</span></div>
+        <button class="save-btn" style="margin-top:0; width:auto; padding: 10px 20px;" onclick="finishSession()">Finish Exam</button>
+    </header>
+
+    <div class="exam-grid">
+        <main class="editor-container">
+            <div class="question-box">
+                <span class="subject-tag">Biology</span>
+                <h2 style="font-size: 1.1rem; line-height: 1.6;">Discuss the physiological changes that occur in the human body during strenuous exercise.</h2>
+            </div>
+            
+            <textarea id="answerInput" placeholder="Start typing your theory response here..." oninput="updateWordCount()"></textarea>
+            
+            <div class="workspace-footer">
+                <div style="font-size: 0.8rem; color: var(--text-dim);">Words: <span id="wordCount">0</span></div>
+                <div class="timer-circle">
+                    <i class="fa-solid fa-clock"></i> <span id="mainTimer">59:59</span>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="card" style="padding: 20px;">
+                <p style="font-weight: 800; font-size: 0.75rem; color: var(--text-dim); margin-bottom: 15px;">QUESTION NAVIGATOR</p>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                    <button class="card" style="padding: 10px; font-weight: 800; border-color: var(--accent);">1</button>
+                    <button class="card" style="padding: 10px; font-weight: 800; opacity: 0.5;">2</button>
+                    <button class="card" style="padding: 10px; font-weight: 800; opacity: 0.5;">3</button>
+                    <button class="card" style="padding: 10px; font-weight: 800; opacity: 0.5;">4</button>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 20px; margin-top: 20px; border-style: dashed; border-color: var(--accent);">
+                <h4 style="font-size: 0.85rem; margin-bottom: 10px;"><i class="fa-solid fa-lightbulb" style="color: #fbbf24;"></i> Quick Tip</h4>
+                <p style="font-size: 0.75rem; color: var(--text-dim); line-height: 1.5;">Structure your answer with an introduction, main body points, and a conclusion for maximum marks.</p>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        function updateWordCount() {
+            const text = document.getElementById('answerInput').value.trim();
+            document.getElementById('wordCount').innerText = text ? text.split(/\s+/).length : 0;
+        }
+
+        function finishSession() {
+            if(confirm("Are you sure you want to end this session and proceed to marking?")) {
+                location.href = 'marking_guide.html';
+            }
+        }
+/* Add this script inside your custom_workspace.html */
+
+// 1. UNIQUE KEY: Identify this specific session (Subject + Date)
+const STORAGE_KEY = 'ijmb_pro_theory_draft';
+
+// 2. AUTO-SAVE: Save to localStorage on every keystroke
+function updateWordCount() {
+    const text = document.getElementById('answerInput').value;
+    
+    // Save the text
+    localStorage.setItem(STORAGE_KEY, text);
+    
+    // Update visual count
+    const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+    document.getElementById('wordCount').innerText = wordCount;
+
+    // Show a tiny "Saved" indicator
+    showSavedBadge();
+}
+
+// 3. RECOVERY: Load data when the student returns
+window.onload = function() {
+    const savedDraft = localStorage.getItem(STORAGE_KEY);
+    if (savedDraft) {
+        document.getElementById('answerInput').value = savedDraft;
+        updateWordCount(); // Refresh the word count
+        alert("Draft recovered! You can continue where you left off.");
+    }
+};
+
+// 4. CLEANUP: Clear storage only when they officially FINISH
+function finishSession() {
+    if(confirm("Submit your answers? This will clear your saved draft.")) {
+        localStorage.removeItem(STORAGE_KEY); // Wipe draft
+        location.href = 'marking_guide.html';
+    }
+}
+
+// Visual "Saved" effect
+function showSavedBadge() {
+    const footer = document.querySelector('.workspace-footer');
+    let badge = document.getElementById('saveBadge');
+    if(!badge) {
+        badge = document.createElement('span');
+        badge.id = 'saveBadge';
+        badge.style = "font-size: 0.7rem; color: #10b981; margin-left: 10px; opacity: 0;";
+        badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Auto-saved';
+        footer.appendChild(badge);
+    }
+    badge.style.opacity = "1";
+    setTimeout(() => { badge.style.opacity = "0"; }, 2000);
+}
+    </script>
+</body>
+</html>
