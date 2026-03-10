@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        .setup-container { max-width: 650px; margin: 0 auto; }
+        .setup-container { max-width: 650px; margin: 0 auto; padding-bottom: 50px; }
         
         .form-group { margin-bottom: 30px; }
         
@@ -20,85 +20,83 @@
             color: var(--text);
         }
 
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .subject-card {
+        /* Checkbox List Mode */
+        .list-container {
             background: var(--card);
             border: 1px solid var(--border);
-            padding: 15px;
             border-radius: 15px;
-            cursor: pointer;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .list-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .list-item:last-child { border-bottom: none; }
+        .list-item:hover { background: rgba(255,255,255,0.02); }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: 0.3s;
         }
 
-        .subject-card.selected {
-            border-color: var(--accent);
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .subject-card i { color: var(--text-dim); }
-        .subject-card.selected i { color: var(--accent); }
-
-        .range-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        input[type="range"] {
-            flex-grow: 1;
-            accent-color: var(--accent);
-        }
-
-        .topic-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .select-all-btn {
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .topic-pill-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            background: rgba(255,255,255,0.02);
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px solid var(--border);
-        }
-
-        .topic-pill {
-            background: var(--card);
-            border: 1px solid var(--border);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .topic-pill.selected {
+        .list-item.selected .custom-checkbox {
             background: var(--accent);
             border-color: var(--accent);
+        }
+
+        .list-item.selected .custom-checkbox::after {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
             color: white;
+            font-size: 0.7rem;
+        }
+
+        /* Search Bar */
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            outline: none;
+        }
+
+        .search-bar:focus { border-color: var(--accent); }
+
+        .limit-notice {
+            font-size: 0.75rem;
+            color: #ef4444;
+            margin-top: 8px;
+            display: none;
         }
 
         .start-btn {
@@ -111,14 +109,7 @@
             font-weight: 800;
             font-size: 1.1rem;
             cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .limit-notice {
-            font-size: 0.75rem;
-            color: #ef4444;
-            margin-top: 5px;
-            display: none;
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -134,98 +125,101 @@
         <div class="setup-container">
             
             <div class="form-group">
-                <label>Select Subjects (Choose 1 to 3)</label>
-                <div class="subject-grid">
-                    <div class="subject-card" onclick="toggleSubject(this, 'Maths')">
-                        <i class="fa-solid fa-calculator"></i>
-                        <span class="subject-name">Mathematics</span>
+                <label>Select Subjects (1 to 3)</label>
+                <div class="list-container">
+                    <div class="list-item" onclick="toggleSelection(this, 'subject')">
+                        <div class="custom-checkbox"></div>
+                        <span>Mathematics</span>
                     </div>
-                    <div class="subject-card" onclick="toggleSubject(this, 'Bio')">
-                        <i class="fa-solid fa-dna"></i>
-                        <span class="subject-name">Biology</span>
+                    <div class="list-item" onclick="toggleSelection(this, 'subject')">
+                        <div class="custom-checkbox"></div>
+                        <span>Biology</span>
                     </div>
-                    <div class="subject-card" onclick="toggleSubject(this, 'Chem')">
-                        <i class="fa-solid fa-flask"></i>
-                        <span class="subject-name">Chemistry</span>
+                    <div class="list-item" onclick="toggleSelection(this, 'subject')">
+                        <div class="custom-checkbox"></div>
+                        <span>Chemistry</span>
                     </div>
-                    <div class="subject-card" onclick="toggleSubject(this, 'Phys')">
-                        <i class="fa-solid fa-bolt"></i>
-                        <span class="subject-name">Physics</span>
+                    <div class="list-item" onclick="toggleSelection(this, 'subject')">
+                        <div class="custom-checkbox"></div>
+                        <span>Physics</span>
                     </div>
                 </div>
-                <p class="limit-notice" id="subjectLimit">You can only select up to 3 subjects.</p>
+                <p class="limit-notice" id="subjectLimit">Please select between 1 and 3 subjects.</p>
             </div>
 
             <div class="form-group">
-                <label>Exam Duration: <span id="timeVal" style="color: var(--accent);">30</span> mins</label>
-                <div class="range-container">
-                    <span style="font-size: 0.8rem;">1m</span>
-                    <input type="range" id="timeRange" min="1" max="180" value="30" oninput="updateTime(this.value)">
-                    <span style="font-size: 0.8rem;">180m</span>
+                <label>Focus Topics</label>
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="search-bar" id="topicSearch" placeholder="Search topics (e.g. Calculus, Genetics...)" onkeyup="filterTopics()">
+                </div>
+                <div class="list-container" id="topicList">
+                    <div class="list-item topic-item" onclick="toggleSelection(this, 'topic')">
+                        <div class="custom-checkbox"></div>
+                        <span>Differential Calculus</span>
+                    </div>
+                    <div class="list-item topic-item" onclick="toggleSelection(this, 'topic')">
+                        <div class="custom-checkbox"></div>
+                        <span>Organic Compounds</span>
+                    </div>
+                    <div class="list-item topic-item" onclick="toggleSelection(this, 'topic')">
+                        <div class="custom-checkbox"></div>
+                        <span>Cell Structure & Function</span>
+                    </div>
+                    <div class="list-item topic-item" onclick="toggleSelection(this, 'topic')">
+                        <div class="custom-checkbox"></div>
+                        <span>Electromagnetism</span>
+                    </div>
+                    <div class="list-item topic-item" onclick="toggleSelection(this, 'topic')">
+                        <div class="custom-checkbox"></div>
+                        <span>Atomic Theory</span>
+                    </div>
+                    <div class="list-item topic-item" onclick="toggleSelection(this, 'topic')">
+                        <div class="custom-checkbox"></div>
+                        <span>Genetics & Heredity</span>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Number of Questions</label>
-                <input type="number" id="qCount" value="5" min="1" max="20" style="width: 100px;">
+                <label>Exam Duration (Minutes)</label>
+                <input type="number" id="duration" value="60" min="1" max="180" style="width: 100%; padding: 15px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; color: white;">
             </div>
 
-            <div class="form-group">
-                <div class="topic-header">
-                    <label style="margin-bottom: 0;">Focus Topics</label>
-                    <button class="select-all-btn" onclick="selectAllTopics()">Select All Topics</button>
-                </div>
-                <div class="topic-pill-container" id="topicBox">
-                    <div class="topic-pill" onclick="toggleTopic(this)">Calculus</div>
-                    <div class="topic-pill" onclick="toggleTopic(this)">Organic Chemistry</div>
-                    <div class="topic-pill" onclick="toggleTopic(this)">Thermodynamics</div>
-                    <div class="topic-pill" onclick="toggleTopic(this)">Cell Division</div>
-                    <div class="topic-pill" onclick="toggleTopic(this)">Mechanics</div>
-                    <div class="topic-pill" onclick="toggleTopic(this)">Genetics</div>
-                </div>
-            </div>
-
-            <button class="start-btn" onclick="validateAndStart()">
-                Generate Theory Exam
-            </button>
+            <button class="start-btn" onclick="startExam()">Generate Theory Exam</button>
         </div>
     </main>
 
     <script>
-        let selectedSubjects = 0;
-
-        function toggleSubject(el, name) {
-            if (!el.classList.contains('selected')) {
-                if (selectedSubjects < 3) {
-                    el.classList.add('selected');
-                    selectedSubjects++;
-                    document.getElementById('subjectLimit').style.display = 'none';
-                } else {
+        function toggleSelection(el, type) {
+            if (type === 'subject') {
+                const selectedSubjects = document.querySelectorAll('.list-item.selected').length;
+                const isSelected = el.classList.contains('selected');
+                
+                if (!isSelected && selectedSubjects >= 3) {
                     document.getElementById('subjectLimit').style.display = 'block';
+                    return;
                 }
-            } else {
-                el.classList.remove('selected');
-                selectedSubjects--;
                 document.getElementById('subjectLimit').style.display = 'none';
             }
-        }
-
-        function updateTime(val) {
-            document.getElementById('timeVal').innerText = val;
-        }
-
-        function toggleTopic(el) {
+            
             el.classList.toggle('selected');
         }
 
-        function selectAllTopics() {
-            const pills = document.querySelectorAll('.topic-pill');
-            pills.forEach(p => p.classList.add('selected'));
+        function filterTopics() {
+            const input = document.getElementById('topicSearch').value.toLowerCase();
+            const items = document.querySelectorAll('.topic-item');
+            
+            items.forEach(item => {
+                const text = item.querySelector('span').innerText.toLowerCase();
+                item.style.display = text.includes(input) ? 'flex' : 'none';
+            });
         }
 
-        function validateAndStart() {
-            if (selectedSubjects === 0) {
-                alert("Please select at least one subject.");
+        function startExam() {
+            const selectedCount = document.querySelectorAll('.list-item.selected').length;
+            if (selectedCount === 0) {
+                alert("Please select at least one subject and topic.");
                 return;
             }
             location.href = 'exam_theory.html';
