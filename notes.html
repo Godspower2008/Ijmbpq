@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Notes | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .note-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .note-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+        .note-details h3 { font-size: 1rem; margin-bottom: 4px; }
+        .note-details p { font-size: 0.8rem; color: var(--text-dim); }
+        .badge {
+            margin-left: auto;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item">Home</a>
+            <a href="study.html" class="nav-item active">Study</a>
+            <a href="test.html" class="nav-item">Test</a>
+            <a href="more.html" class="nav-item">More</a>
+        </nav>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </header>
+
+    <main>
+        <div class="section-header">
+            <h1 class="section-title" style="font-size: 1.8rem;">Lesson Notes</h1>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr;">
+            <div class="card note-card" onclick="location.href='read_note.html'">
+                <div class="note-icon"><i class="fa-solid fa-calculator"></i></div>
+                <div class="note-details">
+                    <h3>General Mathematics</h3>
+                    <p>Calculus, Algebra, and Geometry summaries.</p>
+                </div>
+                <span class="badge">12 Units</span>
+            </div>
+
+            <div class="card note-card" onclick="location.href='read_note.html'">
+                <div class="note-icon"><i class="fa-solid fa-flask-vial"></i></div>
+                <div class="note-details">
+                    <h3>Chemistry</h3>
+                    <p>Organic, Inorganic, and Physical Chemistry.</p>
+                </div>
+                <span class="badge">15 Units</span>
+            </div>
+
+            <div class="card note-card" onclick="location.href='read_note.html'">
+                <div class="note-icon"><i class="fa-solid fa-feather"></i></div>
+                <div class="note-details">
+                    <h3>Use of English</h3>
+                    <p>Grammar, Concord, and Comprehension guides.</p>
+                </div>
+                <span class="badge">8 Units</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
