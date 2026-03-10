@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        .leaderboard-container { max-width: 700px; margin: 0 auto; }
-
+        .leaderboard-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        
         /* Podium Section */
         .podium {
             display: flex;
@@ -17,144 +17,129 @@
             align-items: flex-end;
             gap: 15px;
             margin: 40px 0;
-            padding-bottom: 20px;
-        }
-
-        .podium-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             text-align: center;
         }
 
-        .podium-avatar {
-            width: 60px; height: 60px;
+        .podium-item { width: 100px; }
+        .podium-rank {
+            width: 80px; height: 80px;
             border-radius: 50%;
-            background: var(--card);
-            border: 3px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            margin-bottom: 10px;
+            margin: 0 auto 10px;
+            border: 4px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
             position: relative;
         }
 
-        .crown {
-            position: absolute;
-            top: -15px;
-            font-size: 1.2rem;
-            color: #fbbf24;
-        }
+        .rank-1 .podium-rank { width: 100px; height: 100px; border-color: #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
+        .rank-2 .podium-rank { border-color: #94a3b8; }
+        .rank-3 .podium-rank { border-color: #b45309; }
 
-        .rank-2 .podium-avatar { width: 75px; height: 75px; border-color: #94a3b8; }
-        .rank-1 .podium-avatar { width: 95px; height: 95px; border-color: #fbbf24; }
-        .rank-3 .podium-avatar { width: 75px; height: 75px; border-color: #b45309; }
+        .crown { position: absolute; top: -15px; font-size: 1.5rem; color: #fbbf24; }
 
-        .podium-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; }
-        .podium-score { font-size: 0.75rem; color: var(--accent); font-weight: 800; }
-
-        /* Ranking List */
-        .rank-list {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .rank-item {
+        /* List Section */
+        .leader-list { background: var(--card); border: 1px solid var(--border); border-radius: 25px; overflow: hidden; }
+        
+        .leader-row {
             display: flex;
             align-items: center;
             padding: 15px 20px;
             border-bottom: 1px solid var(--border);
             transition: 0.3s;
         }
+        
+        .leader-row:last-child { border-bottom: none; }
+        .leader-row.me { background: rgba(99, 102, 241, 0.1); border-left: 4px solid var(--accent); }
 
-        .rank-item:last-child { border-bottom: none; }
-        .rank-item:hover { background: rgba(255,255,255,0.02); }
+        .rank-num { width: 30px; font-weight: 800; color: var(--text-dim); }
+        .leader-info { flex-grow: 1; display: flex; align-items: center; gap: 15px; }
+        .leader-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border); }
+        .points { font-weight: 800; color: var(--accent); }
 
-        .rank-number { width: 30px; font-weight: 800; color: var(--text-dim); }
-        .rank-info { flex-grow: 1; display: flex; align-items: center; gap: 15px; }
-        .user-pic { width: 35px; height: 35px; border-radius: 50%; background: rgba(99, 102, 241, 0.1); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
-        .user-name { font-weight: 600; font-size: 0.95rem; }
-        .user-points { font-weight: 800; color: var(--success); font-size: 0.9rem; }
+        .tab-switcher {
+            display: flex;
+            gap: 10px;
+            background: var(--card);
+            padding: 5px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .tab-btn.active { background: var(--accent); color: white; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
-        <nav class="nav-links" id="navLinks">
-            <a href="ijmbpq.html" class="nav-item">Home</a>
-            <a href="study.html" class="nav-item">Study</a>
-            <a href="test.html" class="nav-item">Test</a>
-            <a href="more.html" class="nav-item">More</a>
-        </nav>
-        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        <a href="ijmbpq.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Home</a>
+        <div style="font-weight: 800;">Top Scholars</div>
+        <div style="width: 40px;"></div>
     </header>
 
-    <main>
-        <div class="leaderboard-container">
-            <div class="section-header" style="text-align: center;">
-                <h1 class="section-title">Global Leaderboard</h1>
-                <p style="color: var(--text-dim);">Top performers of the week</p>
+    <main class="leaderboard-container">
+        <div class="tab-switcher">
+            <button class="tab-btn active">Overall</button>
+            <button class="tab-btn">Weekly</button>
+        </div>
+
+        <div class="podium">
+            <div class="podium-item rank-2">
+                <div class="podium-rank"><img src="https://via.placeholder.com/80" class="podium-rank" alt="2nd"></div>
+                <div style="font-weight: 800; font-size: 0.8rem;">Ahmed O.</div>
+                <div class="points" style="font-size: 0.75rem;">12.4k</div>
+            </div>
+            <div class="podium-item rank-1">
+                <i class="fa-solid fa-crown crown"></i>
+                <div class="podium-rank"><img src="https://via.placeholder.com/100" class="podium-rank" alt="1st"></div>
+                <div style="font-weight: 800; font-size: 0.9rem;">Sarah E.</div>
+                <div class="points">15.2k</div>
+            </div>
+            <div class="podium-item rank-3">
+                <div class="podium-rank"><img src="https://via.placeholder.com/80" class="podium-rank" alt="3rd"></div>
+                <div style="font-weight: 800; font-size: 0.8rem;">John D.</div>
+                <div class="points" style="font-size: 0.75rem;">10.1k</div>
+            </div>
+        </div>
+
+        <div class="leader-list">
+            <div class="leader-row">
+                <span class="rank-num">4</span>
+                <div class="leader-info">
+                    <div class="leader-avatar"></div>
+                    <span style="font-weight: 700;">Emeka Eze</span>
+                </div>
+                <span class="points">9,840</span>
             </div>
 
-            <div class="podium">
-                <div class="podium-item rank-2">
-                    <div class="podium-avatar">JS</div>
-                    <div class="podium-name">John S.</div>
-                    <div class="podium-score">2,850 pts</div>
+            <div class="leader-row me">
+                <span class="rank-num">5</span>
+                <div class="leader-info">
+                    <div class="leader-avatar"></div>
+                    <span style="font-weight: 700;">You (Student)</span>
                 </div>
-                <div class="podium-item rank-1">
-                    <div class="crown"><i class="fa-solid fa-crown"></i></div>
-                    <div class="podium-avatar">AM</div>
-                    <div class="podium-name">Amina M.</div>
-                    <div class="podium-score">3,120 pts</div>
-                </div>
-                <div class="podium-item rank-3">
-                    <div class="podium-avatar">CE</div>
-                    <div class="podium-name">Chidi E.</div>
-                    <div class="podium-score">2,710 pts</div>
-                </div>
+                <span class="points">8,200</span>
             </div>
 
-            <div class="rank-list">
-                <div class="rank-item">
-                    <span class="rank-number">4</span>
-                    <div class="rank-info">
-                        <div class="user-pic">FB</div>
-                        <span class="user-name">Femi Bakare</span>
-                    </div>
-                    <span class="user-points">2,500</span>
+            <div class="leader-row">
+                <span class="rank-num">6</span>
+                <div class="leader-info">
+                    <div class="leader-avatar"></div>
+                    <span style="font-weight: 700;">Tunde R.</span>
                 </div>
-                <div class="rank-item">
-                    <span class="rank-number">5</span>
-                    <div class="rank-info">
-                        <div class="user-pic">YK</div>
-                        <span class="user-name">Yusuf K.</span>
-                    </div>
-                    <span class="user-points">2,420</span>
-                </div>
-                <div class="rank-item" style="background: rgba(99, 102, 241, 0.1);">
-                    <span class="rank-number">24</span>
-                    <div class="rank-info">
-                        <div class="user-pic" style="background: var(--accent); color: white;">ME</div>
-                        <span class="user-name">You (Student)</span>
-                    </div>
-                    <span class="user-points">1,200</span>
-                </div>
+                <span class="points">7,900</span>
             </div>
         </div>
     </main>
 
-    <script>
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-            hamburger.classList.toggle('active');
-        });
-    </script>
 </body>
 </html>
