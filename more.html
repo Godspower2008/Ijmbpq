@@ -4,202 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>More | IJMB PRO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            --bg: #020617;
-            --card: #0f172a; 
-            --border: rgba(99, 102, 241, 0.2); 
-            --accent: #6366f1; 
-            --text: #f8fafc;
-            --text-dim: #94a3b8; 
-            --danger: #ef4444;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; }
-
-        main { max-width: 600px; margin: 0 auto; padding: 40px 5% 100px 5%; }
-
-        /* --- PROFILE HEADER --- */
-        .profile-section {
+        /* Specific Styles for the More/Settings Page */
+        .profile-box {
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
+            padding: 30px;
             background: var(--card);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .avatar-circle {
+            width: 70px;
+            height: 70px;
+            background: rgba(99, 102, 241, 0.1);
             border: 2px solid var(--accent);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--accent);
             margin-bottom: 15px;
         }
-        .profile-info h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; }
-        .profile-info p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 15px; }
-        .edit-profile-btn {
-            padding: 8px 16px; border-radius: 50px; border: 1.5px solid var(--border);
-            background: transparent; color: var(--text); font-weight: 600;
-            font-size: 0.85rem; cursor: pointer; transition: 0.3s;
+        .settings-group {
+            margin-bottom: 25px;
         }
-        .edit-profile-btn:hover { border-color: var(--accent); background: rgba(99,102,241,0.05); }
-
-        /* --- CATEGORIZED LISTS --- */
-        .settings-category { margin-bottom: 30px; }
-        .category-title {
-            font-size: 0.8rem; font-weight: 700; color: var(--text-dim);
-            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;
-            padding-left: 10px;
+        .group-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 12px 10px;
         }
         .settings-list {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 20px; overflow: hidden;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
         }
         .settings-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 15px 20px; text-decoration: none; color: var(--text);
-            transition: 0.3s; cursor: pointer; border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+            transition: 0.2s;
         }
         .settings-item:last-child { border-bottom: none; }
         .settings-item:hover { background: rgba(255,255,255,0.03); }
-        .item-content { display: flex; align-items: center; gap: 15px; }
-        .item-icon { color: var(--accent); font-size: 1.1rem; width: 20px; text-align: center; }
-        .item-label { font-size: 0.95rem; font-weight: 600; }
-        .fa-chevron-right { font-size: 0.8rem; color: var(--text-dim); }
-
-        /* --- LOGOUT SECTION --- */
-        .logout-btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; padding: 15px; background: rgba(239, 68, 68, 0.1);
-            color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 15px; font-weight: 700; cursor: pointer; transition: 0.3s;
-        }
-        .logout-btn:hover { background: var(--danger); color: white; }
-
-        /* --- MOBILE NAV --- */
-        .mobile-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: var(--bg); border-top: 1px solid var(--border);
-            padding: 12px 5%; display: flex; justify-content: space-around;
-        }
-        .mobile-nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            color: var(--text-dim); text-decoration: none; font-size: 0.75rem;
-        }
-        .mobile-nav-item.active { color: var(--accent); }
-        .mobile-nav-item i { font-size: 1.3rem; margin-bottom: 4px; }
-
+        .item-left { display: flex; align-items: center; gap: 15px; }
+        .item-left i { color: var(--accent); width: 20px; text-align: center; }
+        .logout-text { color: #ef4444 !important; }
     </style>
 </head>
 <body>
 
-<main>
-    <div class="profile-section">
-        <div class="profile-avatar">
-            <i class="fa-solid fa-user"></i>
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item">Home</a>
+            <a href="study.html" class="nav-item">Study</a>
+            <a href="test.html" class="nav-item">Test</a>
+            <a href="more.html" class="nav-item active">More</a>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
         </div>
-        <div class="profile-info">
-            <h1>User Account</h1>
-            <p>user@example.com</p>
-            <button class="edit-profile-btn" onclick="location.href='profile.html'">Edit Profile</button>
-        </div>
-    </div>
+    </header>
 
-    <div class="settings-category">
-        <h2 class="category-title">Account</h2>
-        <div class="settings-list">
-            <a href="pricing.html" class="settings-item">
-                <div class="item-content">
-                    <i class="fa-solid fa-crown item-icon"></i>
-                    <span class="item-label">Upgrade to PRO</span>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
-            <a href="settings.html" class="settings-item">
-                <div class="item-content">
-                    <i class="fa-solid fa-lock item-icon"></i>
-                    <span class="item-label">Password & Security</span>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
+    <main style="max-width: 700px;">
+        <div class="profile-box">
+            <div class="avatar-circle"><i class="fa-solid fa-user"></i></div>
+            <h2 style="font-size: 1.4rem;">Student Account</h2>
+            <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 15px;">student@ijmbpro.com</p>
+            <button class="card" style="padding: 8px 20px; font-size: 0.8rem; font-weight: 700;">Edit Profile</button>
         </div>
-    </div>
 
-    <div class="settings-category">
-        <h2 class="category-title">App Settings</h2>
-        <div class="settings-list">
-            <div class="settings-item">
-                <div class="item-content">
-                    <i class="fa-solid fa-bell item-icon"></i>
-                    <span class="item-label">Notifications</span>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-            </div>
-            <div class="settings-item">
-                <div class="item-content">
-                    <i class="fa-solid fa-moon item-icon"></i>
-                    <span class="item-label">Theme Settings</span>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
+        <div class="settings-group">
+            <p class="group-label">General</p>
+            <div class="settings-list">
+                <a href="#" class="settings-item">
+                    <div class="item-left"><i class="fa-solid fa-crown"></i> <span>Upgrade to PRO</span></div>
+                    <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.5;"></i>
+                </a>
+                <a href="#" class="settings-item">
+                    <div class="item-left"><i class="fa-solid fa-bell"></i> <span>Notifications</span></div>
+                    <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.5;"></i>
+                </a>
             </div>
         </div>
-    </div>
 
-    <div class="settings-category">
-        <h2 class="category-title">Support</h2>
-        <div class="settings-list">
-            <a href="faq.html" class="settings-item">
-                <div class="item-content">
-                    <i class="fa-solid fa-circle-question item-icon"></i>
-                    <span class="item-label">FAQs & Support</span>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
-            <a href="about.html" class="settings-item">
-                <div class="item-content">
-                    <i class="fa-solid fa-circle-info item-icon"></i>
-                    <span class="item-label">About IJMB PRO</span>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
+        <div class="settings-group">
+            <p class="group-label">Support</p>
+            <div class="settings-list">
+                <a href="#" class="settings-item">
+                    <div class="item-left"><i class="fa-solid fa-circle-question"></i> <span>Help & FAQ</span></div>
+                    <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; opacity: 0.5;"></i>
+                </a>
+                <a href="#" class="settings-item" onclick="handleLogout()">
+                    <div class="item-left"><i class="fa-solid fa-right-from-bracket logout-text"></i> <span class="logout-text">Logout</span></div>
+                </a>
+            </div>
         </div>
-    </div>
+    </main>
 
-    <button class="logout-btn" onclick="handleLogout()">
-        <i class="fa-solid fa-right-from-bracket"></i> Logout
-    </button>
-</main>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        });
 
-<nav class="mobile-nav">
-    <a href="ijmbpq.html" class="mobile-nav-item">
-        <i class="fa-solid fa-house"></i> <span>Home</span>
-    </a>
-    <a href="study.html" class="mobile-nav-item">
-        <i class="fa-solid fa-book-open"></i> <span>Study</span>
-    </a>
-    <a href="test.html" class="mobile-nav-item">
-        <i class="fa-solid fa-flask"></i> <span>Test</span>
-    </a>
-    <a href="more.html" class="mobile-nav-item active">
-        <i class="fa-solid fa-ellipsis-vertical"></i> <span>More</span>
-    </a>
-</nav>
-
-<script>
-    function handleLogout() {
-        if(confirm("Are you sure you want to logout?")) {
-            location.href = 'index.html'; // Assuming index.html is the login page
+        function handleLogout() {
+            if(confirm("Are you sure you want to logout?")) {
+                location.href = 'index.html';
+            }
         }
-    }
-</script>
-
+    </script>
 </body>
 </html>
