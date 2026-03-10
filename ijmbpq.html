@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | IJMB PRO</title>
+    <title>Dashboard | IJMB PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -32,34 +32,32 @@
         <div class="section-header">
             <h2 class="section-title">CBT Simulators</h2>
         </div>
-        
-        <div class="grid-container">
+        <div class="grid">
             <div class="card" onclick="location.href='test.html'">
-                <h3>CBT Simulator</h3>
-                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 5px;">Practice in a real exam environment.</p>
+                <h3>JAMB/UTME Simulator</h3>
+                <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 8px;">Practice with over 20,000 past questions.</p>
             </div>
             <div class="card" onclick="location.href='test.html'">
-                <h3>IJMB Special Simulator</h3>
-                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 5px;">Tailored questions for IJMB candidates.</p>
+                <h3>IJMB Special Mode</h3>
+                <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 8px;">Tailored for points-based examination entry.</p>
             </div>
         </div>
 
         <div class="section-header">
             <h2 class="section-title">Quick Links</h2>
         </div>
-        
-        <div class="grid-container quick-links">
+        <div class="grid quick-links-grid">
             <div class="card" onclick="location.href='study.html'">
                 <h3 style="font-size: 0.9rem;">Past Questions</h3>
+            </div>
+            <div class="card" onclick="location.href='study.html'">
+                <h3 style="font-size: 0.9rem;">Novels</h3>
             </div>
             <div class="card">
                 <h3 style="font-size: 0.9rem;">Video Lessons</h3>
             </div>
             <div class="card">
-                <h3 style="font-size: 0.9rem;">Online Store</h3>
-            </div>
-            <div class="card">
-                <h3 style="font-size: 0.9rem;">Help Desk</h3>
+                <h3 style="font-size: 0.9rem;">Pro Store</h3>
             </div>
         </div>
     </main>
@@ -70,8 +68,15 @@
 
         hamburger.addEventListener('click', () => {
             navLinks.classList.toggle('open');
-            // Animate hamburger to X (optional)
             hamburger.classList.toggle('active');
+        });
+
+        // Close menu if clicking outside
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+                navLinks.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
         });
     </script>
 </body>
