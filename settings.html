@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .settings-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        
+        .profile-section {
+            text-align: center;
+            margin-bottom: 35px;
+            padding: 30px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+        }
+
+        .profile-pic-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+        }
+
+        .upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--accent);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: 2px solid var(--card);
+        }
+
+        .settings-group { margin-bottom: 25px; }
+        .settings-label { font-weight: 800; font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 15px; display: block; }
+
+        .setting-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .setting-info { display: flex; align-items: center; gap: 15px; }
+        .setting-info i { color: var(--accent); width: 20px; text-align: center; }
+
+        /* Simple Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 45px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; width: 18px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(21px); }
+
+        .danger-zone { border-color: #ef4444; color: #ef4444; cursor: pointer; }
+    </style>
+</head>
+<body class="dark-mode"> <header>
+        <a href="ijmbpq.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Home</a>
+        <div style="font-weight: 800;">Settings</div>
+        <div style="width: 40px;"></div>
+    </header>
+
+    <main class="settings-container">
+        <div class="profile-section">
+            <div class="profile-pic-container">
+                <img src="https://via.placeholder.com/100" alt="Profile" class="profile-pic" id="userAvatar">
+                <label for="fileInput" class="upload-btn"><i class="fa-solid fa-camera"></i></label>
+                <input type="file" id="fileInput" hidden accept="image/*" onchange="previewImage(event)">
+            </div>
+            <h2 id="userNameDisplay" style="font-size: 1.2rem;">Student User</h2>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Joined March 2026</p>
+        </div>
+
+        <span class="settings-label">Personal Information</span>
+        <div class="setting-item">
+            <div class="setting-info">
+                <i class="fa-solid fa-user"></i>
+                <span>Display Name</span>
+            </div>
+            <input type="text" id="nameInput" placeholder="Enter name" style="background:transparent; border:none; color:white; text-align:right; outline:none; font-family:inherit;">
+        </div>
+
+        <span class="settings-label">App Preferences</span>
+        <div class="setting-item">
+            <div class="setting-info">
+                <i class="fa-solid fa-moon"></i>
+                <span>Dark Mode</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" checked onchange="toggleTheme()">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <i class="fa-solid fa-bell"></i>
+                <span>Study Reminders</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <span class="settings-label">Account & Data</span>
+        <div class="setting-item" onclick="confirmClear()">
+            <div class="setting-info">
+                <i class="fa-solid fa-trash"></i>
+                <span>Clear Exam History</span>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; opacity: 0.5;"></i>
+        </div>
+
+        <div class="setting-item danger-zone" onclick="alert('Log out successful')">
+            <div class="setting-info">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Log Out</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Theme Toggle Logic
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            // You can also change CSS variables here for a full Light Mode
+        }
+
+        // Image Preview Logic
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('userAvatar');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Clear History
+        function confirmClear() {
+            if(confirm("Are you sure? This will delete all your local study progress and drafts.")) {
+                localStorage.clear();
+                alert("Data cleared.");
+            }
+        }
+    </script>
+</body>
+</html>
