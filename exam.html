@@ -2,195 +2,212 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test | IJMB PRO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Exam Hall | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            --bg: #020617;
-            --card: #0f172a; 
-            --border: rgba(99, 102, 241, 0.2); 
-            --accent: #6366f1; 
-            --text: #f8fafc;
-            --text-dim: #94a3b8; 
-            --success: #10b981;
-            --jamb-bg: rgba(16, 185, 129, 0.1); /* Greenish for JAMB */
-            --waec-bg: rgba(59, 130, 246, 0.1); /* Bluish for WAEC */
-            --neco-bg: rgba(245, 158, 11, 0.1); /* Amber for NECO */
-            --challenge-bg: rgba(99, 102, 241, 0.1);
+        /* Exam Specific Layout Override */
+        body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        .exam-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
+            flex-grow: 1;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; }
-
-        header {
-            display: flex; justify-content: space-between; align-items: center; padding: 20px 5%;
-            background: var(--bg); position: sticky; top: 0; z-index: 1000;
+        /* Left Side: Question Area */
+        .question-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
         }
-        .logo { font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
-        .logo span { color: var(--accent); }
-        .header-icon { font-size: 1.4rem; color: var(--accent); }
 
-        main { max-width: 1000px; margin: 0 auto; padding: 20px 5% 100px 5%; }
-
-        /* --- TEST TITLE BLOCK --- */
-        .test-title-block {
-            display: flex; justify-content: space-between; align-items: start;
-            margin-bottom: 30px;
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
-        .test-title-text h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 5px; }
-        .test-title-text p { color: var(--text-dim); font-size: 0.85rem; }
-        .test-title-icon {
-            width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--border);
+
+        .q-text { font-size: 1.2rem; font-weight: 600; line-height: 1.6; margin-bottom: 30px; }
+
+        .options-list { display: flex; flex-direction: column; gap: 15px; }
+
+        .option {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover { border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
+        .option.selected { border-color: var(--accent); background: var(--accent); color: white; }
+
+        .option-letter {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: rgba(255,255,255,0.1);
             display: flex; align-items: center; justify-content: center;
-            color: var(--success); font-size: 1.2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-weight: 800; font-size: 0.8rem;
         }
 
-        /* --- SIMULATOR LIST (Matching Images) --- */
-        .simulator-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+        /* Right Side: Sidebar */
+        .exam-sidebar { display: flex; flex-direction: column; gap: 20px; }
 
-        .simulator-card {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 20px; padding: 20px; display: flex; align-items: center;
-            gap: 20px; cursor: pointer; transition: 0.3s; position: relative;
-            overflow: hidden;
-        }
-        .simulator-card:hover { transform: scale(1.02); border-color: var(--accent); }
-
-        /* Background patterns based on screenshots */
-        .simulator-card::after {
-            content: ''; position: absolute; right: -20px; top: -20px; width: 100px; height: 100px;
-            border-radius: 50%; opacity: 0.05; pointer-events: none;
+        .timer-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
         }
 
-        .sim-icon {
-            width: 70px; height: 70px; border-radius: 15px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; font-size: 2rem;
+        #timer { font-size: 2rem; font-weight: 800; color: #fbbf24; }
+
+        .nav-grid {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
-        .sim-info h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
-        .sim-info p { color: var(--text-dim); font-size: 0.75rem; line-height: 1.4; }
-
-        /* --- LEADERBOARD BUTTON --- */
-        .leaderboard-container { text-align: center; margin-top: 20px; }
-        .btn-leaderboard {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 15px 30px; border-radius: 50px; border: 1.5px solid var(--border);
-            background: transparent; color: var(--text); font-weight: 700;
-            cursor: pointer; transition: 0.3s;
+        .q-nav-btn {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-dim);
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
         }
-        .btn-leaderboard:hover { border-color: var(--accent); background: rgba(99,102,241,0.05); }
-        .btn-leaderboard i { color: #f59e0b; font-size: 1.2rem; }
 
-        /* --- MOBILE NAV --- */
-        .mobile-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: var(--bg); border-top: 1px solid var(--border);
-            padding: 12px 5%; display: flex; justify-content: space-around;
-        }
-        .mobile-nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            color: var(--text-dim); text-decoration: none; font-size: 0.75rem;
-        }
-        .mobile-nav-item.active { color: var(--accent); }
-        .mobile-nav-item i { font-size: 1.3rem; margin-bottom: 4px; }
+        .q-nav-btn.answered { background: var(--accent); color: white; border: none; }
+        .q-nav-btn.current { border: 2px solid var(--accent); color: var(--accent); }
 
+        /* Action Buttons */
+        .action-btns { margin-top: auto; display: flex; gap: 15px; padding-top: 30px; }
+        .btn { padding: 12px 25px; border-radius: 10px; font-weight: 700; cursor: pointer; border: none; }
+        .btn-next { background: var(--accent); color: white; flex-grow: 1; }
+        .btn-prev { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border); }
+        .btn-submit { background: #ef4444; color: white; }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .exam-container { grid-template-columns: 1fr; overflow-y: auto; }
+            body { overflow-y: auto; }
+            .exam-sidebar { order: -1; } /* Timer at top on mobile */
+            .nav-grid { grid-template-columns: repeat(10, 1fr); }
+            .question-box { padding: 25px; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
-    <i class="fa-solid fa-list-check header-icon"></i>
-</header>
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-dim);">Mathematics | Exam Mode</div>
+        <button class="btn btn-submit" onclick="finishExam()">Submit</button>
+    </header>
 
-<main>
-    <div class="test-title-block">
-        <div class="test-title-text">
-            <h1>Test</h1>
-            <p>Practice your preferred examination</p>
-        </div>
-        <div class="test-title-icon">
-            <i class="fa-solid fa-square-check"></i>
-        </div>
-    </div>
+    <div class="exam-container">
+        <div class="question-box">
+            <div class="question-header">
+                <span style="font-weight: 800; color: var(--accent);">Question 12 of 50</span>
+                <i class="fa-regular fa-bookmark" style="cursor: pointer;"></i>
+            </div>
 
-    <div class="simulator-list">
-        <div class="simulator-card" onclick="location.href='exam.html'">
-            <div class="sim-icon" style="background: rgba(249, 115, 22, 0.1); color: #f97316;">
-                <i class="fa-solid fa-desktop"></i>
+            <div class="q-text">
+                If $2x + 5 = 15$, what is the value of $x^2$?
             </div>
-            <div class="sim-info">
-                <h3>CBT Simulator</h3>
-                <p>Create and set up a CBT environment to practice for any CBT exam.</p>
-            </div>
-        </div>
 
-        <div class="simulator-card" onclick="location.href='exam.html?type=jamb'">
-            <div class="sim-icon" style="background: var(--jamb-bg); color: #10b981;">
-                <i class="fa-solid fa-graduation-cap"></i>
+            <div class="options-list">
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-letter">A</div>
+                    <div class="option-text">25</div>
+                </div>
+                <div class="option selected" onclick="selectOption(this)">
+                    <div class="option-letter">B</div>
+                    <div class="option-text">100</div>
+                </div>
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-letter">C</div>
+                    <div class="option-text">50</div>
+                </div>
+                <div class="option" onclick="selectOption(this)">
+                    <div class="option-letter">D</div>
+                    <div class="option-text">225</div>
+                </div>
             </div>
-            <div class="sim-info">
-                <h3>JAMB CBT Simulator</h3>
-                <p>Practice JAMB CBT with real UTME past questions in CBT format.</p>
-            </div>
-        </div>
 
-        <div class="simulator-card" onclick="location.href='exam.html?type=waec'">
-            <div class="sim-icon" style="background: var(--waec-bg); color: #3b82f6;">
-                <i class="fa-solid fa-award"></i>
-            </div>
-            <div class="sim-info">
-                <h3>WAEC CBT Simulator</h3>
-                <p>Practice WAEC past questions in a real CBT exam environment.</p>
+            <div class="action-btns">
+                <button class="btn btn-prev">Previous</button>
+                <button class="btn btn-next">Save & Next</button>
             </div>
         </div>
 
-        <div class="simulator-card" onclick="location.href='exam.html?type=neco'">
-            <div class="sim-icon" style="background: var(--neco-bg); color: #f59e0b;">
-                <i class="fa-solid fa-pen-nib"></i>
+        <div class="exam-sidebar">
+            <div class="timer-card">
+                <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Time Remaining</div>
+                <div id="timer">59:42</div>
             </div>
-            <div class="sim-info">
-                <h3>NECO CBT Simulator</h3>
-                <p>Prepare for NECO exams using real past questions in CBT mode.</p>
-            </div>
-        </div>
 
-        <div class="simulator-card" style="background: var(--challenge-bg); border-color: var(--accent);">
-            <div class="sim-icon" style="background: var(--accent); color: white;">
-                <i class="fa-solid fa-trophy"></i>
+            <div class="nav-grid">
+                <script>
+                    for(let i=1; i<=50; i++) {
+                        let status = i < 12 ? 'answered' : (i == 12 ? 'current' : '');
+                        document.write(`<button class="q-nav-btn ${status}">${i}</button>`);
+                    }
+                </script>
             </div>
-            <div class="sim-info">
-                <h3>Challenge Simulator</h3>
-                <p>Compete against other students and climb Myschool's Leaderboard.</p>
-            </div>
+
+            <button class="card" style="padding: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="toggleCalc()">
+                <i class="fa-solid fa-calculator"></i> Open Calculator
+            </button>
         </div>
     </div>
 
-    <div class="leaderboard-container">
-        <button class="btn-leaderboard">
-            <i class="fa-solid fa-ranking-star"></i> View Leaderboard
-        </button>
-    </div>
-</main>
+    <script>
+        function selectOption(el) {
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+        }
 
-<nav class="mobile-nav">
-    <a href="ijmbpq.html" class="mobile-nav-item">
-        <i class="fa-solid fa-house"></i> <span>Home</span>
-    </a>
-    <a href="study.html" class="mobile-nav-item">
-        <i class="fa-solid fa-book-open"></i> <span>Study</span>
-    </a>
-    <a href="test.html" class="mobile-nav-item active">
-        <i class="fa-solid fa-flask"></i> <span>Test</span>
-    </a>
-    <a href="#" class="mobile-nav-item">
-        <i class="fa-solid fa-ellipsis-vertical"></i> <span>More</span>
-    </a>
-</nav>
+        function finishExam() {
+            if(confirm("Are you sure you want to end this exam? Your progress will be saved.")) {
+                location.href = 'results.html';
+            }
+        }
 
+        // Simple Timer Logic
+        let time = 3600; 
+        setInterval(() => {
+            time--;
+            let mins = Math.floor(time / 60);
+            let secs = time % 60;
+            document.getElementById('timer').innerText = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+    </script>
 </body>
 </html>
