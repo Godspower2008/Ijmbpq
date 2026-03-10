@@ -3,26 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test | IJMB PRO</title>
+    <title>Theory Simulators | IJMB PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        .sim-card {
+        /* Specific styles to match your screenshot exactly */
+        .simulator-card {
             display: flex;
             align-items: center;
             gap: 20px;
-            padding: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
-        .sim-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
+        
+        .simulator-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon-box {
+            width: 65px;
+            height: 65px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
+            font-size: 1.8rem;
+        }
+
+        .info-box h2 { font-size: 1.2rem; margin-bottom: 5px; }
+        .info-box p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.4; }
+
+        /* Highlight border for the special card */
+        .highlight-card {
+            border: 2px solid var(--accent);
+            background: rgba(99, 102, 241, 0.05);
         }
     </style>
 </head>
@@ -30,60 +47,48 @@
 
     <header>
         <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
-        <nav class="nav-links" id="navLinks">
-            <a href="ijmbpq.html" class="nav-item">Home</a>
-            <a href="study.html" class="nav-item">Study</a>
-            <a href="test.html" class="nav-item active">Test</a>
-            <a href="more.html" class="nav-item">More</a>
-        </nav>
-        <div class="hamburger" id="hamburger">
-            <span></span><span></span><span></span>
-        </div>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
     </header>
 
     <main>
-        <div class="section-header">
-            <h1 class="section-title" style="font-size: 1.8rem;">CBT Simulators</h1>
+        <h1 class="section-title" style="margin-top: 20px; font-size: 2rem;">Theory Simulators</h1>
+
+        <div class="card simulator-card" onclick="location.href='exam_theory.html?type=standard'">
+            <div class="icon-box" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                <i class="fa-solid fa-file-invoice"></i>
+            </div>
+            <div class="info-box">
+                <h2>Standard Exam</h2>
+                <p>Full-length theory paper following the official IJMB syllabus and timing.</p>
+            </div>
         </div>
 
-        <div class="grid" style="grid-template-columns: 1fr;">
-            <div class="card sim-card" onclick="location.href='exam.html'">
-                <div class="sim-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-                <div>
-                    <h3>JAMB CBT Simulator</h3>
-                    <p style="color: var(--text-dim); font-size: 0.8rem;">Full UTME past questions and timed environment.</p>
-                </div>
+        <div class="card simulator-card" onclick="location.href='setup_theory.html'">
+            <div class="icon-box" style="background: rgba(99, 102, 241, 0.1); color: var(--accent);">
+                <i class="fa-solid fa-sliders"></i>
             </div>
-
-            <div class="card sim-card" onclick="location.href='exam.html'">
-                <div class="sim-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
-                    <i class="fa-solid fa-award"></i>
-                </div>
-                <div>
-                    <h3>WAEC CBT Simulator</h3>
-                    <p style="color: var(--text-dim); font-size: 0.8rem;">Practice Objective questions for SSCE.</p>
-                </div>
+            <div class="info-box">
+                <h2>Customized Exam</h2>
+                <p>Pick specific topics and set your own number of theory questions to practice.</p>
             </div>
+        </div>
 
-            <div class="card sim-card" style="border-color: var(--accent); background: rgba(99, 102, 241, 0.05);">
-                <div class="sim-icon" style="background: var(--accent); color: white;">
-                    <i class="fa-solid fa-trophy"></i>
-                </div>
-                <div>
-                    <h3>Weekly Challenge</h3>
-                    <p style="color: var(--text-dim); font-size: 0.8rem;">Compete with others and top the leaderboard.</p>
-                </div>
+        <div class="card simulator-card highlight-card" onclick="location.href='leaderboard.html'">
+            <div class="icon-box" style="background: var(--accent); color: white;">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div class="info-box">
+                <h2>Weekly Challenge</h2>
+                <p>Compete with others and top the leaderboard with your essay scores.</p>
             </div>
         </div>
     </main>
 
     <script>
         const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
         hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
+            // Simple toggle logic for your existing menu
+            document.querySelector('.nav-links')?.classList.toggle('open');
             hamburger.classList.toggle('active');
         });
     </script>
