@@ -3,194 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJMB Master | Archive Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>Test | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .bg-navy { background-color: #002147; }
-        .text-navy { color: #002147; }
+        .sim-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .sim-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900" x-data="ijmbApp()">
+<body>
 
-    <div class="flex flex-col lg:flex-row min-h-screen">
-        
-        <aside class="w-full lg:w-72 bg-navy text-white p-6 lg:fixed lg:h-full">
-            <div class="mb-10">
-                <h1 class="text-2xl font-extrabold text-emerald-400 tracking-tight">IJMB MASTER</h1>
-                <p class="text-xs text-blue-200 opacity-60 uppercase tracking-widest font-bold">Theory Archive</p>
-            </div>
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item">Home</a>
+            <a href="study.html" class="nav-item">Study</a>
+            <a href="test.html" class="nav-item active">Test</a>
+            <a href="more.html" class="nav-item">More</a>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
 
-            <nav class="space-y-2">
-                <template x-for="cat in categories" :key="cat">
-                    <button 
-                        @click="activeCategory = cat"
-                        :class="activeCategory === cat ? 'bg-emerald-600 shadow-lg' : 'hover:bg-white/10'"
-                        class="w-full text-left px-4 py-3 rounded-lg transition-all font-medium flex items-center justify-between"
-                    >
-                        <span x-text="cat"></span>
-                        <span class="text-xs opacity-50" x-text="countQuestions(cat)"></span>
-                    </button>
-                </template>
-            </nav>
-            
-            <div class="mt-20 p-4 bg-white/5 rounded-lg border border-white/10 hidden lg:block">
-                <p class="text-[10px] text-blue-200 uppercase font-bold mb-1">Study Tip</p>
-                <p class="text-xs italic text-slate-300">"Focus on the marking scheme to understand how points are awarded."</p>
-            </div>
-        </aside>
+    <main>
+        <div class="section-header">
+            <h1 class="section-title" style="font-size: 1.8rem;">CBT Simulators</h1>
+        </div>
 
-        <main class="flex-1 lg:ml-72 p-4 lg:p-12">
-            
-            <div class="max-w-3xl mb-10">
-                <div class="relative group">
-                    <input 
-                        type="text" 
-                        x-model="searchQuery"
-                        placeholder="Search topics (e.g. Amalgamation, Calculus)..."
-                        class="w-full pl-6 pr-12 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all text-lg"
-                    >
-                    <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </div>
+        <div class="grid" style="grid-template-columns: 1fr;">
+            <div class="card sim-card" onclick="location.href='exam.html'">
+                <div class="sim-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h3>JAMB CBT Simulator</h3>
+                    <p style="color: var(--text-dim); font-size: 0.8rem;">Full UTME past questions and timed environment.</p>
                 </div>
             </div>
 
-            <div class="mb-8 border-b border-slate-200 pb-4">
-                <h2 class="text-3xl font-bold text-navy" x-text="activeCategory + ' Questions'"></h2>
-                <p class="text-slate-500">Showing model answers and marking schemes.</p>
-            </div>
-
-            <div class="max-w-4xl space-y-6">
-                <template x-for="q in filteredQuestions()" :key="q.id">
-                    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden" x-data="{ open: false }">
-                        <div class="p-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="bg-blue-50 text-navy text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter" x-text="q.subject"></span>
-                                <span class="text-slate-300 text-xs">•</span>
-                                <span class="text-slate-500 text-xs font-medium" x-text="q.topic"></span>
-                            </div>
-                            <h3 class="text-xl font-semibold text-slate-800 leading-snug mb-5" x-text="q.question"></h3>
-                            
-                            <button 
-                                @click="open = !open"
-                                :class="open ? 'bg-slate-800' : 'bg-emerald-600'"
-                                class="text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all flex items-center gap-2 shadow-md hover:scale-105 active:scale-95"
-                            >
-                                <span x-text="open ? 'Hide Answer' : 'View Model Answer'"></span>
-                                <svg xmlns="http://www.w3.org/2000/svg" :class="open ? 'rotate-180' : ''" class="h-4 w-4 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div x-show="open" x-collapse x-cloak class="bg-slate-50 border-t border-slate-100">
-                            <div class="p-6">
-                                <div class="mb-6">
-                                    <h4 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-widest">Model Solution</h4>
-                                    <p class="text-slate-700 leading-relaxed text-lg whitespace-pre-line" x-text="q.answer"></p>
-                                </div>
-
-                                <div class="bg-white border-l-4 border-emerald-500 p-5 rounded-r-lg shadow-sm">
-                                    <h4 class="text-sm font-bold text-emerald-700 flex items-center gap-2 mb-4 uppercase italic">
-                                        Official Marking Guide
-                                    </h4>
-                                    <div class="space-y-3">
-                                        <template x-for="step in q.markingScheme">
-                                            <div class="flex justify-between items-center text-sm border-b border-slate-50 pb-2">
-                                                <span class="text-slate-600 font-medium" x-text="step.point"></span>
-                                                <span class="bg-emerald-50 text-emerald-700 font-bold px-2 py-1 rounded" x-text="step.marks + ' mks'"></span>
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </template>
-
-                <div x-show="filteredQuestions().length === 0" class="text-center py-20">
-                    <p class="text-slate-400 italic">No questions match your search or category.</p>
+            <div class="card sim-card" onclick="location.href='exam.html'">
+                <div class="sim-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <div>
+                    <h3>WAEC CBT Simulator</h3>
+                    <p style="color: var(--text-dim); font-size: 0.8rem;">Practice Objective questions for SSCE.</p>
                 </div>
             </div>
-        </main>
-    </div>
+
+            <div class="card sim-card" style="border-color: var(--accent); background: rgba(99, 102, 241, 0.05);">
+                <div class="sim-icon" style="background: var(--accent); color: white;">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div>
+                    <h3>Weekly Challenge</h3>
+                    <p style="color: var(--text-dim); font-size: 0.8rem;">Compete with others and top the leaderboard.</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
-        function ijmbApp() {
-            return {
-                activeCategory: 'Science',
-                searchQuery: '',
-                categories: ['Science', 'Arts', 'Social Sciences'],
-                questions: [
-                    {
-                        id: 1,
-                        category: 'Science',
-                        subject: 'Physics',
-                        topic: 'Projectile Motion',
-                        question: 'A ball is projected horizontally from the top of a tower 50m high with a velocity of 20m/s. Calculate the time taken to reach the ground.',
-                        answer: 'Using the vertical motion formula: h = 1/2 gt²\nWhere h = 50m and g = 9.8m/s².\n\n50 = 0.5 * 9.8 * t²\nt² = 50 / 4.9\nt = √10.2\nt ≈ 3.2 seconds.',
-                        markingScheme: [
-                            { point: 'Correct formula selection', marks: 1 },
-                            { point: 'Accurate substitution of gravity and height', marks: 1 },
-                            { point: 'Final calculation with units', marks: 1 }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        category: 'Science',
-                        subject: 'Physics',
-                        topic: 'Thermodynamics',
-                        question: 'State the First Law of Thermodynamics and write its mathematical expression.',
-                        answer: 'The First Law states that energy cannot be created or destroyed, only transformed from one form to another. \n\nMathematical expression: ΔU = Q - W',
-                        markingScheme: [
-                            { point: 'Statement of conservation of energy', marks: 2 },
-                            { point: 'Correct mathematical formula', marks: 1 }
-                        ]
-                    },
-                    {
-                        id: 3,
-                        category: 'Arts',
-                        subject: 'Government',
-                        topic: 'Amalgamation',
-                        question: 'Explain two major reasons for the 1914 Amalgamation of Nigeria.',
-                        answer: '1. Economic Reasons: To use the surplus revenue from the Southern Protectorate to offset the deficit in the Northern Protectorate.\n2. Administrative Convenience: To centralize the administration and create a unified railway/telegraph system.',
-                        markingScheme: [
-                            { point: 'Mentioning economic/revenue balance', marks: 2.5 },
-                            { point: 'Explaining administrative unification', marks: 2.5 }
-                        ]
-                    },
-                    {
-                        id: 4,
-                        category: 'Arts',
-                        subject: 'Government',
-                        topic: 'Colonialism',
-                        question: 'State three features of the Clifford Constitution of 1922.',
-                        answer: '1. Introduction of the Elective Principle.\n2. Creation of a Legislative Council for the Southern Protectorate.\n3. Newspaper growth (West African Pilot) due to increased political activity.',
-                        markingScheme: [
-                            { point: 'Elective principle mention', marks: 2 },
-                            { point: 'Legislative council details', marks: 2 },
-                            { point: 'General historical context', marks: 1 }
-                        ]
-                    }
-                ],
-                countQuestions(cat) {
-                    return this.questions.filter(q => q.category === cat).length;
-                },
-                filteredQuestions() {
-                    return this.questions.filter(q => {
-                        const matchesCat = q.category === this.activeCategory;
-                        const matchesSearch = q.topic.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
-                                              q.question.toLowerCase().includes(this.searchQuery.toLowerCase());
-                        return matchesCat && matchesSearch;
-                    });
-                }
-            }
-        }
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        });
     </script>
 </body>
 </html>
