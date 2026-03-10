@@ -3,126 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pricing Plans | IJMB Pro-Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Upgrade to PRO | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root { 
-            --bg: #020617; 
-            --glass: rgba(15, 23, 42, 0.8); 
-            --border: rgba(99, 102, 241, 0.2); 
-            --accent: #6366f1; 
-            --text: #f8fafc; 
-            --text-dim: #94a3b8; 
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .pricing-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; }
+        .pricing-header p { color: var(--text-dim); }
+
+        .pricing-grid {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 50px;
         }
 
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            padding: 80px 5%; 
-            background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 70%);
-            min-height: 100vh;
-        }
-
-        .header { text-align: center; max-width: 600px; margin: 0 auto 60px; }
-        .header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; }
-        .header p { color: var(--text-dim); font-size: 1.1rem; }
-
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 30px; 
-            max-width: 1000px; 
-            margin: 0 auto; 
-        }
-
-        .card { 
-            background: var(--glass); 
-            padding: 40px; 
-            border-radius: 32px; 
-            border: 1px solid var(--border); 
-            position: relative;
-            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        .pricing-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 30px;
             display: flex;
             flex-direction: column;
+            transition: 0.3s;
+            position: relative;
         }
 
-        .card:hover { transform: translateY(-10px); border-color: var(--accent); }
-
-        /* Featured Badge */
-        .featured { border: 2px solid var(--accent); scale: 1.05; }
-        .badge { 
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-            background: var(--accent); color: white; padding: 5px 20px; 
-            border-radius: 50px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase;
+        .pricing-card.popular {
+            border: 2px solid var(--accent);
+            transform: scale(1.05);
         }
 
-        .price { font-size: 3rem; font-weight: 800; margin: 20px 0; }
-        .price span { font-size: 1rem; color: var(--text-dim); }
-
-        .features-list { list-style: none; margin: 30px 0; text-align: left; flex-grow: 1; }
-        .features-list li { margin-bottom: 15px; display: flex; align-items: center; gap: 12px; color: var(--text-dim); }
-        .features-list li i { color: #10b981; }
-
-        .btn { 
-            display: block; background: rgba(255,255,255,0.05); color: white; 
-            padding: 18px; border-radius: 16px; text-decoration: none; 
-            font-weight: 800; border: 1px solid var(--border); transition: 0.3s;
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
-        .btn-premium { background: var(--accent); border: none; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2); }
-        .btn:hover { opacity: 0.9; transform: scale(1.02); }
+        .plan-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--text-dim); }
+        .plan-price { font-size: 2.5rem; font-weight: 800; margin-bottom: 25px; }
+        .plan-price span { font-size: 1rem; color: var(--text-dim); }
 
-        .footer-note { text-align: center; margin-top: 40px; color: var(--text-dim); font-size: 0.9rem; }
-        
-        @media (max-width: 768px) {
-            .featured { scale: 1; margin-top: 20px; }
-            .header h1 { font-size: 2rem; }
+        .feature-list { list-style: none; margin-bottom: 30px; flex-grow: 1; }
+        .feature-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin-bottom: 15px; 
+            font-size: 0.95rem; 
+        }
+        .feature-item i { color: var(--accent); font-size: 0.9rem; }
+        .feature-item.disabled { color: var(--text-dim); opacity: 0.5; }
+        .feature-item.disabled i { color: var(--text-dim); }
+
+        .btn-upgrade {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-upgrade.secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .btn-upgrade:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Responsive Desktop */
+        @media (min-width: 721px) {
+            .pricing-grid { grid-template-columns: repeat(3, 1fr); align-items: start; }
+            .pricing-card.popular { margin-top: -10px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>Simple, Transparent Pricing</h1>
-        <p>Invest in your future. Access the complete IJMB Pro-Archive and secure your points today.</p>
-    </div>
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item">Home</a>
+            <a href="study.html" class="nav-item">Study</a>
+            <a href="test.html" class="nav-item">Test</a>
+            <a href="more.html" class="nav-item">More</a>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
 
-    <div class="grid">
-        <div class="card">
-            <i class="fa-solid fa-seedling" style="font-size: 2rem; color: var(--text-dim);"></i>
-            <h3 style="margin-top:15px;">Scholar (Free)</h3>
-            <div class="price">₦0<span>/month</span></div>
-            <ul class="features-list">
-                <li><i class="fa-solid fa-check"></i> 2024 Past Questions</li>
-                <li><i class="fa-solid fa-check"></i> Public Leaderboard</li>
-                <li><i class="fa-solid fa-xmark" style="color:#ef4444"></i> No Marking Schemes</li>
-                <li><i class="fa-solid fa-xmark" style="color:#ef4444"></i> No Visual Diagrams</li>
-            </ul>
-            <a href="landing.html" class="btn">Continue for Free</a>
+    <main>
+        <div class="pricing-header">
+            <h1>Choose Your Plan</h1>
+            <p>Unlock premium features and ace your exams with confidence.</p>
         </div>
 
-        <div class="card featured">
-            <div class="badge">Most Popular</div>
-            <i class="fa-solid fa-crown" style="font-size: 2rem; color: #f59e0b;"></i>
-            <h3 style="margin-top:15px;">IJMB Pro Elite</h3>
-            <div class="price">₦2,500<span>/session</span></div>
-            <ul class="features-list">
-                <li><i class="fa-solid fa-check"></i> 10+ Years Full Archive</li>
-                <li><i class="fa-solid fa-check"></i> Official Marking Schemes</li>
-                <li><i class="fa-solid fa-check"></i> High-Res Visual Diagrams</li>
-                <li><i class="fa-solid fa-check"></i> Priority WhatsApp Support</li>
-                <li><i class="fa-solid fa-check"></i> Hidden Study Strategies</li>
-            </ul>
-            <a href="contact.html" class="btn btn-premium">Unlock Premium Access</a>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="plan-name">Basic</div>
+                <div class="plan-price">Free</div>
+                <ul class="feature-list">
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Standard CBT Simulator</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> 500+ Past Questions</li>
+                    <li class="feature-item disabled"><i class="fa-solid fa-xmark"></i> Video Lessons</li>
+                    <li class="feature-item disabled"><i class="fa-solid fa-xmark"></i> PDF Report Downloads</li>
+                </ul>
+                <button class="btn-upgrade secondary">Current Plan</button>
+            </div>
+
+            <div class="pricing-card popular">
+                <div class="popular-badge">Most Popular</div>
+                <div class="plan-name">Pro Monthly</div>
+                <div class="plan-price">₦2,500<span>/mo</span></div>
+                <ul class="feature-list">
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Full Simulator Access</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> 20,000+ Past Questions</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Unlimited PDF Reports</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Ad-free Experience</li>
+                </ul>
+                <button class="btn-upgrade">Upgrade Now</button>
+            </div>
+
+            <div class="pricing-card">
+                <div class="plan-name">Pro Yearly</div>
+                <div class="plan-price">₦15,000<span>/yr</span></div>
+                <ul class="feature-list">
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Everything in Pro</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Video Course Library</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> Priority Support</li>
+                    <li class="feature-item"><i class="fa-solid fa-check"></i> 50% Save vs Monthly</li>
+                </ul>
+                <button class="btn-upgrade secondary">Get Yearly</button>
+            </div>
         </div>
-    </div>
+    </main>
 
-    <div class="footer-note">
-        <p><i class="fa-solid fa-shield-halved"></i> Instant activation after payment verification.</p>
-        <p style="margin-top:10px;">Trusted by students from 50+ IJMB Study Centres.</p>
-    </div>
-
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
