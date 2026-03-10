@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Lessons | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .video-card {
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #1e293b;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .thumbnail i {
+            font-size: 3rem;
+            color: white;
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+        .video-card:hover .thumbnail i {
+            transform: scale(1.2);
+            color: var(--accent);
+            opacity: 1;
+        }
+        .duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .video-info { padding: 15px; }
+        .video-info h3 { font-size: 0.95rem; margin-bottom: 5px; line-height: 1.4; }
+        .video-meta { font-size: 0.75rem; color: var(--text-dim); }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item">Home</a>
+            <a href="study.html" class="nav-item active">Study</a>
+            <a href="test.html" class="nav-item">Test</a>
+            <a href="more.html" class="nav-item">More</a>
+        </nav>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </header>
+
+    <main>
+        <div class="section-header">
+            <h1 class="section-title" style="font-size: 1.8rem;">Video Lessons</h1>
+        </div>
+
+        <div class="grid" id="videoGrid">
+            <div class="card video-card">
+                <div class="thumbnail">
+                    <i class="fa-solid fa-circle-play"></i>
+                    <span class="duration">12:45</span>
+                </div>
+                <div class="video-info">
+                    <h3>Introduction to Calculus: Derivatives</h3>
+                    <div class="video-meta">Mathematics • 1.2k Views</div>
+                </div>
+            </div>
+            <div class="card video-card">
+                <div class="thumbnail">
+                    <i class="fa-solid fa-circle-play"></i>
+                    <span class="duration">18:20</span>
+                </div>
+                <div class="video-info">
+                    <h3>Organic Chemistry: Alkanes & Alkenes</h3>
+                    <div class="video-meta">Chemistry • 850 Views</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
