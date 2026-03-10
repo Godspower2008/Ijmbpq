@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .faq-question:hover { background: rgba(255,255,255,0.02); }
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.4s ease-out;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .faq-item.active .faq-answer { padding: 0 20px 20px 20px; max-height: 200px; }
+        .faq-item.active i { transform: rotate(180deg); color: var(--accent); }
+        i { transition: 0.3s; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item">Home</a>
+            <a href="study.html" class="nav-item">Study</a>
+            <a href="test.html" class="nav-item">Test</a>
+            <a href="more.html" class="nav-item">More</a>
+        </nav>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </header>
+
+    <main>
+        <div class="faq-container">
+            <div class="section-header">
+                <h1 class="section-title" style="font-size: 1.8rem;">Frequently Asked Questions</h1>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I access the CBT Simulator?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    You can access the CBT Simulator by clicking on the "Test" tab in the navigation bar. From there, select your preferred exam mode to start practicing.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Are the past questions up to date?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes, we regularly update our database with the latest past questions from IJMB, JAMB, and WAEC bodies to ensure you have the most relevant materials.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Can I use the app offline?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Pro users can download lesson notes and question banks for offline use. Free users require an active internet connection to access the resources.
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 40px; color: var(--text-dim);">
+                Still have questions? Contact us at <a href="mailto:support@ijmbpro.com" style="color: var(--accent); text-decoration: none;">support@ijmbpro.com</a>
+            </p>
+        </div>
+    </main>
+
+    <script>
+        // Hamburger
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const item = q.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
