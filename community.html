@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community | IJMB PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .community-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr 300px;
+            gap: 25px;
+        }
+
+        /* Sidebar Nav */
+        .sidebar-menu { display: flex; flex-direction: column; gap: 10px; }
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            transition: 0.3s;
+        }
+        .menu-item:hover, .menu-item.active { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
+
+        /* Feed Section */
+        .post-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border); overflow: hidden; }
+        .user-meta { font-size: 0.85rem; }
+        .user-name { font-weight: 800; display: block; }
+        .post-time { color: var(--text-dim); font-size: 0.75rem; }
+
+        .post-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; display: block; }
+        .post-tag { background: rgba(99, 102, 241, 0.1); color: var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+        .action-item { cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .action-item:hover { color: var(--accent); }
+
+        /* Right Sidebar: Active Tutors */
+        .tutor-list { display: flex; flex-direction: column; gap: 15px; }
+        .tutor-card { display: flex; align-items: center; gap: 12px; }
+        .status-indicator { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
+
+        @media (max-width: 1100px) {
+            .community-layout { grid-template-columns: 1fr 300px; }
+            .sidebar-menu { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .community-layout { grid-template-columns: 1fr; }
+            .right-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="ijmbpq.html" class="logo">IJMB<span>PRO</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="ijmbpq.html" class="nav-item">Home</a>
+            <a href="study.html" class="nav-item">Study</a>
+            <a href="community.html" class="nav-item active">Community</a>
+            <a href="more.html" class="nav-item">More</a>
+        </nav>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </header>
+
+    <main>
+        <div class="community-layout">
+            <div class="sidebar-menu">
+                <div class="menu-item active"><i class="fa-solid fa-house"></i> All Posts</div>
+                <div class="menu-item"><i class="fa-solid fa-calculator"></i> Mathematics</div>
+                <div class="menu-item"><i class="fa-solid fa-flask"></i> Chemistry</div>
+                <div class="menu-item"><i class="fa-solid fa-atom"></i> Physics</div>
+                <div class="menu-item"><i class="fa-solid fa-bookmark"></i> Saved Discussions</div>
+            </div>
+
+            <div class="feed-section">
+                <div class="card" style="padding: 15px; margin-bottom: 25px;">
+                    <button class="save-btn" style="margin-top: 0; padding: 12px;">Start a Discussion...</button>
+                </div>
+
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-avatar"><img src="https://via.placeholder.com/40" alt="User"></div>
+                        <div class="user-meta">
+                            <span class="user-name">Ahmed Oladimeji</span>
+                            <span class="post-time">2 hours ago</span>
+                        </div>
+                        <span class="post-tag" style="margin-left: auto;">Biology</span>
+                    </div>
+                    <a href="#" class="post-title">Help with Osmosis vs Diffusion?</a>
+                    <p style="color: var(--text-dim); font-size: 0.95rem;">Can someone explain the major difference between these two in simple terms for my theory prep? I keep getting the concentration gradient part mixed up.</p>
+                    <div class="post-actions">
+                        <div class="action-item"><i class="fa-solid fa-arrow-up"></i> 24</div>
+                        <div class="action-item"><i class="fa-solid fa-comment"></i> 8 Answers</div>
+                        <div class="action-item"><i class="fa-solid fa-share"></i></div>
+                    </div>
+                </div>
+
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-avatar"><img src="https://via.placeholder.com/40" alt="User"></div>
+                        <div class="user-meta">
+                            <span class="user-name">Sarah E.</span>
+                            <span class="post-time">5 hours ago</span>
+                        </div>
+                        <span class="post-tag" style="margin-left: auto;">Maths</span>
+                    </div>
+                    <a href="#" class="post-title">Calculus shortcut for derivatives?</a>
+                    <p style="color: var(--text-dim); font-size: 0.95rem;">I found a faster way to solve chain rule problems. Anyone want a step-by-step guide?</p>
+                    <div class="post-actions">
+                        <div class="action-item"><i class="fa-solid fa-arrow-up"></i> 56</div>
+                        <div class="action-item"><i class="fa-solid fa-comment"></i> 12 Answers</div>
+                        <div class="action-item"><i class="fa-solid fa-share"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-sidebar">
+                <div class="card" style="padding: 20px; margin-bottom: 20px;">
+                    <h3 style="font-size: 1rem; margin-bottom: 15px;">Active Tutors</h3>
+                    <div class="tutor-list">
+                        <div class="tutor-card">
+                            <div class="status-indicator"></div>
+                            <span style="font-weight: 700; font-size: 0.9rem;">Dr. Bright (Maths)</span>
+                        </div>
+                        <div class="tutor-card">
+                            <div class="status-indicator"></div>
+                            <span style="font-weight: 700; font-size: 0.9rem;">Prof. Ada (Biology)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 20px; background: var(--accent); color: white; border: none;">
+                    <h3 style="font-size: 1rem; margin-bottom: 10px;">Weekly Challenge</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.9; margin-bottom: 15px;">Solve 5 Theory Questions in Chemistry to earn the "Alchemist" badge!</p>
+                    <button style="width: 100%; padding: 10px; border-radius: 8px; border: none; font-weight: 800; cursor: pointer;">Join Now</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            hamburger.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
