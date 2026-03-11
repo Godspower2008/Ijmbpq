@@ -1,58 +1,51 @@
-/* --- Desktop vs Mobile Navigation Logic --- */
+:root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #f8fafc;
+    --text-dim: #94a3b8;
+    --accent: #6366f1;
+    --border: #334155;
+    --success: #10b981;
+}
 
-/* Default: Hide the bottom nav on desktop */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+body { background: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 80px; }
+
+header {
+    height: 70px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%; border-bottom: 1px solid var(--border); background: var(--bg);
+}
+
+.logo { font-weight: 800; font-size: 1.4rem; text-decoration: none; color: white; }
+.logo span { color: var(--accent); }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; transition: 0.3s; }
+
+.search-bar {
+    width: 100%; padding: 15px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; color: white; margin-bottom: 15px; outline: none;
+}
+
+.list-container { background: var(--card); border: 1px solid var(--border); border-radius: 15px; max-height: 200px; overflow-y: auto; }
+
+.list-item { display: flex; align-items: center; padding: 12px 20px; border-bottom: 1px solid var(--border); cursor: pointer; }
+
+.custom-checkbox { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 6px; margin-right: 15px; display: flex; align-items: center; justify-content: center; }
+
+.selected .custom-checkbox { background: var(--accent); border-color: var(--accent); }
+.selected .custom-checkbox::after { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; color: white; font-size: 0.7rem; }
+
+.start-btn { width: 100%; background: var(--accent); color: white; padding: 18px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+
+/* Mobile Bottom Nav */
 .mobile-nav {
-    display: none;
+    display: flex; position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+    width: 90%; max-width: 400px; background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 20px;
+    justify-content: space-around; z-index: 1000;
 }
 
-/* Mobile Styling (Screens smaller than 768px) */
-@media (max-width: 767px) {
-    /* Hide the top header links */
-    .nav-links {
-        display: none !important; 
-    }
-
-    /* Show the bottom navigation bar */
-    .mobile-nav {
-        display: flex;
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        max-width: 400px;
-        background: rgba(30, 41, 59, 0.8); /* Glassmorphism effect */
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 12px 25px;
-        border-radius: 25px;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 1000;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .mobile-nav-item {
-        color: var(--text-dim);
-        text-decoration: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 0.65rem;
-        font-weight: 700;
-        gap: 5px;
-    }
-
-    .mobile-nav-item i {
-        font-size: 1.2rem;
-    }
-
-    .mobile-nav-item.active {
-        color: var(--accent);
-    }
-
-    /* Add padding to the bottom of the body so content isn't hidden by the bar */
-    body {
-        padding-bottom: 100px;
-    }
-}
+.mobile-nav-item { color: var(--text-dim); text-decoration: none; font-size: 0.65rem; text-align: center; font-weight: 700; }
+.mobile-nav-item i { font-size: 1.2rem; display: block; margin-bottom: 4px; }
+.mobile-nav-item.active { color: var(--accent); }
