@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* IJMBPRO Dark Theme Colors */
+    --ijmb-bg-primary: #0a0e1a;
+    --ijmb-bg-secondary: #111827;
+    --ijmb-bg-card: #1a2235;
+    --ijmb-bg-card-hover: #232b3f;
+    
+    --ijmb-accent-purple: #6366f1;
+    --ijmb-accent-purple-light: #818cf8;
+    --ijmb-accent-blue: #3b82f6;
+    --ijmb-accent-green: #10b981;
+    --ijmb-accent-yellow: #fbbf24;
+    --ijmb-accent-pink: #ec4899;
+    
+    --ijmb-text-primary: #ffffff;
+    --ijmb-text-secondary: #9ca3af;
+    --ijmb-text-muted: #6b7280;
+    
+    --ijmb-border: #2d3748;
+    
+    /* shadcn overrides */
+    --background: 220 30% 5%;
+    --foreground: 0 0% 100%;
+    --card: 220 25% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220 25% 10%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 20% 20%;
+    --muted-foreground: 220 10% 60%;
+    --accent: 239 84% 67%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 239 84% 67%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    background-color: var(--ijmb-bg-primary);
+    color: var(--ijmb-text-primary);
+    min-height: 100vh;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--ijmb-text-primary);
+    line-height: 1.2;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-medium transition-all duration-300;
+    background: linear-gradient(135deg, var(--ijmb-accent-purple) 0%, var(--ijmb-accent-purple-light) 100%);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 rounded-xl font-medium transition-all duration-300;
+    background-color: var(--ijmb-bg-card);
+    color: var(--ijmb-text-primary);
+    border: 1px solid var(--ijmb-border);
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--ijmb-bg-card-hover);
+    border-color: var(--ijmb-accent-purple);
+  }
+  
+  .card-dark {
+    background-color: var(--ijmb-bg-card);
+    border-radius: 1rem;
+    border: 1px solid var(--ijmb-border);
+    transition: all 0.3s ease;
+  }
+  
+  .card-dark:hover {
+    background-color: var(--ijmb-bg-card-hover);
+    border-color: var(--ijmb-accent-purple);
+    transform: translateY(-2px);
+  }
+  
+  .section-padding {
+    @apply py-16 lg:py-20 px-4 sm:px-6 lg:px-8;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, var(--ijmb-accent-purple) 0%, var(--ijmb-accent-purple-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .stat-card {
+    background: linear-gradient(145deg, var(--ijmb-bg-card) 0%, var(--ijmb-bg-secondary) 100%);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--ijmb-border);
+  }
+  
+  .action-card {
+    background: linear-gradient(145deg, var(--ijmb-bg-card) 0%, rgba(99, 102, 241, 0.05) 100%);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--ijmb-border);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .action-card:hover {
+    background: linear-gradient(145deg, var(--ijmb-bg-card-hover) 0%, rgba(99, 102, 241, 0.1) 100%);
+    border-color: var(--ijmb-accent-purple);
+    transform: translateY(-2px);
+  }
+  
+  .input-dark {
+    background-color: var(--ijmb-bg-card);
+    border: 1px solid var(--ijmb-border);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--ijmb-text-primary);
+    transition: all 0.3s ease;
+  }
+  
+  .input-dark:focus {
+    outline: none;
+    border-color: var(--ijmb-accent-purple);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  }
+  
+  .input-dark::placeholder {
+    color: var(--ijmb-text-muted);
+  }
+  
+  .select-dark {
+    background-color: var(--ijmb-bg-card);
+    border: 1px solid var(--ijmb-border);
+    border-radius: 0.75rem;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    color: var(--ijmb-text-primary);
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .select-dark:focus {
+    outline: none;
+    border-color: var(--ijmb-accent-purple);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  }
+}
+
+/* Animation Classes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInBottom {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from { 
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from { 
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes growIn {
+  from { 
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slideInBottom {
+  animation: slideInBottom 0.5s ease-out forwards;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.5s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+.animate-growIn {
+  animation: growIn 0.5s ease-out forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Stagger delays */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+
+/* Initial state for animated elements */
+.animate-on-scroll {
+  opacity: 0;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ijmb-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ijmb-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ijmb-accent-purple);
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--ijmb-accent-purple);
+  color: white;
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--ijmb-bg-card) 25%, var(--ijmb-bg-card-hover) 50%, var(--ijmb-bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}

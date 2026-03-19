@@ -1,0 +1,66 @@
+/* App-specific styles */
+
+/* Ensure smooth transitions */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom focus styles */
+*:focus-visible {
+  outline: 2px solid var(--ijmb-accent-purple);
+  outline-offset: 2px;
+}
+
+/* Button press effect */
+button:active,
+a:active {
+  transform: scale(0.98);
+}
+
+/* Prevent text selection on interactive elements */
+button,
+select {
+  user-select: none;
+}
+
+/* Smooth card transitions */
+.card-dark {
+  transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Ensure proper z-index stacking */
+.sticky {
+  z-index: 10;
+}
+
+/* Mobile touch improvements */
+@media (hover: none) {
+  .card-dark:hover {
+    transform: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  nav,
+  .btn-primary,
+  .btn-secondary {
+    display: none !important;
+  }
+  
+  section {
+    break-inside: avoid;
+  }
+}
+
+/* Loading animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
