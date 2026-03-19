@@ -1,49 +1,73 @@
-# IJMB Pro-Archive (Official 2026 Edition)
+# React + TypeScript + Vite
 
-A premium, high-ticket theoretical portal designed for IJMB candidates. This platform provides professional marking schemes, visual solutions, and a real-time competitive leaderboard to gamify the learning experience.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
----
+Currently, two official plugins are available:
 
-## 🚀 Key Features
-* **Authentication & Security:** Premium login system with email verification and compulsory data collection (Name/Combination).
-* **Dynamic Theory Archives:** Automated science archives for Physics, Chemistry, and Biology using MathJax for high-fidelity formula rendering.
-* **Admin Control Center:** A secure `admin.html` page to upload new questions and marking schemes directly to the Firebase database.
-* **Leaderboard System:** Real-time ranking of students based on their "Points Earned" by solving theoretical questions.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
----
+## React Compiler
 
-## 📂 Master File Directory
-| File Name | Purpose |
-| :--- | :--- |
-| `landing.html` | **The Gate:** High-converting sales page + Signup/Login modal. |
-| `ijmbpq.html` | **The Hub:** Main student dashboard and global leaderboard. |
-| `admin.html` | **The Controller:** Secret page for uploading theoretical content. |
-| `subject-[name].html` | **The Vaults:** Subject-specific archives (Physics, Math, etc.). |
-| `app.js` | **The Brain:** Handles sidebar navigation and global search logic. |
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
----
+## Expanding the ESLint configuration
 
-## 🛠 Setup & Configuration
-1.  **Firebase Connection:** All files are linked to the `ijmb-portal` project.
-2.  **Database Rules:** Ensure your Firebase Realtime Database rules allow reading for authenticated users:
-    ```json
-    {
-      "rules": {
-        ".read": "auth != null",
-        ".write": "auth != null"
-      }
-    }
-    ```
-3.  **Content Management:** Use `admin.html` to push new content. Do not manually edit the JSON in Firebase to avoid formatting errors.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
----
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-## ⚖️ Pricing Model
-The platform is designed to be sold as a premium service (e.g., ₦15,000/session).
-* **Free Tier:** Landing page access.
-* **Premium Tier:** Full access to solved archives and the Leaderboard.
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
----
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-## 📞 Technical Support
-For database resets or student verification issues, contact the system administrator via the link in `contact.html`.
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
